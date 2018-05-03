@@ -9,11 +9,10 @@ mongoose.Promise = global.Promise;
 const { PORT, DATABASE_URL } = require('./config');
 
 app.use(express.static('public'));
-app.listen(process.env.PORT || 8080);
 
 app.get('/home', (req, res) => {
 	res.status(200).json({ message: 'You have arrived on the Migraine App home page' });
-})
+	});
 
 let server;
 
