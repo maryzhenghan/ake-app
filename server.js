@@ -12,7 +12,6 @@ app.use(express.static('public'));
 
 app.get('/home', (req, res) => {
 	res.status(200).json({ message: 'You have arrived on the Migraine App home page' });
-	.catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
 let server;
