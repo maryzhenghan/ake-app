@@ -1,5 +1,6 @@
 language: node.js
-node_js: node
+node_js:
+- 0.8.x
 services:
 - mongodb
 deploy:
