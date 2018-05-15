@@ -14,6 +14,14 @@ app.get('/home', (req, res) => {
 	res.status(200).json({ message: 'You have arrived on the Migraine App home page' });
 });
 
+app.get('/settings', (req, res) => {
+	res.status(200).json({ message: 'You have arrived on the Migraine App settings page' });
+});
+
+app.get('/history', (req, res) => {
+	res.status(200).json({ message: 'You have arrived on the Migraine App history page' });
+});
+
 let server;
 
 function runServer(databaseUrl, port = PORT) {
