@@ -67,7 +67,7 @@ const MOCK_LOGS = {
 	]
 }
 
-function displayTodayLog(callbackFn) {
+function getTodayLog(callbackFn) {
 	setTimeout(function() { callbackFn(MOCK_LOGS)}, 50);
 }
 
@@ -100,7 +100,7 @@ function displayRecentLogs(data) {
 
 // function stays the same even when connecting to real API
 function getDisplayLogs() {
-	getTodayLog(displayTodayLog;);
+	getTodayLog(displayTodayLog);
 	getRecentLogs(displayRecentLogs);
 }
 
