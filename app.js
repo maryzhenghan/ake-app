@@ -1,3 +1,16 @@
+
+// EDIT/ADD LOG //
+
+$('.js-todayLogButton').on("click", function(e) {
+	e.preventDefault();
+	$('.js-todayLogForm').removeClass("hidden");
+});
+
+
+
+// API SETUP //
+
+// mock data
 const MOCK_LOGS = {
 	"recentLogs": [
 		{
