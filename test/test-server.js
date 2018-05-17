@@ -2,7 +2,6 @@
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('../server');
 
 const expect = chai.expect;
 
@@ -50,7 +49,7 @@ describe('Migraine app API resource', function() {
 		});
 	});
 
-	describe('GET endpoint for settings page', function() {
+	describe('GET endpoint for history page', function() {
 
 		it('should return a 200 status code and HTML', function() {
 			let res;
