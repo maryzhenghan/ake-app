@@ -75,7 +75,7 @@ function displayTodayLog(data) {
 	/* let todayLog = data.recentLogs.s... */
 	// will later need to find a way to sort the objects in the mock data array by date
 
-	$('.js-todayLog').append(`<p><h2>05/14/2018</h2>
+	$('.js-todayLog').append(`<p><h5>05/14/2018</h5>
 			<p>No migraine.</p>
 			<p>Weather in Durham: 77F, cloudy, humidity: 83%</p>
 			<p>Water count: 88 oz</p>
