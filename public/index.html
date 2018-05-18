@@ -25,13 +25,34 @@
 			<form>
 				<fieldset>
 					<legend>Log Editor</legend>
+
 					<label for="entry-date">Entry date:</label><input type="date" id="entry-date"><br>
+
 					<div>
 						<span>Migraine today?:</span><br>
 						<label for="migraine-yes">Yes</label><input type="radio" id="migraine-yes" value="yes" checked><br>
 						<label for="migraine-no">No</label><input type="radio" id="migraine-no" value="no"><br>
 					</div>
+
 					<label for="migraine-length">Migraine Length (hours):</label><input type="text" id="migraine-length"><br>
+					<label for="weather">Weather:</label><input type="text" id="weather"><br>
+					<label for="water-count">Water count (oz):</label><input type="text" id="water-count"><br>
+
+					<label for="skipped-meals">Skipped meals (select all that apply):</label>
+					<select name="skipped-meals" size="4" multiple>
+						<option value="n/a">N/A</option>
+						<option value="breakfast">Breakfast</object>
+						<option value="lunch">Lunch</object>
+						<option value="dinner">Dinner</object>
+					</select>
+					<br>
+
+					<label for="hours-of-sleep">Hours of sleep:</label><input type="text" id="hours-of-sleep"><br>
+
+					<label for="total-hours-sleep">Total hours of sleep:</label><input type="text" id="total-hours-sleep"><br>
+
+					<label for="notes">Additional notes:</label><textarea></textarea><br>
+
 					<input type="submit" name="save button" value="Save">
 				</fieldset>
 			</form>
