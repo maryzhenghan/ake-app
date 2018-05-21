@@ -106,7 +106,7 @@ function getRecentLogs(callbackFn) {
 function displayRecentLogs(data) {
 	for (index in data.recentLogs) {
 		$('.js-recentLogs').append(
-			'<p>' + data.recentLogs[index].date + ': ' + data.recentLogs[index].migraine + ' migraine' + '</p>');
+			'<p>' + data.recentLogs[index]['entry date'] + ': ' + data.recentLogs[index].migraine + ' migraine' + '</p>');
 	}
 }
 

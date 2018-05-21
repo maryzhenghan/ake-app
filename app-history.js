@@ -102,7 +102,7 @@ function displayAllLogs(data) {
 		let simpJson = JSON.stringify(data.allLogs[index], null, 10);
 
 		$('body').append(
-			'<p>' + data.allLogs[index].date + ': ' + data.allLogs[index].migraine + ' migraine' + '</p><p>' + simpJson + '</p>');
+			'<p>' + data.allLogs[index]['entry date'] + ': ' + data.allLogs[index].migraine + ' migraine' + '</p><p>' + simpJson + '</p>');
 	}
 }
 
