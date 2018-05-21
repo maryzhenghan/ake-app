@@ -4,7 +4,13 @@
 $('.js-todayLogButton').on("click", function(e) {
 	e.preventDefault();
 	$('.js-todayLogForm').removeClass("hidden");
+	$('.js-todayLogButton').addClass("hidden");
 });
+
+$('.js-logSaveButton').on("click", function(e) {
+	e.preventDefault();
+
+})
 
 
 
