@@ -1,23 +1,41 @@
 
 // EDIT/ADD LOG //
 
-$('.js-todayLogButton').on("click", function(e) {
+// clicking on edit log button
+$('.js-todayLogEdit').on("click", function(e) {
 	e.preventDefault();
-	$('.js-todayLogForm').removeClass("hidden");
-	$('.js-todayLogButton').addClass("hidden");
+	$('.js-todayLogForm').removeClass('hidden');
+	$('.js-todayLogDisplay').addClass('hidden');
+	$('.js-todayLogEdit').addClass('hidden');
+
+	//	if ($('.js-todayDate').find())
 });
 
+// saving edited log w mock data
 $('.js-logSaveButton').on("click", function(e) {
 	e.preventDefault();
+	$('.js-todayLogForm').addClass("hidden");
 
+	MOCK_LOGS.recentLogs.push({"id": "555", "entry date": "5/22/2018", "migraine": "yes", "weather": "88F, sunny, humidiy: 90%", "water count (oz)": 78, "skipped meals": "none", "hours of sleep": "23:00 to 07:00", "total hours slept": 8, "notes": "n/a"});
+
+	// take out .empty when using real data, as needed //
+	$('.js-todayLogDisplay').empty().append(`<p><h5>05/22/2018</h5>
+			<p>Yes migraine.</p>
+			<p>Weather in Durham: 88F, sunny, humidiy: 90%</p>
+			<p>Water count (oz): 78</p>
+			<p>No skipped meals.</p>
+			<p>Hours of sleep: 23:00 to 07:00</p>
+			<p>Total hours slept: 8</p>`);
+	$('.js-todayLogDisplay').removeClass('hidden');
+	$('.js-todayLogEdit').removeClass('hidden');
 })
 
 
 
-// API SETUP //
+// // API SETUP // //
 
 // mock data
-const MOCK_LOGS = {
+let MOCK_LOGS = {
 	"recentLogs": [
 		{
 			"id": "111",
@@ -86,41 +104,62 @@ const MOCK_LOGS = {
 	]
 }
 
+
+// function for setting today's date
+function getTodayDate() {
+	let today = new Date();
+	let dd = today.getDate();
+	let mm = today.getMonth()+1;
+	let yyyy = today.getFullYear();
+
+	if (dd<10) {
+		dd = '0'+dd;
+	}
+	if (mm<10) {
+		mm = '0'+mm;
+	}
+
+	let todayDate = mm+'/'+dd+'/'+yyyy;
+	$('.js-todayDate').text(todayDate);
+}
+
+
+// functions for checking if there's an existing log for today.
+// if so, display w edit button. if not, display create log button
 function getTodayLog(callbackFn) {
 	setTimeout(function() { callbackFn(MOCK_LOGS)}, 50);
 }
 
 function displayTodayLog(data) {
-	/* let todayLog = data.recentLogs.s... */
-	// will later need to find a way to sort the objects in the mock data array by date
+	// will later need to sort the objects in the db by date
 
-	$('.js-todayLog').append(`<p><h5>05/14/2018</h5>
+	/*
+	if ( !== todayDate) {
+		$('.js-todayLogCreate').addClass('hidden');
+		$('.js-todayLogEdit').removeClass('hidden');
+		$('.js-todayLog').append(`correct date's data`);
+	}
+	else {
+		$('.js-todayLogCreate').removeClass('hidden');
+		$('.js-todayLogEdit').addClass('hidden');
+	}
+	*/
+
+	$('.js-todayLogDisplay').append(`<p><h5>05/14/2018</h5>
 			<p>No migraine.</p>
 			<p>Weather in Durham: 77F, cloudy, humidity: 83%</p>
 			<p>Water count: 88 oz</p>
 			<p>Skipped meals: lunch</p>
 			<p>Hours of sleep: 23:00 to 07:00</p>
 			<p>Total hours: 8 hours</p>`);
-}
-
-
-function getRecentLogs(callbackFn) {
-	setTimeout(function(){ callbackFn(MOCK_LOGS)}, 100);
-}
-
-// function stays same when connecting to real API later
-function displayRecentLogs(data) {
-	for (index in data.recentLogs) {
-		$('.js-recentLogs').append(
-			'<p>' + data.recentLogs[index]['entry date'] + ': ' + data.recentLogs[index].migraine + ' migraine' + '</p>');
-	}
+	$('.js-todayLogEdit').removeClass('hidden');
+	$('.js-todayLogCreate').addClass('hidden');
 }
 
 
 // function stays the same even when connecting to real API
 function getDisplayLogs() {
-	getTodayLog(displayTodayLog);
-	getRecentLogs(displayRecentLogs);
+	getTodayDate(getTodayLog(displayTodayLog));
 }
 
 $(getDisplayLogs);
