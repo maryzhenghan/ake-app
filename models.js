@@ -1,9 +1,11 @@
 // reference mongoose docs: http://mongoosejs.com/docs/guide.html
 
+'use strict';
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-let migraineLogSchema = new Schema({
+const migraineLogSchema = new Schema({
 	date: { type: Date, default: Date.now },
 	migraineLengthHr: Number,
 	water: Number,
@@ -41,8 +43,17 @@ function calculateSleepTotal(startHr, startMin, endHr, endMin) {
 }
 
 
-migraineLogSchema.virtual('sleepTotalHr').get(function () {
-	let sleepTotal = calculateSleepTotalHr(migraineLogSchema.sleepStartHr, migraineLogSchema.sleepStartMin, migraineLogSchema.sleepEndHr, migraineLogSchema.sleepEndMin);
+migraineLogSchema.virtual('sleepStart').get(function () {
+	return migraineLogSchema.sleepStartHr + ':' + migraineLogSchema.sleepStartMin;
+});
+
+migraineLogSchema.virtual('sleepEnd').get(function () {
+	return migraineLogSchema.sleepEndHr + ':' + migraineLogSchema.sleepEndMin;
+});
+
+
+migraineLogSchema.virtual('sleepTotal').get(function () {
+	let sleepTotal = calculateSleepTotal(migraineLogSchema.sleepStartHr, migraineLogSchema.sleepStartMin, migraineLogSchema.sleepEndHr, migraineLogSchema.sleepEndMin);
 
 	return sleepTotal;
 });
@@ -60,3 +71,21 @@ migraineLogSchema.virtual('migraine').get(function () {
 
 	return migraine;
 });
+
+
+migraineLogSchema.methods.serialize = function() {
+	return {
+		date: this.date,
+		migraine: this.migraine,
+		water: this.water,
+		skippedMeals: this.skippedMeals,
+		sleepStart: this.sleepStart,
+		sleepEnd: this.sleepEnd,
+		sleepTotal: this.sleepTotalHr,
+		notes: this.notes
+	};
+};
+
+const Migraine = mongoose.model('Migraine', migraineLogSchema);
+
+module.exports = {Migraine};
