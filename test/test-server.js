@@ -34,21 +34,6 @@ describe('Migraine app API resource', function() {
 		});
 	});
 
-	describe('GET endpoint for settings page', function() {
-
-		it('should return a 200 status code and HTML', function() {
-			let res;
-
-			return chai.request(app)
-				.get('/settings')
-				.then(function(_res) {
-					res = _res;
-					expect(res).to.have.status(200);
-					expect(res.body).to.not.be.null;
-				});
-		});
-	});
-
 	describe('GET endpoint for history page', function() {
 
 		it('should return a 200 status code and HTML', function() {
