@@ -7,8 +7,10 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const { PORT, DATABASE_URL } = require('./config');
+const { Migraine } = require('./models');
 
 app.use(express.static('public'));
+app.use(bodyParser.json());
 
 app.get('/home', (req, res) => {
 	res.status(200).json({ message: 'You have arrived on the Migraine App home page' });
@@ -16,6 +18,15 @@ app.get('/home', (req, res) => {
 
 app.get('/history', (req, res) => {
 	res.status(200).json({ message: 'You have arrived on the Migraine App history page' });
+});
+
+app.get('/docs/:id', (req, res) => {
+});
+
+
+// catch-all endpoint if client makes request to non-existent endpoint
+app.use('*', function(req, res) {
+	res.status(404).json({ message: 'Not Found' });
 });
 
 let server;

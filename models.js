@@ -75,6 +75,7 @@ migraineLogSchema.virtual('migraine').get(function () {
 
 migraineLogSchema.methods.serialize = function() {
 	return {
+		id: this._id,
 		date: this.date,
 		migraine: this.migraine,
 		water: this.water,
