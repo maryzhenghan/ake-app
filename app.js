@@ -1,4 +1,3 @@
-
 // EDIT/ADD LOG //
 
 // clicking on edit log button on homepage
@@ -34,11 +33,10 @@ $('.js-logSaveButton').on("click", function(e) {
 
 // mock data
 let MOCK_LOGS = {
-	"recentLogs": [
+	"allLogs": [
 		{
 			"date": "05/10/2018",
-			"migraine": "Yes",
-			"migraineLength": 3,
+			"migraineLengthHr": 3,
 			"weather": "88F, sunny, humidity: 90%",
 			"water": "76 oz",
 			"skippedMeals": "no",
