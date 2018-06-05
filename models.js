@@ -9,7 +9,7 @@ const migraineLogSchema = new Schema({
 	date: { type: Date, default: Date.now },
 	migraineLengthHr: Number,
 	water: Number,
-	skippedMeals: Array,
+	skippedMeals: [{ meal: String }],
 	sleepStartHr: Number,
 	sleepStartMin: Number,
 	sleepEndHr: Number,
@@ -87,6 +87,6 @@ migraineLogSchema.methods.serialize = function() {
 	};
 };
 
-const Migraine = mongoose.model('Migraine', migraineLogSchema);
+const Log = mongoose.model('Log', migraineLogSchema);
 
-module.exports = {Migraine};
+module.exports = {Log};
