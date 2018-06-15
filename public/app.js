@@ -31,6 +31,75 @@ $('.js-logSaveButton').on("click", function(e) {
 
 // // API SETUP // //
 
+// mock data
+let MOCK_LOGS = {
+	"allLogs": [
+		{
+			"date": "05/10/2018",
+			"migraineLengthHr": 3,
+			"weather": "88F, sunny, humidity: 90%",
+			"water": "76 oz",
+			"skippedMeals": "no",
+			"sleepStartHr": 23,
+			"sleepStartMin": 30,
+			"sleepEndHr": 06,
+			"sleepEndMin": 55,
+			"sleepTotalHrs": 7.42,
+			"notes": "n/a"
+		},
+		{
+			"date": "05/11/2018",
+			"migraine": "No",
+			"migraine length": "n/a",
+			"weather": "73F, overcast, humidity: 86%",
+			"water": "88 oz",
+			"skippedMeals": "no",
+			"hours of sleep": "23:45 to 07:00",
+			"total hours": "7.25",
+			"notes": "indoors most of the day",
+		},
+		{
+			"id": "333",
+			"date": "05/12/2018",
+			"migraine": "No",
+			"migraine length": "n/a",
+			"weather": "92F, sunny, humidity: 94%",
+			"water": "102 oz",
+			"skippedMeals": "breakfast - late",
+			"hours of sleep": "23:00 to 05:35",
+			"total hours": "6.6",
+			"notes": "woke up early for sendoff",
+			"publishedAt": 201805132203
+		},
+		{
+			"id": "444",
+			"date": "05/13/2018",
+			"migraine": "Yes",
+			"migraine length": "6 hours",
+			"weather": "89F, thunderstorms, humidity: 80%",
+			"water": "90 oz",
+			"skippedMeals": "no",
+			"hours of sleep": "23:35 to 6:55",
+			"total hours": "7.33",
+			"notes": "migraine probably from waking up early yesterday, or rain/barometric pressure",
+			"publishedAt": 201805151310
+		},
+		{
+			"id": "555",
+			"date": "05/14/2018",
+			"migraine": "No",
+			"migraine length": "n/a",
+			"weather": "77F, cloudy, humidity: 83%",
+			"water": "88 oz",
+			"skippedMeals": "lunch",
+			"hours of sleep": "23:00 to 07:00",
+			"total hours": "8",
+			"publishedAt": 201805151315
+		}
+	]
+}
+
+
 // function for setting today's date
 function getTodayDate() {
 	let today = new Date();
