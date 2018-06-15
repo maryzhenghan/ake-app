@@ -42,7 +42,7 @@ let MOCK_LOGS = {
 			"skippedMeals": "no",
 			"sleepStartHr": 23,
 			"sleepStartMin": 30,
-			"sleepEndHr": 06,
+			"sleepEndHr": 6,
 			"sleepEndMin": 55,
 			"sleepTotalHrs": 7.42,
 			"notes": "n/a"
@@ -116,14 +116,13 @@ function getTodayDate() {
 
 	let todayDate = mm+'/'+dd+'/'+yyyy;
 	$('.js-todayDate').text(todayDate);
-	console.log(todayDate);
 }
 
 
 // functions for checking if there's an existing log for today.
 // if so, display w edit button. if not, display create log button
 function getTodayLog(callbackFn) {
-	const currentLog = MOCK_LOGS[3]; // call database get current date
+	const currentLog = MOCK_LOGS.allLogs[3]; // call database get current date
 
 	// will later need to sort the objects in the db by date
 
@@ -143,13 +142,14 @@ function getTodayLog(callbackFn) {
 }
 
 function displayTodayLog(data) {
+	JSON.stringify(data);
 	$('.js-todayLogDisplay').append(`<p><h5>${data.date}</h5>
 			<p>${data.migraine} migraine.</p>
 			<p>Weather in Durham: ${data.weather}</p>
 			<p>Water count: ${data.water} oz</p>
 			<p>Skipped meals: ${data.skippedMeals}</p>
 			<p>Went to bed at ${data.startSleepHr}:${data.startSleepMin}</p>
-			<p>Woke up at ${data.endSleepHr}:${endSleepMin}</p>/
+			<p>Woke up at ${data.endSleepHr}:${data.endSleepMin}</p>/
 			<p>Total hours slept: ${data.totalHrSleep}</p>`);
 	$('.js-todayLogEdit').removeClass('hidden');
 	$('.js-todayLogCreate').addClass('hidden');
@@ -168,7 +168,8 @@ function displayTodayLog(data) {
 
 // function stays the same even when connecting to real API
 function getDisplayLogs() {
-	getTodayDate(getTodayLog(displayTodayLog));
+	getTodayDate();
+	getTodayLog(displayTodayLog);
 }
 
 $(getDisplayLogs);
