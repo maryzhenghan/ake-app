@@ -1,0 +1,122 @@
+[
+	{
+		"_id": "111111111111111111111100",
+		"date": "05/10/2018",
+		"migraineLengthHr": 3,
+		"water": 76,
+		"skippedMeals": [],
+		"sleepStartHr": 23,
+		"sleepStartMin": 30,
+		"sleepEndHr": 6,
+		"sleepEndMin": 55,
+		"notes": null
+	},
+	{
+		"_id": "111111111111111111111101",
+		"date": "05/11/2018",
+		"migraineLengthHr": 0,
+		"water": 88,
+		"skippedMeals": [],
+		"sleepStartHr": 23,
+		"sleepStartMin": 45,
+		"sleepEndHr": 7,
+		"sleepEndMin": 0,
+		"notes": "indoors most of the day"
+	},
+	{
+		"_id": "111111111111111111111102",
+		"date": "05/12/2018",
+		"migraineLengthHr": 0,
+		"water": 102,
+		"skippedMeals": [{ "meal": "breakfast" }],
+		"sleepStartHr": 23,
+		"sleepStartMin": 0,
+		"sleepEndHr": 5,
+		"sleepEndMin": 35,
+		"notes": "woke up early for sendoff"
+	},
+	{
+		"_id": "111111111111111111111103",
+		"date": "05/13/2018",
+		"migraineLengthHr": 6,
+		"water": 90,
+		"skippedMeals": [],
+		"sleepStartHr": 23,
+		"sleepStartMin": 35,
+		"sleepEndHr": 6,
+		"sleepEndMin": 55,
+		"notes": "migraine probably from waking up early yesterday, or rain/barometric pressure"
+	},
+	{
+		"_id": "111111111111111111111104",
+		"date": "05/14/2018",
+		"migraineLengthHr": 0,
+		"water": 88,
+		"skippedMeals": [{ "meal": "lunch" }],
+		"sleepStartHr": 23,
+		"sleepStartMin": 0,
+		"sleepEndHr": 7,
+		"sleepEndMin": 0,
+		"notes": null
+	},
+	{
+		"_id": "111111111111111111111105",
+		"date": "05/14/2018",
+		"migraineLengthHr": 0,
+		"water": 88,
+		"skippedMeals": [{ "meal": "breakfast" }, { "meal": "dinner" }],
+		"sleepStartHr": 22,
+		"sleepStartMin": 0,
+		"sleepEndHr": 6,
+		"sleepEndMin": 20,
+		"notes": "weather at 80% humidity today"
+	},
+	{
+		"_id": "111111111111111111111106",
+		"date": "05/14/2018",
+		"migraineLengthHr": 0,
+		"water": 88,
+		"skippedMeals": [{ "meal": "lunch" }],
+		"sleepStartHr": 1,
+		"sleepStartMin": 5,
+		"sleepEndHr": 8,
+		"sleepEndMin": 10,
+		"notes": "77F, cloudy, humidity: 83%"
+	},
+	{
+		"_id": "111111111111111111111107",
+		"date": "05/14/2018",
+		"migraineLengthHr": 0,
+		"water": 88,
+		"skippedMeals": [],
+		"sleepStartHr": 23,
+		"sleepStartMin": 20,
+		"sleepEndHr": 6,
+		"sleepEndMin": 50,
+		"notes": null
+	},
+	{
+		"_id": "111111111111111111111108",
+		"date": "05/14/2018",
+		"migraineLengthHr": 0,
+		"water": 88,
+		"skippedMeals": [{ "meal": "breakfast" }],
+		"sleepStartHr": 22,
+		"sleepStartMin": 0,
+		"sleepEndHr": 5,
+		"sleepEndMin": 45,
+		"notes": "woke up early for conference"
+	},
+	{
+		"_id": "111111111111111111111109",
+		"date": "05/14/2018",
+		"migraineLengthHr": 0,
+		"water": 80,
+		"skippedMeals": [],
+		"sleepStartHr": 0,
+		"sleepStartMin": 30,
+		"sleepEndHr": 6,
+		"sleepEndMin": 30,
+		"notes": null
+	}
+]

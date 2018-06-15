@@ -17,7 +17,7 @@ const migraineLogSchema = new Schema({
 	notes: String
 });
 
-const migraineLog = mongoose.model('migraineLog', logSchema);
+const migraineLog = mongoose.model('migraineLog', migraineLogSchema);
 
 
 // calculates total hours of sleep for virtual 'sleepTotalHr'. sleep hours are submitted in military time
@@ -39,22 +39,22 @@ function calculateSleepTotal(startHr, startMin, endHr, endMin) {
 		calculatedSleepTotal = ((endMin / 60) - (startMin / 60));
 	}
 
+	calculatedSleepTotal = calculatedSleepTotal.toFixed(2); 
 	return calculatedSleepTotal;
 }
 
 
 migraineLogSchema.virtual('sleepStart').get(function () {
-	return migraineLogSchema.sleepStartHr + ':' + migraineLogSchema.sleepStartMin;
+	return this.sleepStartHr + ':' + this.sleepStartMin;
 });
 
 migraineLogSchema.virtual('sleepEnd').get(function () {
-	return migraineLogSchema.sleepEndHr + ':' + migraineLogSchema.sleepEndMin;
+	return this.sleepEndHr + ':' + this.sleepEndMin;
 });
 
 
 migraineLogSchema.virtual('sleepTotal').get(function () {
-	let sleepTotal = calculateSleepTotal(migraineLogSchema.sleepStartHr, migraineLogSchema.sleepStartMin, migraineLogSchema.sleepEndHr, migraineLogSchema.sleepEndMin);
-
+	let sleepTotal = calculateSleepTotal(this.sleepStartHr, this.sleepStartMin, this.sleepEndHr, this.sleepEndMin);
 	return sleepTotal;
 });
 
@@ -82,7 +82,7 @@ migraineLogSchema.methods.serialize = function() {
 		skippedMeals: this.skippedMeals,
 		sleepStart: this.sleepStart,
 		sleepEnd: this.sleepEnd,
-		sleepTotal: this.sleepTotalHr,
+		sleepTotal: this.sleepTotal,
 		notes: this.notes
 	};
 };

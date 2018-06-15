@@ -1,5 +1,6 @@
 'use strict';
 
+const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 
@@ -14,11 +15,13 @@ app.use(bodyParser.json());
 
 
 app.get('/home', (req, res) => {
-	res.status(200).json({ message: 'You have arrived on the Migraine App home page' });
+	res.status(200);
+	res.sendFile('index.html', {root: './public'});
 });
 
 app.get('/history', (req, res) => {
-	res.status(200).json({ message: 'You have arrived on the Migraine App history page' });
+	res.status(200);
+	res.sendFile('history.html', {root: './public'});
 });
 
 // limits to the first 5 logs
@@ -29,7 +32,7 @@ app.get('/logs', (req, res) => {
 		.then(logs => {
 			res.json({
 				logs: logs.map(
-					(logs) => log.serialize())
+					(log) => log.serialize())
 			});
 		})
 		.catch(err => {
@@ -53,14 +56,13 @@ app.get('/logs/:id', (req, res) => {
 app.post('/logs', (req, res) => {
 	const requiredFields = ['date', 'migraineLengthHr'];
 
-	for (let i = 0; i < requiredFields.length; i++) {
-		const field = requiredFields[i];
+	requiredFields.forEach(field => {
 		if (!(field in req.body)) {
 			const message = `Missing \`${field}\` in request body`;
 			console.error(message);
 			return res.status(400).send(message);
 		}
-	}
+	});
 
 	Log
 		.create({
@@ -102,11 +104,12 @@ app.put('/logs/:id', (req, res) => {
 	});
 
 	Log
-		.findbyIdAndUpdate(req.params.id, { $set: toUpdate })
+		.findByIdAndUpdate(req.params.id, { $set: toUpdate })
 		.then(log => res.status(204).end())
 		.catch(err => {
 			console.error(err);
 			res.status(500).json({ message: 'Internal server error' });
+		});
 });
 
 
@@ -117,6 +120,7 @@ app.delete('/logs/:id', (req, res) => {
 		.catch(err => {
 			console.error(err);
 			res.status(500).json({ message: 'Internal server error' });
+		});
 });
 
 
@@ -164,4 +168,4 @@ if (require.main === module) {
 	runServer(DATABASE_URL).catch(err => console.error(err));
 }
 
-module.exports = { app, runServer, closeServer };
+module.exports = { app, server, runServer, closeServer };

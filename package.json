@@ -14,6 +14,7 @@
   },
   "scripts": {
     "test": "mocha",
+    "test-server": "mocha test/server.js",
     "start": "node server.js"
   },
   "repository": {

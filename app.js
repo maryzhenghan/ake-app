@@ -141,7 +141,7 @@ function getTodayLog(callbackFn) {
 	setTimeout(function() { callbackFn(currentLog)}, 50);
 }
 
-function displayTodayLog(currentLog) {
+function displayTodayLog(data) {
 	$('.js-todayLogDisplay').append(`<p><h5>${data.date}</h5>
 			<p>${data.migraine} migraine.</p>
 			<p>Weather in Durham: ${data.weather}</p>
