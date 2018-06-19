@@ -1,11 +1,11 @@
 'use strict';
 
-const app = require('../server');
+const { app, runServer, closeServer } = require('../server');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
 const db = require('../db/mongoose');
-const {TEST_DATABASE_URL} = require('../config');
+const { TEST_DATABASE_URL } = require('../config');
 
 const { Log } = require('../models.js');
 const seedLogs = require('../db/seed/logs');
@@ -21,21 +21,11 @@ describe('Migraine app API resource', function() {
 	// calls app.listen() for you, however I think once you
 	// are testing database interactions you need to call those
 	// to connect to the test database etc.
-
+	
+	*/
 
 	before(function() {
 		return runServer(TEST_DATABASE_URL);
-	});
-
-	after(function() {
-		return closeServer();
-	});
-
-	*/
-
-	before(function () {
-		return db.connect(TEST_DATABASE_URL)
-			.then(() => db.dropDatabase());
 	});
 
 	beforeEach(function () {
@@ -46,9 +36,10 @@ describe('Migraine app API resource', function() {
 		return db.dropDatabase();
 	});
 
-	after(function () {
-		return db.disconnect();
+	after(function() {
+		return closeServer();
 	});
+	
 
 	describe('GET endpoint for home page', function() {
 		it('should return a 200 status code and HTML', function() {
@@ -91,28 +82,20 @@ describe('Migraine app API resource', function() {
 					res = _res;
 					expect(res).to.have.status(200);
 					expect(res).to.be.json;
-					expect(res.body.logs).to.have.length.of.at.least(1);
-					return Log.count();
-				})
-				.then(function(count) {
-					expect(res.body.logs).to.have.length.of(5);
+					expect(res.body.logs).to.have.length(5);
 				});
 		});
 
-		/*it('should return logs with the right fields', function() {
+		it('should return logs with the right fields', function() {
 			let resLog;
 
-			return chai.requet(app)
+			return chai.request(app)
 				.get('/logs')
 				.then(function(_res) {
-					res = _res;
-					expect(res).to.have.status(200);
-					expect(res.body.logs).to.have.length.of.at.least(1);
-					return Log.count();
-				})
-				.then(function(count) {
-					expect(res.body.logs).to.have.length.of(5);
+					resLog = _res.body.logs[0];
+					expect(resLog).to.have.property('date');
+					expect(resLog).to.have.property('migraine');
 				});
-		});*/
+		});
 	});
 });

@@ -58,11 +58,10 @@ migraineLogSchema.virtual('sleepTotal').get(function () {
 	return sleepTotal;
 });
 
-
 migraineLogSchema.virtual('migraine').get(function () {
 	let migraine;
 
-	if (migraineLogSchema.migraineLengthHr > 0) {
+	if (this.migraineLengthHr > 0) {
 		migraine = true;
 	}
 	else {
