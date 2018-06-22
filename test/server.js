@@ -14,15 +14,11 @@ const expect = chai.expect;
 chai.use(chaiHttp);
 
 describe('Migraine app API resource', function() {
-	/* don't need this for now
-
 	// Note that with your current tests you don't need
 	// your before and after functions, since chai.request(app)
 	// calls app.listen() for you, however I think once you
 	// are testing database interactions you need to call those
 	// to connect to the test database etc.
-	
-	*/
 
 	before(function() {
 		return runServer(TEST_DATABASE_URL);
@@ -181,7 +177,7 @@ describe('Migraine app API resource', function() {
 				});
 		});
 
-		/*it('should update the log', function(done) {
+		it('should update the log', function() {
 			const updateLog = { "id": "111111111111111111111100", "migraineLengthHr": 400 };
 			let data;
 
@@ -190,14 +186,13 @@ describe('Migraine app API resource', function() {
 					data = _data;
 					return chai.request(app)
 						.put('/logs/111111111111111111111100')
-						.send(updateLog);
+						.send(updateLog)
+						.then(function(res) {
+							expect(res).to.have.status(200);
+							expect(res.body).to.be.a('object');
+					});
 				})
-				.then(function(res) {
-					expect(res).to.have.status(200);
-					expect(res.body).to.be.a('object');
-				})
-				.catch(done);
-		});*/
+		});
 	});
 
 
@@ -218,5 +213,4 @@ describe('Migraine app API resource', function() {
 				});
 		});
 	});
-
 });

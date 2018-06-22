@@ -14,6 +14,8 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 
 
+// REQUESTS
+
 app.get('/home', (req, res) => {
 	res.status(200);
 	res.sendFile('index.html', {root: './public'});
@@ -28,7 +30,7 @@ app.get('/history', (req, res) => {
 app.get('/logs', (req, res) => {
 	Log
 		.find()
-		.limit( 5 )
+		.limit( 5 ) // can be a query param if i combine the GET /today
 		.then(logs => {
 			res.json({
 				logs: logs.map(
@@ -52,17 +54,53 @@ app.get('/logs/:id', (req, res) => {
 		});
 });
 
+// for filter, be sure to make an "allowed fields" for the queries to limit access
+// make sure to write tests
+
+// request today's log
+app.get('/today', (req, res) => { // combine with above GET /logs req. if no todayDate, then just spit out last log
+	console.log(req.query.date);
+
+	Log
+		.find({ "date": req.query.date }) // check moment.js library for dates/times library
+																				// https://stackoverflow.com/questions/11973304/mongodb-mongoose-querying-at-a-specific-date
+		.then(result => {
+
+			console.log(result.length);
+
+			if (result.length > 0) {
+				res.status(200).json(result[0].serialize());
+			}
+
+			else {
+				console.log('result is empty array');
+				res.status(204).end(); // send 204 for no data, or a 200 with data. alt: 'send([]);'' - sends empty array
+			}
+		})
+		.catch(err => {
+			console.error(err);
+			res.status(500).json({ message: 'Internal server error' });
+		});
+});
+
 
 app.post('/logs', (req, res) => {
 	const requiredFields = ['date', 'migraineLengthHr'];
 
+	let message;
+	let missingError = false;
+	
 	requiredFields.forEach(field => {
 		if (!(field in req.body)) {
-			const message = `Missing \`${field}\` in request body`;
+			message = `Missing \`${field}\` in request body`;
 			console.error(message);
-			return res.status(400).send(message);
+			missingError = true;
 		}
 	});
+
+	if (missingError) {
+		return res.status(400).send(message);
+	}
 
 	Log
 		.create({

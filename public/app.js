@@ -116,18 +116,28 @@ function getTodayDate() {
 
 	let todayDate = mm+'/'+dd+'/'+yyyy;
 	$('.js-todayDate').text(todayDate);
+
+	return todayDate;
 }
 
 
 // functions for checking if there's an existing log for today.
 // if so, display w edit button. if not, display create log button
 function getTodayLog(callbackFn) {
-	const currentLog = MOCK_LOGS.allLogs[3]; // call database get current date
 
-	// will later need to sort the objects in the db by date
+	let todayDate = getTodayDate();
+	let settings = {
+		url: `/today?date=${todayDate}`,
+		method: 'GET'
+	};
 
-	/*
-	if ( !== todayDate) {
+	console.log('hello');
+
+	$.ajax(settings).always(function(data) {
+
+		console.log(data);
+		console.log('hello x2');
+	/*if (data. === null) {
 		$('.js-todayLogCreate').addClass('hidden');
 		$('.js-todayLogEdit').removeClass('hidden');
 		$('.js-todayLog').append(`correct date's data`);
@@ -136,9 +146,10 @@ function getTodayLog(callbackFn) {
 		$('.js-todayLogCreate').removeClass('hidden');
 		$('.js-todayLogEdit').addClass('hidden');
 	}
-	*/
 
 	setTimeout(function() { callbackFn(currentLog)}, 50);
+	*/
+});
 }
 
 function displayTodayLog(data) {
