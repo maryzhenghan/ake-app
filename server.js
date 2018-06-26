@@ -27,15 +27,19 @@ app.get('/history', (req, res) => {
 });
 
 // limits to the first 5 logs
+
+// for filter, be sure to make an "allowed fields" for the queries to limit access
+// make sure to write tests
 app.get('/logs', (req, res) => {
 	Log
-		.find()
-		.limit( 5 ) // can be a query param if i combine the GET /today
+		.find(req.query) //https://stackoverflow.com/questions/11973304/mongodb-mongoose-querying-at-a-specific-date - check moment.js library
+		.limit( 3 )
+		// make sure they are the most recent 3 logs
 		.then(logs => {
-			res.json({
-				logs: logs.map(
-					(log) => log.serialize())
-			});
+			res.status(200).json({
+						logs: logs.map(
+							(log) => log.serialize())
+					});
 		})
 		.catch(err => {
 			console.error(err);
@@ -48,35 +52,6 @@ app.get('/logs/:id', (req, res) => {
 	Log
 		.findById(req.params.id)
 		.then(log => res.json(log.serialize()))
-		.catch(err => {
-			console.error(err);
-			res.status(500).json({ message: 'Internal server error' });
-		});
-});
-
-// for filter, be sure to make an "allowed fields" for the queries to limit access
-// make sure to write tests
-
-// request today's log
-app.get('/today', (req, res) => { // combine with above GET /logs req. if no todayDate, then just spit out last log
-	console.log(req.query.date);
-
-	Log
-		.find({ "date": req.query.date }) // check moment.js library for dates/times library
-																				// https://stackoverflow.com/questions/11973304/mongodb-mongoose-querying-at-a-specific-date
-		.then(result => {
-
-			console.log(result.length);
-
-			if (result.length > 0) {
-				res.status(200).json(result[0].serialize());
-			}
-
-			else {
-				console.log('result is empty array');
-				res.status(204).end(); // send 204 for no data, or a 200 with data. alt: 'send([]);'' - sends empty array
-			}
-		})
 		.catch(err => {
 			console.error(err);
 			res.status(500).json({ message: 'Internal server error' });

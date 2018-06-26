@@ -22,10 +22,23 @@
 		<hr>
 
 		<h4>Today's log:</h4>
+
 		<div class="js-todayLog">
-			<div class="js-todayLogDisplay"></div>
+			<div class="js-todayLogDisplay">
+				<div class="js-todayLogDisplayNo hidden">
+					<p>Nothing logged yet.</p>
+					<p>Most recent log:</p>
+					<div class="js-todayLogDisplayPast"></div>
+				</div>
+
+				<div class="js-todayLogDisplayYes hidden">
+					
+				</div>
+			</div>
+
 			<input type="submit" value="Create today's log" class="js-todayLogCreate hidden">
 			<input type="submit" value="Edit today's log" class="js-todayLogEdit hidden">
+
 			<div class="js-todayLogForm hidden">
 				<form>
 					<fieldset>

@@ -30,76 +30,6 @@ $('.js-logSaveButton').on("click", function(e) {
 
 
 // // API SETUP // //
-
-// mock data
-let MOCK_LOGS = {
-	"allLogs": [
-		{
-			"date": "05/10/2018",
-			"migraineLengthHr": 3,
-			"weather": "88F, sunny, humidity: 90%",
-			"water": "76 oz",
-			"skippedMeals": "no",
-			"sleepStartHr": 23,
-			"sleepStartMin": 30,
-			"sleepEndHr": 6,
-			"sleepEndMin": 55,
-			"sleepTotalHrs": 7.42,
-			"notes": "n/a"
-		},
-		{
-			"date": "05/11/2018",
-			"migraine": "No",
-			"migraine length": "n/a",
-			"weather": "73F, overcast, humidity: 86%",
-			"water": "88 oz",
-			"skippedMeals": "no",
-			"hours of sleep": "23:45 to 07:00",
-			"total hours": "7.25",
-			"notes": "indoors most of the day",
-		},
-		{
-			"id": "333",
-			"date": "05/12/2018",
-			"migraine": "No",
-			"migraine length": "n/a",
-			"weather": "92F, sunny, humidity: 94%",
-			"water": "102 oz",
-			"skippedMeals": "breakfast - late",
-			"hours of sleep": "23:00 to 05:35",
-			"total hours": "6.6",
-			"notes": "woke up early for sendoff",
-			"publishedAt": 201805132203
-		},
-		{
-			"id": "444",
-			"date": "05/13/2018",
-			"migraine": "Yes",
-			"migraine length": "6 hours",
-			"weather": "89F, thunderstorms, humidity: 80%",
-			"water": "90 oz",
-			"skippedMeals": "no",
-			"hours of sleep": "23:35 to 6:55",
-			"total hours": "7.33",
-			"notes": "migraine probably from waking up early yesterday, or rain/barometric pressure",
-			"publishedAt": 201805151310
-		},
-		{
-			"id": "555",
-			"date": "05/14/2018",
-			"migraine": "No",
-			"migraine length": "n/a",
-			"weather": "77F, cloudy, humidity: 83%",
-			"water": "88 oz",
-			"skippedMeals": "lunch",
-			"hours of sleep": "23:00 to 07:00",
-			"total hours": "8",
-			"publishedAt": 201805151315
-		}
-	]
-}
-
-
 // function for setting today's date
 function getTodayDate() {
 	let today = new Date();
@@ -120,23 +50,39 @@ function getTodayDate() {
 	return todayDate;
 }
 
-
 // functions for checking if there's an existing log for today.
 // if so, display w edit button. if not, display create log button
 function getTodayLog(callbackFn) {
 
 	let todayDate = getTodayDate();
 	let settings = {
-		url: `/today?date=${todayDate}`,
+		url: `/logs?date=${todayDate}`,
 		method: 'GET'
 	};
 
-	console.log('hello');
+	$.ajax(settings)
+	.done(function(data) {
+		if (data.logs.length > 0) {
+			$('.js-todayLogDisplayYes').removeClass('hidden');
+			$('.js-todayLogEdit').removeClass('hidden');
 
-	$.ajax(settings).always(function(data) {
+			return callbackFn(data);
+		}
 
-		console.log(data);
-		console.log('hello x2');
+		else {
+			let noSettings = {
+				url: '/logs',
+				method: 'GET'
+			}
+
+			$.ajax(noSettings).done(function(data) {
+				$('.js-todayLogDisplayNo').removeClass('hidden');
+				$('.js-todayLogDisplayPast').append(combineLogs(data.logs));
+				$('.js-todayLogCreate').removeClass('hidden');
+
+				return callbackFn(data);
+			});
+		}
 	/*if (data. === null) {
 		$('.js-todayLogCreate').addClass('hidden');
 		$('.js-todayLogEdit').removeClass('hidden');
@@ -152,25 +98,37 @@ function getTodayLog(callbackFn) {
 });
 }
 
+function createLogHtml() {
+	// creating ONE log the way it should be
+
+
+}
+
+function combineLogs(logData) {
+	// map each log via createLogHtml and .join after
+	// return string of HTML
+
+
+}
+
+
+
 function displayTodayLog(data) {
 	JSON.stringify(data);
-	$('.js-todayLogDisplay').append(`<p><h5>${data.date}</h5>
-			<p>${data.migraine} migraine.</p>
-			<p>Weather in Durham: ${data.weather}</p>
-			<p>Water count: ${data.water} oz</p>
-			<p>Skipped meals: ${data.skippedMeals}</p>
-			<p>Went to bed at ${data.startSleepHr}:${data.startSleepMin}</p>
-			<p>Woke up at ${data.endSleepHr}:${data.endSleepMin}</p>/
-			<p>Total hours slept: ${data.totalHrSleep}</p>`);
-	$('.js-todayLogEdit').removeClass('hidden');
-	$('.js-todayLogCreate').addClass('hidden');
+	$('.js-todayLogDisplayYes').append(`<p><h5>${data.logs[0].dateAdjusted}</h5>
+			<p>${data.logs[0].migraine} migraine.</p>
+			<p>Water count: ${data.logs[0].water} oz</p>
+			<p>Skipped meals: ${data.logs[0].skippedMeals}</p>
+			<p>Went to bed at ${data.logs[0].sleepStart}</p>
+			<p>Woke up at ${data.logs[0].sleepEnd}</p>/
+			<p>Total hours slept: ${data.logs[0].sleepTotal}</p>`);
 
 	//	if ($('.js-todayDate').find())
 
 	$('#entry-date').val("2018-05-24");
 	$('#migraine-yes').prop('checked', false);
 	$('#migraine-no').prop('checked', true);
-	$('#migraine-length').val(8);	
+	$('#migraine-length').val(8);
 	$('#weather').val("77F, cloudy, humidity: 83%");
 	$('#water-count').val(88);
 //	$('#skipped-meals').
@@ -179,7 +137,6 @@ function displayTodayLog(data) {
 
 // function stays the same even when connecting to real API
 function getDisplayLogs() {
-	getTodayDate();
 	getTodayLog(displayTodayLog);
 }
 

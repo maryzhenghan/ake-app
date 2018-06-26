@@ -4,6 +4,7 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const moment = require('moment');
 
 const migraineLogSchema = new Schema({
 	date: { type: Date, default: Date.now },
@@ -71,11 +72,29 @@ migraineLogSchema.virtual('migraine').get(function () {
 	return migraine;
 });
 
+migraineLogSchema.virtual('dateAdjusted').get(function () {
+	let today = this.date;
+	let dd = today.getDate();
+	let mm = today.getMonth()+1;
+	let yyyy = today.getFullYear();
+
+	if (dd<10) {
+		dd = '0'+dd;
+	}
+	if (mm<10) {
+		mm = '0'+mm;
+	}
+
+	let dateAdjusted = mm+'/'+dd+'/'+yyyy;
+	return dateAdjusted;
+});
+
+
 
 migraineLogSchema.methods.serialize = function() {
 	return {
 		id: this._id,
-		date: this.date,
+		dateAdjusted: this.dateAdjusted,
 		migraine: this.migraine,
 		water: this.water,
 		skippedMeals: this.skippedMeals,
