@@ -28,11 +28,11 @@
 				<div class="js-todayLogDisplayNo hidden">
 					<p>Nothing logged yet.</p>
 					<p>Most recent log:</p>
-					<div class="js-todayLogDisplayPast"></div>
+					<div class="js-todayLogDisplayPast hidden"></div>
 				</div>
 
 				<div class="js-todayLogDisplayYes hidden">
-					
+
 				</div>
 			</div>
 
@@ -44,32 +44,95 @@
 					<fieldset>
 						<legend>Log Editor</legend>
 
-						<label for="entry-date">Entry date:</label><input type="date" id="entry-date"><br>
-
-						<div>
-							<span>Migraine today?:</span><br>
-							<label for="migraine-yes">Yes</label><input type="radio" id="migraine-yes" value="yes" checked><br>
-							<label for="migraine-no">No</label><input type="radio" id="migraine-no" value="no"><br>
-						</div>
+						<!-- html form validation - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date -->
+						<label for="entry-date">Entry date:</label><input type="date" id="entry-date" min="2018-01-01" required><br>
 
 						<label for="migraine-length">Migraine Length (hours):</label><input type="text" id="migraine-length"><br>
 						<label for="weather">Weather:</label><input type="text" id="weather"><br>
 						<label for="water-count">Water count (oz):</label><input type="text" id="water-count"><br>
 
 						<label for="skipped-meals">Skipped meals (select all that apply):</label>
-						<select name="skipped-meals" size="4" multiple>
-							<option value="n/a">None</option>
-							<option value="breakfast">Breakfast</object>
-							<option value="lunch">Lunch</object>
-							<option value="dinner">Dinner</object>
+						<select id="skipped-meals" name="skipped-meals" size="3" multiple>
+							<option value="1">Breakfast</object>
+							<option value="2">Lunch</object>
+							<option value="3">Dinner</object>
 						</select>
 						<br>
 
-						<label for="hours-of-sleep">Hours of sleep:</label><input type="text" id="hours-of-sleep"><br>
+						<label for="sleepstart-hr">Went to bed at:</label>
+						<!-- do i need value at all? now that i have used https://learn.jquery.com/using-jquery-core/faq/how-do-i-get-the-text-value-of-a-selected-option/ in app.js? -->
+						<select id="sleepstart-hr" name="sleepstart-hr"><br>
+							<option value="00" id="sleepstart-hr00">00</option>
+							<option value="01" id="sleepstart-hr01">01</option>
+							<option value="02" id="sleepstart-hr02">02</option>
+							<option value="03" id="sleepstart-hr03">03</option>
+							<option value="04" id="sleepstart-hr04">04</option>
+							<option value="05" id="sleepstart-hr05">05</option>
+							<option value="06" id="sleepstart-hr06">06</option>
+							<option value="07" id="sleepstart-hr07">07</option>
+							<option value="08" id="sleepstart-hr08">08</option>
+							<option value="09" id="sleepstart-hr09">09</option>
+							<option value="10" id="sleepstart-hr10">10</option>
+							<option value="11" id="sleepstart-hr11">11</option>
+							<option value="12" id="sleepstart-hr12">12</option>
+							<option value="13" id="sleepstart-hr13">13</option>
+							<option value="14" id="sleepstart-hr14">14</option>
+							<option value="15" id="sleepstart-hr15">15</option>
+							<option value="16" id="sleepstart-hr16">16</option>
+							<option value="17" id="sleepstart-hr17">17</option>
+							<option value="18" id="sleepstart-hr18">18</option>
+							<option value="19" id="sleepstart-hr19">19</option>
+							<option value="20" id="sleepstart-hr20">20</option>
+							<option value="21" id="sleepstart-hr21">21</option>
+							<option value="22" id="sleepstart-hr22">22</option>
+							<option value="23" id="sleepstart-hr23">23</option>
+						</select>
 
-						<label for="total-hours-sleep">Total hours of sleep:</label><input type="text" id="total-hours-sleep"><br>
+						<label for="sleepstart-min">:</label>
+						<select id="sleepstart-min" name="sleepstart-min"><br>
+							<option value="00">00</option>
+							<option value="15">15</option>
+							<option value="30">30</option>
+							<option value="45">45</option>
+						</select>
 
-						<label for="notes">Additional notes:</label><textarea></textarea><br>
+						<label for="sleepend-hr">Woke up at:</label>
+						<select id="sleepend-hr" name="sleepsend-hr"><br>
+							<option value="00">00</option>
+							<option value="01">01</option>
+							<option value="02">02</option>
+							<option value="03">03</option>
+							<option value="04">04</option>
+							<option value="05">05</option>
+							<option value="06">06</option>
+							<option value="07">07</option>
+							<option value="08">08</option>
+							<option value="09">09</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+							<option value="16">16</option>
+							<option value="17">17</option>
+							<option value="18">18</option>
+							<option value="19">19</option>
+							<option value="20">20</option>
+							<option value="21">21</option>
+							<option value="22">22</option>
+							<option value="23">23</option>
+						</select>
+
+						<label for="sleepend-min">:</label>
+						<select id="sleepend-min" name="sleepend-min"><br>
+							<option value="00">00</option>
+							<option value="15">15</option>
+							<option value="30">30</option>
+							<option value="45">45</option>
+						</select>
+
+						<label for="notes">Additional notes:</label><textarea id="notes"></textarea><br>
 
 						<input type="submit" name="save button" value="Save" class="js-logSaveButton">
 					</fieldset>

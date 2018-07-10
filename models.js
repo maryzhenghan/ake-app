@@ -4,13 +4,13 @@
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const moment = require('moment');
 
 const migraineLogSchema = new Schema({
 	date: { type: Date, default: Date.now },
 	migraineLengthHr: Number,
+	weather: String,
 	water: Number,
-	skippedMeals: [{ meal: String }],
+	skippedMeals: [String],
 	sleepStartHr: Number,
 	sleepStartMin: Number,
 	sleepEndHr: Number,
@@ -18,6 +18,7 @@ const migraineLogSchema = new Schema({
 	notes: String
 });
 
+// this vs Log at the very end?
 const migraineLog = mongoose.model('migraineLog', migraineLogSchema);
 
 
@@ -40,7 +41,7 @@ function calculateSleepTotal(startHr, startMin, endHr, endMin) {
 		calculatedSleepTotal = ((endMin / 60) - (startMin / 60));
 	}
 
-	calculatedSleepTotal = calculatedSleepTotal.toFixed(2); 
+	calculatedSleepTotal = calculatedSleepTotal.toFixed(2);
 	return calculatedSleepTotal;
 }
 
@@ -74,7 +75,7 @@ migraineLogSchema.virtual('migraine').get(function () {
 
 migraineLogSchema.virtual('dateAdjusted').get(function () {
 	let today = this.date;
-	let dd = today.getDate();
+	let dd = today.getUTCDate();
 	let mm = today.getMonth()+1;
 	let yyyy = today.getFullYear();
 
@@ -96,6 +97,8 @@ migraineLogSchema.methods.serialize = function() {
 		id: this._id,
 		dateAdjusted: this.dateAdjusted,
 		migraine: this.migraine,
+		migraineLengthHr: this.migraineLengthHr,
+		weather: this.weather,
 		water: this.water,
 		skippedMeals: this.skippedMeals,
 		sleepStart: this.sleepStart,

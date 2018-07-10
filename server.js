@@ -64,11 +64,12 @@ app.post('/logs', (req, res) => {
 
 	let message;
 	let missingError = false;
-	
+
 	requiredFields.forEach(field => {
 		if (!(field in req.body)) {
 			message = `Missing \`${field}\` in request body`;
-			console.error(message);
+			console.error(JSON.stringify(message));
+			console.error(JSON.stringify(req.body));
 			missingError = true;
 		}
 	});
@@ -81,6 +82,7 @@ app.post('/logs', (req, res) => {
 		.create({
 			date: req.body.date,
 			migraineLengthHr: req.body.migraineLengthHr,
+			weather: req.body.weather,
 			water: req.body.water,
 			skippedMeals: req.body.skippedMeals,
 			sleepStartHr: req.body.sleepStartHr,
@@ -108,7 +110,7 @@ app.put('/logs/:id', (req, res) => {
 	}
 
 	const toUpdate = {};
-	const updateableFields = ['date', 'migraineLengthHr', 'water', 'skippedMeals', 'sleepStartHr', 'sleepStartMin', 'sleepEndHr', 'sleepEndMin', 'notes'];
+	const updateableFields = ['date', 'migraineLengthHr', 'weather', 'water', 'skippedMeals', 'sleepStartHr', 'sleepStartMin', 'sleepEndHr', 'sleepEndMin', 'notes'];
 
 	updateableFields.forEach(field => {
 		if (field in req.body) {
