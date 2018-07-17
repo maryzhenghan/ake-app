@@ -60,6 +60,7 @@ $('.js-logSaveButton-edit').on("click", function(e) {
 	$('.js-todayLogEdit').removeClass('hidden');
 
 	let logDataObject = {
+		id: $('#logId').val(),
 		date: $('#entry-date').val(),
 		migraineLengthHr: $('#migraine-length').val(),
 		weather: $('#weather').val(),
@@ -186,7 +187,7 @@ function postNewLog(logData) {
 }
 
 function putNewLog(logData) {
-	let id = req.params.id;
+	let id = logData.id;
 	let settings = {
 		url: `/logs/${id}`,
 		method: 'PUT',
@@ -248,11 +249,12 @@ function convertTime(splitTime) {
 
 function matchEditFields(data) {
 
-	// START HERE let id = data.logs[0]._id;
+	let id = data.logs[0].id;
 	let log = data.logs[0];
 	let date = `${data.logs[0].dateAdjusted}`;
 	let entryDate = convertDate(date);
 
+	$('#logId').val(id);
 	$('#entry-date-edit').val(entryDate);
 	$('#migraine-length-edit').val(log.migraineLengthHr);
 	$('#weather-edit').val(log.weather);
@@ -261,11 +263,9 @@ function matchEditFields(data) {
 	if (log.skippedMeals.includes('1')) {
 		$('#skippedmeals-edit-1').attr('selected', 'selected');
 	}
-
 	if (log.skippedMeals.includes('2')) {
 		$('#skippedmeals-edit-2').attr('selected', 'selected');
 	}
-
 	if (log.skippedMeals.includes('3')) {
 		$('#skippedmeals-edit-3').attr('selected', 'selected');
 	}
