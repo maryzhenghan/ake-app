@@ -31,9 +31,10 @@ app.get('/history', (req, res) => {
 // for filter, be sure to make an "allowed fields" for the queries to limit access
 // make sure to write tests
 app.get('/logs', (req, res) => {
+	console.log(req.query);
 	Log
 		.find(req.query) //https://stackoverflow.com/questions/11973304/mongodb-mongoose-querying-at-a-specific-date - check moment.js library
-		.limit( 3 )
+		.limit( 10 )
 		// make sure they are the most recent 3 logs
 		.then(logs => {
 			res.status(200).json({
@@ -64,6 +65,8 @@ app.post('/logs', (req, res) => {
 
 	let message;
 	let missingError = false;
+	let date = req.body.date;
+	let alreadyExistsError;
 
 	requiredFields.forEach(field => {
 		if (!(field in req.body)) {
@@ -77,6 +80,17 @@ app.post('/logs', (req, res) => {
 	if (missingError) {
 		return res.status(400).send(message);
 	}
+
+	Log
+		.find({ date: date })
+		.then(log => {
+			if (log) {
+				alreadyExistsError = 'A log with this date already exists';
+				console.log(log);
+				console.log('nope');
+				return res.json(400).send(alreadyExistsError);
+			}
+		});
 
 	Log
 		.create({

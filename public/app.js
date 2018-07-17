@@ -1,24 +1,25 @@
-// EDIT/ADD LOG //
+// ADD/EDIT LOG //
 // new log button on homepage
 $('.js-todayLogCreate').on("click", function(e) {
 	e.preventDefault();
-	$('.js-todayLogForm').removeClass('hidden');
+	$('.js-todayLogFormCreate').removeClass('hidden');
+	$('.js-todayLogFormEdit').addClass('hidden');
 	$('.js-todayLogCreate').addClass('hidden');
 })
 
 // clicking on edit log button on homepage
 $('.js-todayLogEdit').on("click", function(e) {
 	e.preventDefault();
-	$('.js-todayLogForm').removeClass('hidden');
+	$('.js-todayLogFormEdit').removeClass('hidden');
+	$('.js-todayLogFormCreate').addClass('hidden');
 	$('.js-todayLogDisplay').addClass('hidden');
 	$('.js-todayLogEdit').addClass('hidden');
 });
 
-// saving edited log w mock data
+// saving new log
 $('.js-logSaveButton').on("click", function(e) {
 	e.preventDefault();
-	$('.js-todayLogForm').addClass('hidden');
-	$('.js-todayLogCreate').addClass('hidden');
+	$('.js-todayLogFormCreate').addClass('hidden');
 	$('.js-todayLogDisplay').removeClass('hidden');
 	$('.js-todayLogEdit').removeClass('hidden');
 
@@ -37,24 +38,44 @@ $('.js-logSaveButton').on("click", function(e) {
 
 	postNewLog(logDataObject);
 
-	// need a different form for create vs edit
+	// // take out .empty when using real data, as needed //
+	$('.js-todayLogDisplay').empty().append(`<p><h5>fake log</h5>
+			<p>Yes migraine.</p>
+			<p>Weather in Durham: 88F, sunny, humidiy: 90%</p>
+			<p>Water count (oz): 78</p>
+			<p>No skipped meals.</p>
+			<p>Hours of sleep: 23:00 to 07:00</p>
+			<p>Total hours slept: 8</p>`);
 
-	// turn this into a stand-alone function once it works
-	function postNewLog(logData) {
-		let settings = {
-			url: `/logs`,
-			method: 'POST',
-			dataType: 'json',
-			contentType: 'application/json',
-			data: JSON.stringify(logData),
-		};
+	clearForm();
+	getDisplayLogs();
+});
 
-		$.ajax(settings)
-		.done();
-	}
+// saving edited log
+$('.js-logSaveButton-edit').on("click", function(e) {
+	e.preventDefault();
+	$('.js-todayLogFormEdit').addClass('hidden');
+	$('.js-todayLogCreate').addClass('hidden');
+	$('.js-todayLogDisplay').removeClass('hidden');
+	$('.js-todayLogEdit').removeClass('hidden');
+
+	let logDataObject = {
+		date: $('#entry-date').val(),
+		migraineLengthHr: $('#migraine-length').val(),
+		weather: $('#weather').val(),
+		water: $('#water-count').val(),
+		skippedMeals: $('#skipped-meals').val() || [],
+		sleepStartHr: $('#sleepstart-hr option:selected').text(),
+		sleepStartMin: $('#sleepstart-min option:selected').text(),
+		sleepEndHr: $('#sleepend-hr option:selected').text(),
+		sleepEndMin: $('#sleepend-min option:selected').text(),
+		notes: $('#notes').val()
+	};
+
+	putNewLog(logDataObject);
 
 	// take out .empty when using real data, as needed //
-	$('.js-todayLogDisplay').empty().append(`<p><h5>05/22/2018</h5>
+	$('.js-todayLogDisplay').empty().append(`<p><h5>fake log</h5>
 			<p>Yes migraine.</p>
 			<p>Weather in Durham: 88F, sunny, humidiy: 90%</p>
 			<p>Water count (oz): 78</p>
@@ -63,8 +84,15 @@ $('.js-logSaveButton').on("click", function(e) {
 			<p>Total hours slept: 8</p>`);
 
 	getDisplayLogs();
-})
+});
 
+function clearForm() {
+	$(':input','.js-todayLogFormCreate')
+  .not(':button, :submit, :reset')
+  .val('')
+  .removeAttr('checked')
+  .removeAttr('selected');
+}
 
 // function for setting today's date
 function getTodayDate() {
@@ -86,13 +114,26 @@ function getTodayDate() {
 	return todayDate;
 }
 
+
+function getRequestFormatDate(todayDate) {
+	let splitTodayDate = todayDate.split('/');
+
+	let mm = splitTodayDate[0];
+	let dd = splitTodayDate[1];
+	let yyyy = splitTodayDate[2];
+
+	let requestFormatDate = `${yyyy}-${mm}-${dd}`;
+	return requestFormatDate;
+}
+
 // functions for checking if there's an existing log for today.
 // if so, display w edit button. if not, display create log button
 function getTodayLog(callbackFn, callbackFn2) {
-
 	let todayDate = getTodayDate();
+	let requestFormatDate = getRequestFormatDate(todayDate);
+
 	let settings = {
-		url: `/logs?date=${todayDate}`,
+		url: `/logs?date=${requestFormatDate}`,
 		method: 'GET'
 	};
 
@@ -101,6 +142,7 @@ function getTodayLog(callbackFn, callbackFn2) {
 		if (data.logs.length > 0) {
 			$('.js-todayLogDisplayYes').removeClass('hidden');
 			$('.js-todayLogEdit').removeClass('hidden');
+			$('.js-todayLogCreate').removeClass('hidden');
 
 			callbackFn(data);
 			callbackFn2(data);
@@ -125,6 +167,38 @@ function getTodayLog(callbackFn, callbackFn2) {
 });
 }
 
+// TEST THIS.. then next steps:
+// create separate form for create vs. edit today log --> post vs put
+// make the "create new log" button disappear when there IS today log
+// also work on format for the new log to display.
+
+function postNewLog(logData) {
+	let settings = {
+		url: `/logs`,
+		method: 'POST',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify(logData),
+	};
+
+	$.ajax(settings)
+	.done();
+}
+
+function putNewLog(logData) {
+	let id = req.params.id;
+	let settings = {
+		url: `/logs/${id}`,
+		method: 'PUT',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify(logData),
+	};
+
+	$.ajax(settings)
+	.done();
+}
+
 function createLogHtml() {
 	// creating ONE log the way it should be
 
@@ -145,7 +219,6 @@ function displayTodayLog(data) {
 	let stringifiedMeals = JSON.stringify(data.logs[0].skippedMeals[0]);
 	// need to slice the quotes off the meal.
 	// and map to each meal
-	console.log(stringifiedMeals);
 	$('.js-todayLogDisplayYes').append(`<p><h5>${log.dateAdjusted}</h5>
 			<p>Migraine: ${log.migraine}</p>
 			<p>Migraine length: ${log.migraineLengthHr}</p>
@@ -175,19 +248,27 @@ function convertTime(splitTime) {
 
 function matchEditFields(data) {
 
+	// START HERE let id = data.logs[0]._id;
 	let log = data.logs[0];
 	let date = `${data.logs[0].dateAdjusted}`;
 	let entryDate = convertDate(date);
 
-	$('#entry-date').val(entryDate);
-	$('#migraine-length').val(log.migraineLengthHr);
-	$('#weather').val(log.weather);
-	$('#water-count').val(log.water);
+	$('#entry-date-edit').val(entryDate);
+	$('#migraine-length-edit').val(log.migraineLengthHr);
+	$('#weather-edit').val(log.weather);
+	$('#water-count-edit').val(log.water);
 
-	// $('#skipped-meals').val(log.);
-	// let skippedMealsVal =
-	// // $('#skipped-meals').val();
-	// console.log(skippedMealsVal);
+	if (log.skippedMeals.includes('1')) {
+		$('#skippedmeals-edit-1').attr('selected', 'selected');
+	}
+
+	if (log.skippedMeals.includes('2')) {
+		$('#skippedmeals-edit-2').attr('selected', 'selected');
+	}
+
+	if (log.skippedMeals.includes('3')) {
+		$('#skippedmeals-edit-3').attr('selected', 'selected');
+	}
 
 	let splitStartTime = log.sleepStart.split(":");
 	let splitEndTime = log.sleepEnd.split(":");
@@ -201,12 +282,12 @@ function matchEditFields(data) {
 	let convertedEndHr = convertTime(endHr);
 	let convertedEndMin = convertTime(endMin);
 
-	$(`#sleepstart-hr${convertedStartHr}`).attr('selected');
-	$(`#sleepstart-min${convertedStartMin}`).attr('selected');
-	$(`#sleepend-hr${convertedEndHr}`).attr('selected');
-	$(`#sleepend-min${convertedEndMin}`).attr('selected');
+	$(`#sleepstart-edit-hr${convertedStartHr}`).attr('selected', 'selected');
+	$(`#sleepstart-edit-min${convertedStartMin}`).attr('selected', 'selected');
+	$(`#sleepend-edit-hr${convertedEndHr}`).attr('selected', 'selected');
+	$(`#sleepend-edit-min${convertedEndMin}`).attr('selected', 'selected');
 
-	$('#notes').val(log.notes);
+	$('#notes-edit').val(log.notes);
 }
 
 // function stays the same even when connecting to real API
