@@ -18,10 +18,6 @@ const migraineLogSchema = new Schema({
 	notes: String
 });
 
-// this vs Log at the very end?
-const migraineLog = mongoose.model('migraineLog', migraineLogSchema);
-
-
 // calculates total hours of sleep for virtual 'sleepTotalHr'. sleep hours are submitted in military time
 function calculateSleepTotal(startHr, startMin, endHr, endMin) {
 	let calculatedSleepTotal;
@@ -75,7 +71,14 @@ migraineLogSchema.virtual('migraine').get(function () {
 
 migraineLogSchema.virtual('dateAdjusted').get(function () {
 	let today = this.date;
+
+	if (this.date == null) {
+	 	console.log(`If this date is null, then print this: ${this}`);
+	}
+	// console.log(this);
+
 	let dd = today.getUTCDate();
+
 	let mm = today.getMonth()+1;
 	let yyyy = today.getFullYear();
 

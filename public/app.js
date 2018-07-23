@@ -55,23 +55,25 @@ $('.js-logSaveButton').on("click", function(e) {
 $('.js-logSaveButton-edit').on("click", function(e) {
 	e.preventDefault();
 	$('.js-todayLogFormEdit').addClass('hidden');
-	$('.js-todayLogCreate').addClass('hidden');
+	// $('.js-todayLogCreate').addClass('hidden');
 	$('.js-todayLogDisplay').removeClass('hidden');
 	$('.js-todayLogEdit').removeClass('hidden');
 
 	let logDataObject = {
 		id: $('#logId').val(),
-		date: $('#entry-date').val(),
-		migraineLengthHr: $('#migraine-length').val(),
-		weather: $('#weather').val(),
-		water: $('#water-count').val(),
-		skippedMeals: $('#skipped-meals').val() || [],
-		sleepStartHr: $('#sleepstart-hr option:selected').text(),
-		sleepStartMin: $('#sleepstart-min option:selected').text(),
-		sleepEndHr: $('#sleepend-hr option:selected').text(),
-		sleepEndMin: $('#sleepend-min option:selected').text(),
-		notes: $('#notes').val()
+		date: $('#entry-date-edit').val(),
+		migraineLengthHr: $('#migraine-length-edit').val(),
+		weather: $('#weather-edit').val(),
+		water: $('#water-count-edit').val(),
+		skippedMeals: $('#skipped-meals-edit').val() || [],
+		sleepStartHr: $('#sleepstart-hr-edit option:selected').text(),
+		sleepStartMin: $('#sleepstart-min-edit option:selected').text(),
+		sleepEndHr: $('#sleepend-hr-edit option:selected').text(),
+		sleepEndMin: $('#sleepend-min-edit option:selected').text(),
+		notes: $('#notes-edit').val()
 	};
+
+	console.log(logDataObject);
 
 	putNewLog(logDataObject);
 
@@ -167,11 +169,6 @@ function getTodayLog(callbackFn, callbackFn2) {
 	// setTimeout(function() { callbackFn(currentLog)}, 50);
 });
 }
-
-// TEST THIS.. then next steps:
-// create separate form for create vs. edit today log --> post vs put
-// make the "create new log" button disappear when there IS today log
-// also work on format for the new log to display.
 
 function postNewLog(logData) {
 	let settings = {

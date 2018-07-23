@@ -26,16 +26,12 @@ app.get('/history', (req, res) => {
 	res.sendFile('history.html', {root: './public'});
 });
 
-// limits to the first 5 logs
 
 // for filter, be sure to make an "allowed fields" for the queries to limit access
-// make sure to write tests
 app.get('/logs', (req, res) => {
 	console.log(req.query);
 	Log
-		.find(req.query) //https://stackoverflow.com/questions/11973304/mongodb-mongoose-querying-at-a-specific-date - check moment.js library
-		.limit( 10 )
-		// make sure they are the most recent 3 logs
+		.find(req.query)
 		.then(logs => {
 			res.status(200).json({
 						logs: logs.map(
@@ -69,11 +65,11 @@ app.post('/logs', (req, res) => {
 	let alreadyExistsError;
 
 	requiredFields.forEach(field => {
-		if (!(field in req.body)) {
-			message = `Missing \`${field}\` in request body`;
-			console.error(JSON.stringify(message));
-			console.error(JSON.stringify(req.body));
+		if (empty(req.body[field])) {
+			message = `Missing \`${field}\` value in request body`;
+			console.error(message);
 			missingError = true;
+			return;
 		}
 	});
 
@@ -82,33 +78,34 @@ app.post('/logs', (req, res) => {
 	}
 
 	Log
-		.find({ date: date })
+		.find({ dateAdjusted: date })
 		.then(log => {
-			if (log) {
+			if (log.length !== 0) {
 				alreadyExistsError = 'A log with this date already exists';
-				console.log(log);
-				console.log('nope');
-				return res.json(400).send(alreadyExistsError);
+				console.log(`This is the already existing log: ${log}`);
+				return res.status(400).send(alreadyExistsError);
 			}
-		});
 
-	Log
-		.create({
-			date: req.body.date,
-			migraineLengthHr: req.body.migraineLengthHr,
-			weather: req.body.weather,
-			water: req.body.water,
-			skippedMeals: req.body.skippedMeals,
-			sleepStartHr: req.body.sleepStartHr,
-			sleepStartMin: req.body.sleepStartMin,
-			sleepEndHr: req.body.sleepEndHr,
-			sleepEndMin: req.body.sleepEndMin,
-			notes: req.body.notes
-		})
-		.then(log => res.status(201).json(log.serialize()))
-		.catch(err => {
-			console.error(err);
-			res.status(500).json({ message: 'Internal server error' });
+			else {
+				Log
+					.create({
+						date: req.body.date,
+						migraineLengthHr: req.body.migraineLengthHr,
+						weather: req.body.weather,
+						water: req.body.water,
+						skippedMeals: req.body.skippedMeals,
+						sleepStartHr: req.body.sleepStartHr,
+						sleepStartMin: req.body.sleepStartMin,
+						sleepEndHr: req.body.sleepEndHr,
+						sleepEndMin: req.body.sleepEndMin,
+						notes: req.body.notes
+					})
+					.then(log => res.status(201).json(log.serialize()))
+					.catch(err => {
+						console.error(err);
+						res.status(500).json({ message: 'Internal server error' });
+					});
+			}
 		});
 });
 
@@ -160,6 +157,32 @@ app.use('*', function(req, res) {
 
 
 let server;
+
+function empty(value)
+{
+  if(typeof(value) === 'number' || typeof(value) === 'boolean') {
+    return false;
+  }
+
+  if(typeof(value) === 'undefined' || value === null) {
+    return true;
+  }
+
+	if(typeof(value.length) !== 'undefined') {
+	  if(/^[\s]*$/.test(value.toString())) {
+	    return true;
+	  }
+	  return value.length === 0;
+	}
+
+  let count = 0;
+  for(let i in value) {
+    if(value.hasOwnProperty(i)) {
+      count ++;
+    }
+  }
+  return count === 0;
+}
 
 function runServer(databaseUrl, port = PORT) {
 	return new Promise((resolve, reject) => {
