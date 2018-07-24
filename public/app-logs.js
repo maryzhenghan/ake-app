@@ -11,7 +11,7 @@ function getAllLogs(callbackFn) {
 }
 
 function displayAllLogs(data) {
-
+	console.log(data);
 	for (let i in data.logs) {
 		let simpJson = JSON.stringify(data.logs[i], null, "\t");
 
