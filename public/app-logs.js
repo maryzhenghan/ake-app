@@ -1,3 +1,8 @@
+$('.js-logFilterButton').on("click", function(e) {
+	e.preventDefault();
+	$('.js-allLogsContainer').empty();
+});
+
 function getAllLogs(callbackFn) {
 	let settings = {
 		url: '/logs',
@@ -15,13 +20,12 @@ function displayAllLogs(data) {
 	for (let i in data.logs) {
 		let simpJson = JSON.stringify(data.logs[i], null, "\t");
 
-		$('.js-allLogs').append(
+		$('.js-allLogsContainer').append(
 			`<p>${data.logs[i].dateAdjusted}:</p>
 			<p>${simpJson}</p>
 			<hr>
 			`);
 	}
-
 
 }
 

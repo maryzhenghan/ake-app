@@ -5,7 +5,7 @@ $('.js-todayLogCreate').on("click", function(e) {
 	$('.js-todayLogFormCreate').removeClass('hidden');
 	$('.js-todayLogFormEdit').addClass('hidden');
 	$('.js-todayLogCreate').addClass('hidden');
-})
+});
 
 // clicking on edit log button on homepage
 $('.js-todayLogEdit').on("click", function(e) {
