@@ -35,7 +35,7 @@ describe('Migraine app API resource', function() {
 	after(function() {
 		return closeServer();
 	});
-	
+
 
 	describe('GET endpoint for home page', function() {
 		it('should return a 200 status code and HTML', function() {
@@ -52,12 +52,12 @@ describe('Migraine app API resource', function() {
 		});
 	});
 
-	describe('GET endpoint for history page', function() {
+	describe('GET endpoint for all-logs page', function() {
 		it('should return a 200 status code and HTML', function() {
 			let res;
 
 			return chai.request(app)
-				.get('/history')
+				.get('/all-logs')
 				.then(function(_res) {
 					res = _res;
 					expect(res).to.have.status(200);
@@ -68,7 +68,7 @@ describe('Migraine app API resource', function() {
 	});
 
 	describe ('GET endpoint for /logs', function() {
-		it('should return the first 5 logs in JSON', function() {
+		it('should return logs in JSON', function() {
 			let res;
 
 			return chai.request(app)
@@ -78,7 +78,6 @@ describe('Migraine app API resource', function() {
 					expect(res).to.have.status(200);
 					expect(res).to.be.json;
 					expect(res.body).to.be.a("object");
-					expect(res.body.logs).to.have.length(5);
 				});
 		});
 
@@ -89,8 +88,8 @@ describe('Migraine app API resource', function() {
 				.get('/logs')
 				.then(function(_res) {
 					res = _res.body.logs[0];
-					expect(res).to.have.property('date');
-					expect(res).to.have.property('migraine');
+					expect(res).to.have.property('dateAdjusted');
+					expect(res).to.have.property('migraineLengthHr');
 				});
 		});
 	});
@@ -120,7 +119,8 @@ describe('Migraine app API resource', function() {
 		it('should create and return a new item when provided valid data', function() {
 			const newLog = {
 				"date": "06/21/2020",
-				"migraineLengthHr": 0
+				"migraineLengthHr": 4
+
 			};
 
 			let body;
@@ -134,8 +134,8 @@ describe('Migraine app API resource', function() {
 					expect(res).to.have.status(201);
 					expect(res).to.be.json;
 					expect(res).to.be.a('object');
-					expect(res.body).to.have.property('date');
-					expect(res.body).to.have.property('migraine');
+					expect(res.body).to.have.property('dateAdjusted');
+					expect(res.body).to.have.property('migraineLengthHr');
 					return Log.findOne({ _id: body.id });
 				})
   				.then(data => {

@@ -21,15 +21,13 @@ app.get('/home', (req, res) => {
 	res.sendFile('index.html', {root: './public'});
 });
 
-app.get('/history', (req, res) => {
+app.get('/all-logs', (req, res) => {
 	res.status(200);
-	res.sendFile('history.html', {root: './public'});
+	res.sendFile('logs.html', {root: './public'});
 });
-
 
 // for filter, be sure to make an "allowed fields" for the queries to limit access
 app.get('/logs', (req, res) => {
-	console.log(req.query);
 	Log
 		.find(req.query)
 		.then(logs => {

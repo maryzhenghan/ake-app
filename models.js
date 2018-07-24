@@ -1,5 +1,3 @@
-// reference mongoose docs: http://mongoosejs.com/docs/guide.html
-
 'use strict';
 
 const mongoose = require('mongoose');
@@ -71,11 +69,6 @@ migraineLogSchema.virtual('migraine').get(function () {
 
 migraineLogSchema.virtual('dateAdjusted').get(function () {
 	let today = this.date;
-
-	if (this.date == null) {
-	 	console.log(`If this date is null, then print this: ${this}`);
-	}
-	// console.log(this);
 
 	let dd = today.getUTCDate();
 
