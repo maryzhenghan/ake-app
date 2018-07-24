@@ -10,6 +10,7 @@
 		<h1>
 			<a href="./index.html">MigraineApp</a>
 		</h1>
+
 		<div role="nav">
 			<h2><a href="./logs.html">All logs</a></h2>
 		</div>
@@ -19,7 +20,106 @@
 
 	<main role="main" aria-live="assertive">
 		<div class="js-allLogs">
-		<h2>All logs</h2>
+			<h2>All logs</h2>
+
+			<div class="js-allLogsForm">
+				<form>
+					<fieldset>
+						<legend>Log filter</legend>
+
+						<label for="entry-date-start-filter">Log start date:</label><input type="date" id="entry-date-start-filter" min="2018-01-01" required><br>
+						<label for="entry-date-end-filter">Log end date:</label><input type="date" id="entry-date-end-filter" min="2018-01-01" required><br>
+
+						<label for="migraine-length-filter">Migraine Length (hours):</label><input type="text" id="migraine-length-filter"><br>
+						<label for="weather-filter">Weather contains phrase:</label><input type="text" id="weather-filter"><br>
+						<label for="water-count-filter">Water count (oz):</label><input type="text" id="water-count-filter"><br>
+
+						<label for="skipped-meals-filter">Skipped meals (select all that apply):</label>
+						<select id="skipped-meals-filter" name="skipped-meals-filter" size="3" multiple>
+							<option value="1" id="skippedmeals-filter-1">Breakfast</object>
+							<option value="2" id="skippedmeals-filter-2">Lunch</object>
+							<option value="3" id="skippedmeals-filter-3">Dinner</object>
+						</select>
+						<br>
+
+						<label for="sleepstart-hr-filter">Went to bed at:</label>
+						<select id="sleepstart-hr-filter" name="sleepstart-hr-filter"><br>
+							<option value="00" id="sleepstart-filter-hr00">00</option>
+							<option value="01" id="sleepstart-filter-hr01">01</option>
+							<option value="02" id="sleepstart-filter-hr02">02</option>
+							<option value="03" id="sleepstart-filter-hr03">03</option>
+							<option value="04" id="sleepstart-filter-hr04">04</option>
+							<option value="05" id="sleepstart-filter-hr05">05</option>
+							<option value="06" id="sleepstart-filter-hr06">06</option>
+							<option value="07" id="sleepstart-filter-hr07">07</option>
+							<option value="08" id="sleepstart-filter-hr08">08</option>
+							<option value="09" id="sleepstart-filter-hr09">09</option>
+							<option value="10" id="sleepstart-filter-hr10">10</option>
+							<option value="11" id="sleepstart-filter-hr11">11</option>
+							<option value="12" id="sleepstart-filter-hr12">12</option>
+							<option value="13" id="sleepstart-filter-hr13">13</option>
+							<option value="14" id="sleepstart-filter-hr14">14</option>
+							<option value="15" id="sleepstart-filter-hr15">15</option>
+							<option value="16" id="sleepstart-filter-hr16">16</option>
+							<option value="17" id="sleepstart-filter-hr17">17</option>
+							<option value="18" id="sleepstart-filter-hr18">18</option>
+							<option value="19" id="sleepstart-filter-hr19">19</option>
+							<option value="20" id="sleepstart-filter-hr20">20</option>
+							<option value="21" id="sleepstart-filter-hr21">21</option>
+							<option value="22" id="sleepstart-filter-hr22">22</option>
+							<option value="23" id="sleepstart-filter-hr23">23</option>
+						</select>
+
+						<label for="sleepstart-min-filter">:</label>
+						<select id="sleepstart-min-filter" name="sleepstart-min-filter"><br>
+							<option value="00" id="sleepstart-filter-min00">00</option>
+							<option value="15" id="sleepstart-filter-min15">15</option>
+							<option value="30" id="sleepstart-filter-min30">30</option>
+							<option value="45" id="sleepstart-filter-min45">45</option>
+						</select>
+
+						<label for="sleepend-hr-efilter">Woke up at:</label>
+						<select id="sleepend-hr-filter" name="sleepsend-hr-filter"><br>
+							<option value="00" id="sleepend-filter-hr00">00</option>
+							<option value="01" id="sleepend-filter-hr01">01</option>
+							<option value="02" id="sleepend-filter-hr02">02</option>
+							<option value="03" id="sleepend-filter-hr03">03</option>
+							<option value="04" id="sleepend-filter-hr04">04</option>
+							<option value="05" id="sleepend-filter-hr05">05</option>
+							<option value="06" id="sleepend-filter-hr06">06</option>
+							<option value="07" id="sleepend-filter-hr07">07</option>
+							<option value="08" id="sleepend-filter-hr08">08</option>
+							<option value="09" id="sleepend-filter-hr09">09</option>
+							<option value="10" id="sleepend-filter-hr10">10</option>
+							<option value="11" id="sleepend-filter-hr11">11</option>
+							<option value="12" id="sleepend-filter-hr12">12</option>
+							<option value="13" id="sleepend-filter-hr13">13</option>
+							<option value="14" id="sleepend-filter-hr14">14</option>
+							<option value="15" id="sleepend-filter-hr15">15</option>
+							<option value="16" id="sleepend-filter-hr16">16</option>
+							<option value="17" id="sleepend-filter-hr17">17</option>
+							<option value="18" id="sleepend-filter-hr18">18</option>
+							<option value="19" id="sleepend-filter-hr19">19</option>
+							<option value="20" id="sleepend-filter-hr20">20</option>
+							<option value="21" id="sleepend-filter-hr21">21</option>
+							<option value="22" id="sleepend-filter-hr22">22</option>
+							<option value="23" id="sleepend-filter-hr23">23</option>
+						</select>
+
+						<label for="sleepend-min-filter">:</label>
+						<select id="sleepend-min-filter" name="sleepend-min-filter"><br>
+							<option value="00" id="sleepend-filter-min00">00</option>
+							<option value="15" id="sleepend-filter-min15">15</option>
+							<option value="30" id="sleepend-filter-min30">30</option>
+							<option value="45" id="sleepend-filter-min45">45</option>
+						</select>
+
+						<label for="notes-filter">Notes containing phrase:</label><textarea id="notes-filter"></textarea><br>
+
+						<input type="submit" name="filter-button-edit" value="Filter" class="js-logFilterButton">
+					</fieldset>
+				</form>
+			</div>
 		</div>
 	</main>
 

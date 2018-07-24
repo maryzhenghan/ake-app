@@ -73,8 +73,6 @@ $('.js-logSaveButton-edit').on("click", function(e) {
 		notes: $('#notes-edit').val()
 	};
 
-	console.log(logDataObject);
-
 	putNewLog(logDataObject);
 
 	// take out .empty when using real data, as needed //
@@ -172,7 +170,7 @@ function getTodayLog(callbackFn, callbackFn2) {
 
 function postNewLog(logData) {
 	let settings = {
-		url: `/logs`,
+		url: '/logs',
 		method: 'POST',
 		dataType: 'json',
 		contentType: 'application/json',
