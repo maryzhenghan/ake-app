@@ -88,7 +88,7 @@ $('.js-logSaveButton-edit').on("click", function(e) {
 });
 
 function clearForm() {
-	$(':input','.js-todayLogFormCreate')
+	$(':input', '.js-todayLogFormCreate')
   .not(':button, :submit, :reset')
   .val('')
   .removeAttr('checked')

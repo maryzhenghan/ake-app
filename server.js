@@ -76,7 +76,7 @@ app.post('/logs', (req, res) => {
 	}
 
 	Log
-		.find({ dateAdjusted: date })
+		.find({ date: date })
 		.then(log => {
 			if (log.length !== 0) {
 				alreadyExistsError = 'A log with this date already exists';
@@ -156,8 +156,7 @@ app.use('*', function(req, res) {
 
 let server;
 
-function empty(value)
-{
+function empty(value) {
   if(typeof(value) === 'number' || typeof(value) === 'boolean') {
     return false;
   }
