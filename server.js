@@ -30,6 +30,7 @@ app.get('/all-logs', (req, res) => {
 app.get('/logs', (req, res) => {
 	Log
 		.find(req.query)
+		.sort({ date: -1 })
 		.then(logs => {
 			res.status(200).json({
 						logs: logs.map(
