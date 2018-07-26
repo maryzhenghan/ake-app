@@ -21,7 +21,6 @@ $('.js-logSaveButton').on("click", function(e) {
 	e.preventDefault();
 	$('.js-todayLogFormCreate').addClass('hidden');
 	$('.js-todayLogDisplay').removeClass('hidden');
-	$('.js-todayLogEdit').removeClass('hidden');
 
 	let logDataObject = {
 		date: $('#entry-date').val(),
@@ -37,16 +36,6 @@ $('.js-logSaveButton').on("click", function(e) {
 	};
 
 	postNewLog(logDataObject);
-
-	// // take out .empty when using real data, as needed //
-	$('.js-todayLogDisplay').empty().append(`<p><h5>fake log</h5>
-			<p>Yes migraine.</p>
-			<p>Weather in Durham: 88F, sunny, humidiy: 90%</p>
-			<p>Water count (oz): 78</p>
-			<p>No skipped meals.</p>
-			<p>Hours of sleep: 23:00 to 07:00</p>
-			<p>Total hours slept: 8</p>`);
-
 	clearForm();
 	getDisplayLogs();
 });
