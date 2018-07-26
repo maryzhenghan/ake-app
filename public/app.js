@@ -157,15 +157,12 @@ function getTodayLog(callbackFn, callbackFn2) {
 
 			$.ajax(noSettings).done(function(data) {
 				$('.js-todayLogDisplayNo').removeClass('hidden');
-				$('.js-todayLogDisplayPast').append(combineLogs(data.logs));
 				$('.js-todayLogCreate').removeClass('hidden');
-				// should create a auto-fill date with today's date in the form if no form exists
 
 				callbackFn(data);
 			});
 		}
-	// setTimeout(function() { callbackFn(currentLog)}, 50);
-});
+	});
 }
 
 function postNewLog(logData) {
@@ -178,7 +175,9 @@ function postNewLog(logData) {
 	};
 
 	$.ajax(settings)
-	.done();
+	.done(data => {
+		return createLogHtml(data);
+	});
 }
 
 function putNewLog(logData) {
@@ -195,10 +194,18 @@ function putNewLog(logData) {
 	.done();
 }
 
-function createLogHtml() {
+function createLogHtml(logData) {
 	// creating ONE log the way it should be
-
-
+	$('.js-todayLogDisplay').empty().append(`
+		<p><h5>${logData.dateAdjusted}</h5>
+		<p>Migraine today?: ${logData.migraine}</p>
+		<p>Migraine length hour: ${logData.migraineLengthHr}</p>
+		<p>Weather: ${logData.weather}</p>
+		<p>Water count (oz): ${logData.water}</p>
+		<p>Skipped meals: ${logData.skippedMeals}</p>
+		<p>Hours slept: ${logData.sleepStart} to ${logData.sleepEnd}</p>
+		<p>Total hours slept: ${logData.sleepTotal}</p>
+		<p>Notes: ${logData.notes}</p>`);
 }
 
 function combineLogs(logData) {

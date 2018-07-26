@@ -28,19 +28,51 @@ app.get('/all-logs', (req, res) => {
 
 // for filter, be sure to make an "allowed fields" for the queries to limit access
 app.get('/logs', (req, res) => {
-	Log
-		.find(req.query)
-		.sort({ date: -1 })
-		.then(logs => {
-			res.status(200).json({
-						logs: logs.map(
-							(log) => log.serialize())
-					});
-		})
-		.catch(err => {
-			console.error(err);
-			res.status(500).json({ message: 'Internal server error' });
-		});
+
+	// items.find({
+	//   created_at: {
+	//       $gte: ISODate("2010-04-29T00:00:00.000Z"),
+	//       $lt: ISODate("2010-05-01T00:00:00.000Z")
+	//   }
+	// })
+
+	// if (!empty(req.query.date) && (!empty(req.query.dateEnd))) {
+	// 	console.log('yay date and dateEnd are BOTH not empty');
+	// }
+	//
+	// else if (!empty(req.query.date) || !(empty(req.query.dateEnd))) {
+	// 	console.log('yay date OR dateEnd is empty');
+	// 	Log
+	// 		.find(req.query)
+	// 		.sort({ date: -1 })
+	// 		.then(logs => {
+	// 			res.status(200).json({
+	// 						logs: logs.map(
+	// 							(log) => log.serialize())
+	// 					});
+	// 		})
+	// 		.catch(err => {
+	// 			console.error(err);
+	// 			res.status(500).json({ message: 'Internal server error' });
+	// 		});
+	// }
+
+	// else {
+		Log
+			.find(req.query)
+			.sort({ date: -1 })
+			.then(logs => {
+				res.status(200).json({
+							logs: logs.map(
+								(log) => log.serialize())
+						});
+			})
+			.catch(err => {
+				console.error(err);
+				res.status(500).json({ message: 'Internal server error' });
+			});
+	// }
+
 });
 
 // request log by ID

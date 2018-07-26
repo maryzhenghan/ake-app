@@ -18,8 +18,7 @@
 
 	<main role="main" aria-live="assertive">
 		<h2 class="js-todayDate"></h2>
-		<h3>Welcome back to MigraineApp, <span class="js-name">Mary</span></h3>
-		<h4>Today's weather: <span class="js-weatherWidget">75F, cloudy, 80% humidity</span></h4>
+		<h3>Welcome to MigraineApp!</h3>
 
 		<hr>
 
@@ -29,8 +28,6 @@
 			<div class="js-todayLogDisplay">
 				<div class="js-todayLogDisplayNo hidden">
 					<p>Nothing logged yet.</p>
-					<p>Most recent log:</p>
-					<div class="js-todayLogDisplayPast hidden"></div>
 				</div>
 
 				<div class="js-todayLogDisplayYes hidden">
@@ -46,7 +43,6 @@
 					<fieldset>
 						<legend>Log Creator</legend>
 
-						<!-- html form validation - https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/date -->
 						<label for="entry-date">Entry date:</label><input type="date" id="entry-date" min="2018-01-01" required><br>
 
 						<label for="migraine-length">Migraine Length (hours):</label><input type="text" id="migraine-length"><br>

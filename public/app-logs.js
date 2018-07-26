@@ -1,14 +1,20 @@
 'use strict';
 
-const allFields = ['dateStart', 'dateEnd', 'migraineLengthHr', 'weather', 'water', 'skippedMeals', 'sleepStartHr', 'sleepStartMin', 'sleepEndHr', 'sleepEndMin', 'notes'];
+const allFields = ['date', 'dateEnd', 'migraineLengthHr', 'weather', 'water', 'skippedMeals', 'sleepStartHr', 'sleepStartMin', 'sleepEndHr', 'sleepEndMin', 'notes'];
 
 $('.js-logFilterButton').on("click", function(e) {
 	e.preventDefault();
 	$('.js-allLogsContainer').empty();
 
+	// need to create filter options for total hours of sleepEnd
+	// need to create filter options for migraine yes/no
+
+	// if those fields are not empty, then need to add a new filter to "filters" object
+	// assign variables that get filled into filters...
+
 	let filters = {
-		// dateStart: $('#entry-date-start-filter').val(),
-		// dateEnd: $('#entry-date-end-filter').val(),
+		date: $('#entry-date-start-filter').val(),
+		dateEnd: $('#entry-date-end-filter').val(),
 		migraineLengthHr: $('#migraine-length-filter').val(),
 		weather: $('#weather-filter').val(),
 		water: $('#water-count-filter').val(),
@@ -26,16 +32,17 @@ $('.js-logFilterButton').on("click", function(e) {
 	allFields.forEach(field => {
 		// CHECK IF RANGE IS EVEN POSSIBLE IN MONGO
 		if (!empty(filters[field])) {
-		// 	if (field === "dateStart") {
-		// 		filterParams["dateStart"] = filters[field];
-		// 	}
-		//
-		// 	else if (field === "dateEnd") {
-		// 		filterParams["dateEnd"] = filters[field];
-		// 	}
-		//
-		// 	else { }
+			if (field === "date") {
+				filterParams += `date=${filters[field]}&`;
+			}
+
+			else if (field === "dateEnd") {
+				filterParams += `dateEnd=${filters[field]}&`;
+			}
+
+			else {
 				filterParams += `${field}=${filters[field]}&`;
+			}
 		}
 		return filterParams;
 	});
@@ -68,6 +75,7 @@ function empty(value) {
 	}
 	return count === 0;
 }
+
 
 function filterLogs(params, callbackFn) {
 	let settings = {
