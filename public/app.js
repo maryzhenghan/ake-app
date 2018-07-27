@@ -190,6 +190,47 @@ function putNewLog(logData) {
 }
 
 function createLogHtml(logData) {
+	let sleepStartHrSplit = logData.sleepStart.split(":");
+	let sleepEndHrSplit = logData.sleepEnd.split(":");
+
+	let sleepStartSplit = sleepStartHrSplit[0];
+	let sleepStartSplit2 = sleepStartHrSplit[1];
+
+	let sleepEndSplit = sleepEndHrSplit[0];
+	let sleepEndSplit2 = sleepEndHrSplit[1];
+
+	if (sleepStartSplit < 10) {
+		sleepStartSplit = '0' + sleepStartSplit;
+	}
+	if (sleepStartSplit2 < 10) {
+		sleepStartSplit2 = '0' + sleepStartSplit2;
+	}
+	if (sleepEndSplit < 10) {
+		sleepEndSplit = '0' + sleepEndSplit;
+	}
+	if (sleepEndSplit2 < 10) {
+		sleepEndSplit2 = '0' + sleepEndSplit2;
+	}
+
+	let sleepStart12HrClock;
+	let sleepEnd12HrClock;
+
+	if (sleepStartSplit < 12) {
+		sleepStart12HrClock = "AM";
+	}
+	else {
+		sleepStart12HrClock = "PM";
+	}
+
+	if (sleepEndSplit < 12) {
+		sleepEnd12HrClock = "AM";
+	}
+	else {
+		sleepEnd12HrClock = "PM";
+	}
+
+	console.log(`${sleepStart12HrClock}, ${sleepEnd12HrClock}`);
+
 	$('.js-todayLogDisplay').empty().append(`
 		<p><h5>${logData.dateAdjusted}</h5>
 		<p>Migraine today?: ${logData.migraine}</p>
@@ -197,7 +238,7 @@ function createLogHtml(logData) {
 		<p>Weather: ${logData.weather}</p>
 		<p>Water count (oz): ${logData.water}</p>
 		<p>Skipped meals: ${logData.skippedMeals}</p>
-		<p>Hours slept: ${logData.sleepStart} to ${logData.sleepEnd}</p>
+		<p>Hours slept: ${sleepStartSplit}:${sleepStartSplit2} ${sleepStart12HrClock} to ${sleepEndSplit}:${sleepEndSplit2} ${sleepEnd12HrClock}</p>
 		<p>Total hours slept: ${logData.sleepTotal}</p>
 		<p>Notes: ${logData.notes}</p>`);
 }
