@@ -5,6 +5,10 @@ $('.js-todayLogCreate').on("click", function(e) {
 	$('.js-todayLogFormCreate').removeClass('hidden');
 	$('.js-todayLogFormEdit').addClass('hidden');
 	$('.js-todayLogCreate').addClass('hidden');
+
+	if ($('#logId').val() !== "") {
+		$('.js-todayLogEdit').removeClass('hidden');
+	}
 });
 
 // clicking on edit log button on homepage
@@ -12,7 +16,7 @@ $('.js-todayLogEdit').on("click", function(e) {
 	e.preventDefault();
 	$('.js-todayLogFormEdit').removeClass('hidden');
 	$('.js-todayLogFormCreate').addClass('hidden');
-	$('.js-todayLogDisplay').addClass('hidden');
+	$('.js-todayLogCreate').removeClass('hidden');
 	$('.js-todayLogEdit').addClass('hidden');
 });
 
@@ -77,8 +81,8 @@ $('.js-logSaveButton-edit').on("click", function(e) {
 });
 
 function clearForm() {
-	$(':input', '.js-todayLogFormCreate')
-  .not(':button, :submit, :reset')
+	$('.js-todayLogFormCreate input')
+  .not('.js-todayLogFormCreate button, .js-todayLogFormCreate reset')
   .val('')
   .removeAttr('checked')
   .removeAttr('selected');
@@ -128,14 +132,14 @@ function getTodayLog(callbackFn, callbackFn2) {
 	};
 
 	$.ajax(settings)
-	.done(function(data) {
+	.done(data => {
 		if (data.logs.length > 0) {
 			$('.js-todayLogDisplayYes').removeClass('hidden');
 			$('.js-todayLogEdit').removeClass('hidden');
 			$('.js-todayLogCreate').removeClass('hidden');
 
-			callbackFn(data);
-			callbackFn2(data);
+			callbackFn(data.logs[0]);
+			callbackFn2(data.logs[0]);
 		}
 
 		else {
@@ -144,11 +148,10 @@ function getTodayLog(callbackFn, callbackFn2) {
 				method: 'GET'
 			}
 
-			$.ajax(noSettings).done(function(data) {
+			$.ajax(noSettings).done(data => {
 				$('.js-todayLogDisplayNo').removeClass('hidden');
 				$('.js-todayLogCreate').removeClass('hidden');
-
-				callbackFn(data);
+				$('.js-todayLogDisplayNo').removeClass('hidden');
 			});
 		}
 	});
@@ -165,6 +168,9 @@ function postNewLog(logData) {
 
 	$.ajax(settings)
 	.done(data => {
+		$('.js-todayLogEdit').removeClass('hidden');
+		console.log(data);
+		matchEditFields(data);
 		return createLogHtml(data);
 	});
 }
@@ -184,7 +190,6 @@ function putNewLog(logData) {
 }
 
 function createLogHtml(logData) {
-	// creating ONE log the way it should be
 	$('.js-todayLogDisplay').empty().append(`
 		<p><h5>${logData.dateAdjusted}</h5>
 		<p>Migraine today?: ${logData.migraine}</p>
@@ -195,30 +200,6 @@ function createLogHtml(logData) {
 		<p>Hours slept: ${logData.sleepStart} to ${logData.sleepEnd}</p>
 		<p>Total hours slept: ${logData.sleepTotal}</p>
 		<p>Notes: ${logData.notes}</p>`);
-}
-
-function combineLogs(logData) {
-	// map each log via createLogHtml and .join after
-	// return string of HTML
-
-
-}
-
-
-
-function displayTodayLog(data) {
-	let log = data.logs[0];
-	let stringifiedMeals = JSON.stringify(data.logs[0].skippedMeals[0]);
-	// need to slice the quotes off the meal.
-	// and map to each meal
-	$('.js-todayLogDisplayYes').append(`<p><h5>${log.dateAdjusted}</h5>
-			<p>Migraine: ${log.migraine}</p>
-			<p>Migraine length: ${log.migraineLengthHr}</p>
-			<p>Water count: ${log.water} oz</p>
-			<p>Skipped meals: ${stringifiedMeals}</p>
-			<p>Went to bed at ${log.sleepStart}</p>
-			<p>Woke up at ${log.sleepEnd}</p>
-			<p>Total hours slept: ${log.sleepTotal}</p>`);
 }
 
 function convertDate(date) {
@@ -240,29 +221,28 @@ function convertTime(splitTime) {
 
 function matchEditFields(data) {
 
-	let id = data.logs[0].id;
-	let log = data.logs[0];
-	let date = `${data.logs[0].dateAdjusted}`;
+	let id = data.id;
+	let date = `${data.dateAdjusted}`;
 	let entryDate = convertDate(date);
 
 	$('#logId').val(id);
 	$('#entry-date-edit').val(entryDate);
-	$('#migraine-length-edit').val(log.migraineLengthHr);
-	$('#weather-edit').val(log.weather);
-	$('#water-count-edit').val(log.water);
+	$('#migraine-length-edit').val(data.migraineLengthHr);
+	$('#weather-edit').val(data.weather);
+	$('#water-count-edit').val(data.water);
 
-	if (log.skippedMeals.includes('1')) {
+	if (data.skippedMeals.includes('1')) {
 		$('#skippedmeals-edit-1').attr('selected', 'selected');
 	}
-	if (log.skippedMeals.includes('2')) {
+	if (data.skippedMeals.includes('2')) {
 		$('#skippedmeals-edit-2').attr('selected', 'selected');
 	}
-	if (log.skippedMeals.includes('3')) {
+	if (data.skippedMeals.includes('3')) {
 		$('#skippedmeals-edit-3').attr('selected', 'selected');
 	}
 
-	let splitStartTime = log.sleepStart.split(":");
-	let splitEndTime = log.sleepEnd.split(":");
+	let splitStartTime = data.sleepStart.split(":");
+	let splitEndTime = data.sleepEnd.split(":");
 	let startHr = splitStartTime[0];
 	let startMin = splitStartTime[1];
 	let endHr = splitEndTime[0];
@@ -278,13 +258,13 @@ function matchEditFields(data) {
 	$(`#sleepend-edit-hr${convertedEndHr}`).attr('selected', 'selected');
 	$(`#sleepend-edit-min${convertedEndMin}`).attr('selected', 'selected');
 
-	$('#notes-edit').val(log.notes);
+	$('#notes-edit').val(data.notes);
 }
 
 // function stays the same even when connecting to real API
 function getDisplayLogs() {
 	// need to make sure date autofills today's date...
-	getTodayLog(displayTodayLog, matchEditFields);
+	getTodayLog(createLogHtml, matchEditFields);
 }
 
 $(getDisplayLogs);
