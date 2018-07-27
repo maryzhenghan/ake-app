@@ -75,17 +75,16 @@ migraineLogSchema.virtual('dateAdjusted').get(function () {
 	let mm = today.getMonth()+1;
 	let yyyy = today.getFullYear();
 
-	if (dd<10) {
-		dd = '0'+dd;
+	if (dd < 10) {
+		dd = '0' + dd;
 	}
-	if (mm<10) {
-		mm = '0'+mm;
+	if (mm < 10) {
+		mm = '0' + mm;
 	}
 
 	let dateAdjusted = mm+'/'+dd+'/'+yyyy;
 	return dateAdjusted;
 });
-
 
 
 migraineLogSchema.methods.serialize = function() {

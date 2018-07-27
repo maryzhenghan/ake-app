@@ -67,16 +67,7 @@ $('.js-logSaveButton-edit').on("click", function(e) {
 	};
 
 	putNewLog(logDataObject);
-
-	// take out .empty when using real data, as needed //
-	$('.js-todayLogDisplay').empty().append(`<p><h5>fake log</h5>
-			<p>Yes migraine.</p>
-			<p>Weather in Durham: 88F, sunny, humidiy: 90%</p>
-			<p>Water count (oz): 78</p>
-			<p>No skipped meals.</p>
-			<p>Hours of sleep: 23:00 to 07:00</p>
-			<p>Total hours slept: 8</p>`);
-
+	clearForm();
 	getDisplayLogs();
 });
 
@@ -186,10 +177,13 @@ function putNewLog(logData) {
 	};
 
 	$.ajax(settings)
-	.done();
+	.done(data => {
+
+	});
 }
 
 function createLogHtml(logData) {
+	// clock related edits
 	let sleepStartHrSplit = logData.sleepStart.split(":");
 	let sleepEndHrSplit = logData.sleepEnd.split(":");
 
@@ -229,11 +223,20 @@ function createLogHtml(logData) {
 		sleepEnd12HrClock = "PM";
 	}
 
-	console.log(`${sleepStart12HrClock}, ${sleepEnd12HrClock}`);
+	// true false migraine
+	let migraineYesNo;
+
+	console.log(logData.migraine);
+	if (logData.migraine === true) {
+		migraineYesNo = 'Yes';
+	}
+	else {
+		migraineYesNo = 'No';
+	}
 
 	$('.js-todayLogDisplay').empty().append(`
 		<p><h5>${logData.dateAdjusted}</h5>
-		<p>Migraine today?: ${logData.migraine}</p>
+		<p>Migraine today?: ${migraineYesNo}</p>
 		<p>Migraine length hour: ${logData.migraineLengthHr}</p>
 		<p>Weather: ${logData.weather}</p>
 		<p>Water count (oz): ${logData.water}</p>
