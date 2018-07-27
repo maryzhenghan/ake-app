@@ -225,13 +225,17 @@ function createLogHtml(logData) {
 
 	// true false migraine
 	let migraineYesNo;
-
-	console.log(logData.migraine);
 	if (logData.migraine === true) {
 		migraineYesNo = 'Yes';
 	}
 	else {
 		migraineYesNo = 'No';
+	}
+
+	// if empty Notes
+	let notesModified;
+	if (logData.notes === "") {
+		notesModified = "n/a";
 	}
 
 	$('.js-todayLogDisplay').empty().append(`
@@ -243,7 +247,7 @@ function createLogHtml(logData) {
 		<p>Skipped meals: ${logData.skippedMeals}</p>
 		<p>Hours slept: ${sleepStartSplit}:${sleepStartSplit2} ${sleepStart12HrClock} to ${sleepEndSplit}:${sleepEndSplit2} ${sleepEnd12HrClock}</p>
 		<p>Total hours slept: ${logData.sleepTotal}</p>
-		<p>Notes: ${logData.notes}</p>`);
+		<p>Notes: ${notesModified}</p>`);
 }
 
 function convertDate(date) {
