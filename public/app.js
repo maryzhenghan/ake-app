@@ -72,8 +72,8 @@ $('.js-logSaveButton-edit').on("click", function(e) {
 });
 
 function clearForm() {
-	$('.js-todayLogFormCreate input')
-  .not('.js-todayLogFormCreate button, .js-todayLogFormCreate reset')
+	$('.js-todayLogFormCreate input, #skipped-meals, #sleepstart-hr, #sleepstart-min, #sleepend-hr, #sleepend-min, #notes')
+  .not('.js-logSaveButton')
   .val('')
   .removeAttr('checked')
   .removeAttr('selected');
@@ -160,7 +160,6 @@ function postNewLog(logData) {
 	$.ajax(settings)
 	.done(data => {
 		$('.js-todayLogEdit').removeClass('hidden');
-		console.log(data);
 		matchEditFields(data);
 		return createLogHtml(data);
 	});
@@ -178,7 +177,7 @@ function putNewLog(logData) {
 
 	$.ajax(settings)
 	.done(data => {
-
+		return createLogHtml(data);
 	});
 }
 
@@ -232,6 +231,21 @@ function createLogHtml(logData) {
 		migraineYesNo = 'No';
 	}
 
+	// skippedMeals
+	let skippedMealsModified = "";
+	let skippedB = "breakfast";
+	let skippedL = "lunch";
+	let skippedD = "dinner";
+	if (logData.skippedMeals.includes('1')) {
+		skippedMealsModified += "breakfast ";
+	}
+	if (logData.skippedMeals.includes('2')) {
+		skippedMealsModified += "lunch ";
+	}
+	if (logData.skippedMeals.includes('3')) {
+		skippedMealsModified += "dinner ";
+	}
+
 	// if empty Notes
 	let notesModified;
 	if (logData.notes === "") {
@@ -241,11 +255,11 @@ function createLogHtml(logData) {
 	$('.js-todayLogDisplay').empty().append(`
 		<p><h5>${logData.dateAdjusted}</h5>
 		<p>Migraine today?: ${migraineYesNo}</p>
-		<p>Migraine length hour: ${logData.migraineLengthHr}</p>
-		<p>Weather: ${logData.weather}</p>
+		<p>Length of migraine (hours): ${logData.migraineLengthHr}</p>
+		<p>Weather description: ${logData.weather}</p>
 		<p>Water count (oz): ${logData.water}</p>
-		<p>Skipped meals: ${logData.skippedMeals}</p>
-		<p>Hours slept: ${sleepStartSplit}:${sleepStartSplit2} ${sleepStart12HrClock} to ${sleepEndSplit}:${sleepEndSplit2} ${sleepEnd12HrClock}</p>
+		<p>Skipped meals: ${skippedMealsModified}</p>
+		<p>Asleep: From ${sleepStartSplit}:${sleepStartSplit2} ${sleepStart12HrClock} to ${sleepEndSplit}:${sleepEndSplit2} ${sleepEnd12HrClock}</p>
 		<p>Total hours slept: ${logData.sleepTotal}</p>
 		<p>Notes: ${notesModified}</p>`);
 }
@@ -268,7 +282,6 @@ function convertTime(splitTime) {
 }
 
 function matchEditFields(data) {
-
 	let id = data.id;
 	let date = `${data.dateAdjusted}`;
 	let entryDate = convertDate(date);

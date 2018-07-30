@@ -18,7 +18,6 @@ $('.js-logFilterButton').on("click", function(e) {
 		migraineLengthHr: $('#migraine-length-filter').val(),
 		weather: $('#weather-filter').val(),
 		water: $('#water-count-filter').val(),
-		// might need to add the "|| []" part to skippedMeals
 		skippedMeals: $('#skipped-meals-filter').val(),
 		sleepStartHr: $('#sleepstart-hr-filter option:selected').text(),
 		sleepStartMin: $('#sleepstart-min-filter option:selected').text(),
