@@ -247,7 +247,7 @@ function createLogHtml(logData) {
 	}
 
 	// if empty Notes
-	let notesModified;
+	let notesModified = logData.notes;
 	if (logData.notes === "") {
 		notesModified = "n/a";
 	}
