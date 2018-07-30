@@ -142,7 +142,6 @@ app.post('/logs', (req, res) => {
 
 
 app.put('/logs/:id', (req, res) => {
-	// check if id in request path and request body match
 	if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
 		const message = (
 			`Request path id (${req.params.id}) and request body id ` +

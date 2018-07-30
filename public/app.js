@@ -40,15 +40,12 @@ $('.js-logSaveButton').on("click", function(e) {
 	};
 
 	postNewLog(logDataObject);
-	clearForm();
-	getDisplayLogs();
 });
 
 // saving edited log
 $('.js-logSaveButton-edit').on("click", function(e) {
 	e.preventDefault();
 	$('.js-todayLogFormEdit').addClass('hidden');
-	// $('.js-todayLogCreate').addClass('hidden');
 	$('.js-todayLogDisplay').removeClass('hidden');
 	$('.js-todayLogEdit').removeClass('hidden');
 
@@ -67,8 +64,6 @@ $('.js-logSaveButton-edit').on("click", function(e) {
 	};
 
 	putNewLog(logDataObject);
-	clearForm();
-	getDisplayLogs();
 });
 
 function clearForm() {
@@ -160,6 +155,7 @@ function postNewLog(logData) {
 	$.ajax(settings)
 	.done(data => {
 		$('.js-todayLogEdit').removeClass('hidden');
+		clearForm();
 		matchEditFields(data);
 		return createLogHtml(data);
 	});
@@ -177,7 +173,8 @@ function putNewLog(logData) {
 
 	$.ajax(settings)
 	.done(data => {
-		return createLogHtml(data);
+		clearForm(data);
+		return getDisplayLogs();
 	});
 }
 
