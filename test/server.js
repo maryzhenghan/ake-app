@@ -157,10 +157,6 @@ describe('Migraine app API resource', function() {
 					expect(res.body).to.be.a('object');
 				});
 		});
-
-		/*it('should respond with an error if there exists an entry with duplicate date field', function() {
-
-		});*/
 	});
 
 	describe ('PUT endpoint for /logs/:id', function() {
@@ -187,11 +183,10 @@ describe('Migraine app API resource', function() {
 					return chai.request(app)
 						.put('/logs/111111111111111111111100')
 						.send(updateLog)
-						.then(function(res) {
-							expect(res).to.have.status(200);
-							expect(res.body).to.be.a('object');
+						.then(res => {
+							expect(res).to.have.status(204);
 					});
-				})
+				});
 		});
 	});
 

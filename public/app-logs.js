@@ -182,6 +182,8 @@ function createLogHtml(data) {
 			<p>Asleep: From ${sleepStartSplit}:${sleepStartSplit2} ${sleepStart12HrClock} to ${sleepEndSplit}:${sleepEndSplit2} ${sleepEnd12HrClock}</p>
 			<p>Total hours slept: ${logData.sleepTotal}</p>
 			<p>Notes: ${notesModified}</p>
+			<input type="submit" name="allLogs-edit-button" value="Edit log" class="js-logEditButton">
+			<input type="submit" name="allLogs-delete-button" value="Delete log" class="js-logDeleteButton">
 			<hr>`);
 	});
 }

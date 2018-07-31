@@ -161,7 +161,7 @@ app.put('/logs/:id', (req, res) => {
 
 	Log
 		.findByIdAndUpdate(req.params.id, { $set: toUpdate })
-		.then(log => res.status(201).json(log.serialize()))
+		.then(log => res.status(204).json())
 		.catch(err => {
 			console.error(err);
 			res.status(500).json({ message: 'Internal server error' });
