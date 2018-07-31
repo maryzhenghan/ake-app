@@ -25,7 +25,8 @@ $('.js-todayLogEdit').on('click', function(e) {
 $('.js-logSaveButton').on('click', function(e) {
 	e.preventDefault();
 	$('.js-todayLogFormCreate').addClass('hidden');
-	$('.js-todayLogDisplay').removeClass('hidden');
+	$('.js-todayLogDisplayYes').removeClass('hidden');
+	$('.js-todayLogDisplayNo').addClass('hidden');
 
 	let logDataObject = {
 		date: $('#entry-date').val(),
@@ -86,7 +87,8 @@ $('.js-logCancelButton-edit').on('click', function(e) {
 // delete log
 $('.js-logDeleteButton-edit').on('click', function(e) {
 	e.preventDefault();
-
+	let deleteLogId = $('#logId').val();
+	deleteTodayLog(deleteLogId);
 });
 
 function clearForm() {
@@ -151,6 +153,7 @@ function getTodayLog(callbackFn, callbackFn2) {
 	.done(data => {
 		if (data.logs.length > 0) {
 			$('.js-todayLogDisplayYes').removeClass('hidden');
+			$('.js-todayLogDisplayNo').addClass('hidden');
 			$('.js-todayLogEdit').removeClass('hidden');
 			$('.js-todayLogCreate').removeClass('hidden');
 
@@ -167,7 +170,6 @@ function getTodayLog(callbackFn, callbackFn2) {
 			$.ajax(noSettings).done(data => {
 				$('.js-todayLogDisplayNo').removeClass('hidden');
 				$('.js-todayLogCreate').removeClass('hidden');
-				$('.js-todayLogDisplayNo').removeClass('hidden');
 			});
 		}
 	});
@@ -206,6 +208,22 @@ function putNewLog(logData) {
 	.done(data => {
 		clearForm(data);
 		return getDisplayLogs();
+	});
+}
+
+function deleteTodayLog(id) {
+	let settings = {
+		url: `/logs/${id}`,
+		method: 'DELETE'
+	};
+
+	$.ajax(settings)
+	.done(data => {
+		$('.js-todayLogFormEdit').addClass('hidden');
+		$('.js-todayLogEdit').addClass('hidden');
+		$('.js-todayLogDisplayNo').removeClass('hidden');
+		$('.js-todayLogDisplayYes').empty().addClass('hidden');
+		clearForm(data);
 	});
 }
 
@@ -283,7 +301,7 @@ function createLogHtml(logData) {
 		notesModified = "n/a";
 	}
 
-	$('.js-todayLogDisplay').empty().append(`
+	$('.js-todayLogDisplayYes').empty().append(`
 		<p><h5>${logData.dateAdjusted}</h5>
 		<p>Migraine today?: ${migraineYesNo}</p>
 		<p>Length of migraine (hours): ${logData.migraineLengthHr}</p>
@@ -332,8 +350,6 @@ function matchEditFields(data) {
 	if ($('#skippedmeals-edit-3:selected').prop('selected')) {
 		$('#skippedmeals-edit-3:selected').prop('selected', false);
 	}
-
-	// $('#skipped-meals-edit option[selected="true"]').removeAttr("selected");
 
 	if (data.skippedMeals.includes('1')) {
 		$('#skippedmeals-edit-1').attr('selected', 'selected');
