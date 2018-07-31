@@ -46,7 +46,7 @@ $('.js-logFilterButton').on("click", function(e) {
 		return filterParams;
 	});
 
-	filterLogs(filterParams, displayLogs);
+	filterLogs(filterParams, createLogHtml);
 });
 
 
@@ -100,21 +100,94 @@ function getAllLogs(callbackFn) {
 	});
 }
 
-function displayLogs(data) {
-	for (let i in data.logs) {
-		let simpJson = JSON.stringify(data.logs[i], null, "\t");
+function createLogHtml(data) {
+	data.logs.forEach(logData => {
+		// clock related edits
+		let sleepStartHrSplit = logData.sleepStart.split(":");
+		let sleepEndHrSplit = logData.sleepEnd.split(":");
 
-		$('.js-allLogsContainer').append(
-			`<p>${data.logs[i].dateAdjusted}:</p>
-			<p>${simpJson}</p>
-			<hr>
-			`);
-	}
+		let sleepStartSplit = sleepStartHrSplit[0];
+		let sleepStartSplit2 = sleepStartHrSplit[1];
 
+		let sleepEndSplit = sleepEndHrSplit[0];
+		let sleepEndSplit2 = sleepEndHrSplit[1];
+
+		if (sleepStartSplit < 10) {
+			sleepStartSplit = '0' + sleepStartSplit;
+		}
+		if (sleepStartSplit2 < 10) {
+			sleepStartSplit2 = '0' + sleepStartSplit2;
+		}
+		if (sleepEndSplit < 10) {
+			sleepEndSplit = '0' + sleepEndSplit;
+		}
+		if (sleepEndSplit2 < 10) {
+			sleepEndSplit2 = '0' + sleepEndSplit2;
+		}
+
+		let sleepStart12HrClock;
+		let sleepEnd12HrClock;
+
+		if (sleepStartSplit < 12) {
+			sleepStart12HrClock = "AM";
+		}
+		else {
+			sleepStart12HrClock = "PM";
+		}
+
+		if (sleepEndSplit < 12) {
+			sleepEnd12HrClock = "AM";
+		}
+		else {
+			sleepEnd12HrClock = "PM";
+		}
+
+		// true false migraine
+		let migraineYesNo;
+		if (logData.migraine === true) {
+			migraineYesNo = 'Yes';
+		}
+		else {
+			migraineYesNo = 'No';
+		}
+
+		// skippedMeals
+		let skippedMealsModified = "";
+		let skippedB = "breakfast";
+		let skippedL = "lunch";
+		let skippedD = "dinner";
+		if (logData.skippedMeals.includes('1')) {
+			skippedMealsModified += "breakfast ";
+		}
+		if (logData.skippedMeals.includes('2')) {
+			skippedMealsModified += "lunch ";
+		}
+		if (logData.skippedMeals.includes('3')) {
+			skippedMealsModified += "dinner ";
+		}
+
+		// if empty Notes
+		let notesModified = logData.notes;
+		if (logData.notes === "") {
+			notesModified = "n/a";
+		}
+
+		$('.js-allLogsContainer').append(`
+			<p><h5>${logData.dateAdjusted}</h5>
+			<p>Migraine today?: ${migraineYesNo}</p>
+			<p>Length of migraine (hours): ${logData.migraineLengthHr}</p>
+			<p>Weather description: ${logData.weather}</p>
+			<p>Water count (oz): ${logData.water}</p>
+			<p>Skipped meals: ${skippedMealsModified}</p>
+			<p>Asleep: From ${sleepStartSplit}:${sleepStartSplit2} ${sleepStart12HrClock} to ${sleepEndSplit}:${sleepEndSplit2} ${sleepEnd12HrClock}</p>
+			<p>Total hours slept: ${logData.sleepTotal}</p>
+			<p>Notes: ${notesModified}</p>
+			<hr>`);
+	});
 }
 
 function getDisplayLogs() {
-	getAllLogs(displayLogs);
+	getAllLogs(createLogHtml);
 }
 
 $(getDisplayLogs);
