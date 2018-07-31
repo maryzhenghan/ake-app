@@ -137,6 +137,7 @@
 						<label for="notes">Additional notes:</label><textarea id="notes"></textarea><br>
 
 						<input type="submit" name="save-button" value="Save" class="js-logSaveButton">
+						<input type="submit" name="cancel-button" value="Cancel" class="js-logCancelButton">
 					</fieldset>
 				</form>
 			</div>
@@ -162,7 +163,6 @@
 						<br>
 
 						<label for="sleepstart-hr-edit">Went to bed last night at:</label>
-						<!-- do i need value at all? now that i have used https://learn.jquery.com/using-jquery-core/faq/how-do-i-get-the-text-value-of-a-selected-option/ in app.js? -->
 						<select id="sleepstart-hr-edit" name="sleepstart-hr-edit"><br>
 							<option value="00" id="sleepstart-edit-hr00">00</option>
 							<option value="01" id="sleepstart-edit-hr01">01</option>
@@ -237,6 +237,8 @@
 						<label for="notes-edit">Additional notes:</label><textarea id="notes-edit"></textarea><br>
 
 						<input type="submit" name="save-button-edit" value="Save" class="js-logSaveButton-edit">
+						<input type="submit" name="cancel-button-edit" value="Cancel" class="js-logCancelButton-edit">
+						<input type="submit" name="delete-button-edit" value="Delete log" class="js-logDeleteButton-edit">
 					</fieldset>
 				</form>
 			</div>

@@ -1,6 +1,6 @@
 // ADD/EDIT LOG //
 // new log button on homepage
-$('.js-todayLogCreate').on("click", function(e) {
+$('.js-todayLogCreate').on('click', function(e) {
 	e.preventDefault();
 	$('.js-todayLogFormCreate').removeClass('hidden');
 	$('.js-todayLogFormEdit').addClass('hidden');
@@ -11,17 +11,18 @@ $('.js-todayLogCreate').on("click", function(e) {
 	}
 });
 
-// clicking on edit log button on homepage
-$('.js-todayLogEdit').on("click", function(e) {
+// edit log button on homepage
+$('.js-todayLogEdit').on('click', function(e) {
 	e.preventDefault();
 	$('.js-todayLogFormEdit').removeClass('hidden');
 	$('.js-todayLogFormCreate').addClass('hidden');
 	$('.js-todayLogCreate').removeClass('hidden');
 	$('.js-todayLogEdit').addClass('hidden');
+	getDisplayLogs();
 });
 
 // saving new log
-$('.js-logSaveButton').on("click", function(e) {
+$('.js-logSaveButton').on('click', function(e) {
 	e.preventDefault();
 	$('.js-todayLogFormCreate').addClass('hidden');
 	$('.js-todayLogDisplay').removeClass('hidden');
@@ -43,7 +44,7 @@ $('.js-logSaveButton').on("click", function(e) {
 });
 
 // saving edited log
-$('.js-logSaveButton-edit').on("click", function(e) {
+$('.js-logSaveButton-edit').on('click', function(e) {
 	e.preventDefault();
 	$('.js-todayLogFormEdit').addClass('hidden');
 	$('.js-todayLogDisplay').removeClass('hidden');
@@ -66,12 +67,39 @@ $('.js-logSaveButton-edit').on("click", function(e) {
 	putNewLog(logDataObject);
 });
 
+// cancel created
+$('.js-logCancelButton').on('click', function(e) {
+	e.preventDefault();
+	$('.js-todayLogFormCreate').addClass('hidden');
+	$('.js-todayLogCreate').removeClass('hidden');
+	clearForm();
+});
+
+// cancel edit
+$('.js-logCancelButton-edit').on('click', function(e) {
+	e.preventDefault();
+	$('.js-todayLogFormEdit').addClass('hidden');
+	$('.js-todayLogEdit').removeClass('hidden');
+	getDisplayLogs();
+});
+
+// delete log
+$('.js-logDeleteButton-edit').on('click', function(e) {
+	e.preventDefault();
+
+});
+
 function clearForm() {
 	$('.js-todayLogFormCreate input, #skipped-meals, #sleepstart-hr, #sleepstart-min, #sleepend-hr, #sleepend-min, #notes')
-  .not('.js-logSaveButton')
+  .not('.js-logSaveButton, .js-logCancelButton')
   .val('')
   .removeAttr('checked')
   .removeAttr('selected');
+
+	let todayDate = getTodayDate();
+	let requestFormatDate = getRequestFormatDate(todayDate);
+
+	$('#entry-date').val(requestFormatDate);
 }
 
 // function for setting today's date
@@ -117,6 +145,8 @@ function getTodayLog(callbackFn, callbackFn2) {
 		method: 'GET'
 	};
 
+	$('#entry-date').val(requestFormatDate);
+
 	$.ajax(settings)
 	.done(data => {
 		if (data.logs.length > 0) {
@@ -155,6 +185,7 @@ function postNewLog(logData) {
 	$.ajax(settings)
 	.done(data => {
 		$('.js-todayLogEdit').removeClass('hidden');
+		$('.js-todayLogCreate').removeClass('hidden');
 		clearForm();
 		matchEditFields(data);
 		return createLogHtml(data);
@@ -242,6 +273,9 @@ function createLogHtml(logData) {
 	if (logData.skippedMeals.includes('3')) {
 		skippedMealsModified += "dinner ";
 	}
+	if (!(logData.skippedMeals.includes('1')) && !(logData.skippedMeals.includes('2')) && !(logData.skippedMeals.includes('3'))) {
+		skippedMealsModified = "n/a";
+	}
 
 	// if empty Notes
 	let notesModified = logData.notes;
@@ -289,14 +323,29 @@ function matchEditFields(data) {
 	$('#weather-edit').val(data.weather);
 	$('#water-count-edit').val(data.water);
 
+	if ($('#skippedmeals-edit-1:selected').prop('selected')) {
+		$('#skippedmeals-edit-1:selected').prop('selected', false);
+	}
+	if ($('#skippedmeals-edit-2:selected').prop('selected')) {
+		$('#skippedmeals-edit-2:selected').prop('selected', false);
+	}
+	if ($('#skippedmeals-edit-3:selected').prop('selected')) {
+		$('#skippedmeals-edit-3:selected').prop('selected', false);
+	}
+
+	// $('#skipped-meals-edit option[selected="true"]').removeAttr("selected");
+
 	if (data.skippedMeals.includes('1')) {
 		$('#skippedmeals-edit-1').attr('selected', 'selected');
+		$('#skippedmeals-edit-1').prop('selected', true);
 	}
 	if (data.skippedMeals.includes('2')) {
 		$('#skippedmeals-edit-2').attr('selected', 'selected');
+		$('#skippedmeals-edit-2').prop('selected', true);
 	}
 	if (data.skippedMeals.includes('3')) {
 		$('#skippedmeals-edit-3').attr('selected', 'selected');
+		$('#skippedmeals-edit-3').prop('selected', true);
 	}
 
 	let splitStartTime = data.sleepStart.split(":");
@@ -312,16 +361,21 @@ function matchEditFields(data) {
 	let convertedEndMin = convertTime(endMin);
 
 	$(`#sleepstart-edit-hr${convertedStartHr}`).attr('selected', 'selected');
+	$(`#sleepstart-edit-hr${convertedStartHr}`).prop('selected', true);
+
 	$(`#sleepstart-edit-min${convertedStartMin}`).attr('selected', 'selected');
+	$(`#sleepstart-edit-min${convertedStartMin}`).prop('selected', true);
+
 	$(`#sleepend-edit-hr${convertedEndHr}`).attr('selected', 'selected');
+	$(`#sleepend-edit-hr${convertedEndHr}`).prop('selected', true);
+
 	$(`#sleepend-edit-min${convertedEndMin}`).attr('selected', 'selected');
+	$(`#sleepend-edit-min${convertedEndMin}`).prop('selected', true);
 
 	$('#notes-edit').val(data.notes);
 }
 
-// function stays the same even when connecting to real API
 function getDisplayLogs() {
-	// need to make sure date autofills today's date...
 	getTodayLog(createLogHtml, matchEditFields);
 }
 
