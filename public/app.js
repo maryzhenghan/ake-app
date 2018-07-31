@@ -65,7 +65,7 @@ $('.js-logSaveButton-edit').on('click', function(e) {
 		notes: $('#notes-edit').val()
 	};
 
-	putNewLog(logDataObject);
+	putLog(logDataObject);
 });
 
 // cancel created
@@ -194,7 +194,7 @@ function postNewLog(logData) {
 	});
 }
 
-function putNewLog(logData) {
+function putLog(logData) {
 	let id = logData.id;
 	let settings = {
 		url: `/logs/${id}`,
