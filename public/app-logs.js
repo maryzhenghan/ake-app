@@ -2,12 +2,10 @@
 
 const allFields = ['date', 'dateEnd', 'migraineLengthHr', 'weather', 'water', 'skippedMeals', 'sleepStartHr', 'sleepStartMin', 'sleepEndHr', 'sleepEndMin', 'notes'];
 
+// filter button
 $('.js-logFilterButton').on('click', function(e) {
 	e.preventDefault();
 	$('.js-allLogsContainer').empty();
-
-	// need to create filter options for total hours of sleepEnd
-	// need to create filter options for migraine yes/no
 
 	// if those fields are not empty, then need to add a new filter to "filters" object
 	// assign variables that get filled into filters...
@@ -15,10 +13,13 @@ $('.js-logFilterButton').on('click', function(e) {
 	let filters = {
 		date: $('#entry-date-start-filter').val(),
 		dateEnd: $('#entry-date-end-filter').val(),
+		// will return true or false
+		migraineYesNo: $('#migraine-yesno-filter').prop('checked'),
 		migraineLengthHr: $('#migraine-length-filter').val(),
 		weather: $('#weather-filter').val(),
 		water: $('#water-count-filter').val(),
 		skippedMeals: $('#skipped-meals-filter').val(),
+		sleepTotalRange: $('#sleeprange-filter').text(),
 		sleepStartHr: $('#sleepstart-hr-filter option:selected').text(),
 		sleepStartMin: $('#sleepstart-min-filter option:selected').text(),
 		sleepEndHr: $('#sleepend-hr-filter option:selected').text(),
@@ -46,8 +47,23 @@ $('.js-logFilterButton').on('click', function(e) {
 		return filterParams;
 	});
 
-	filterLogs(filterParams, createLogHtml);
+	filterLogs(filterParams, createLogHtml, createEditHandlers);
 });
+
+// reset button
+$('.js-logResetButton').on('click', function(e) {
+	clearForm();
+});
+
+
+function clearForm() {
+	$('.js-allLogsForm input, #migraine-yesno-filter, #skipped-meals-filter, #sleeprange-filter, #sleepstart-hr-filter, #sleepstart-min-filter, #sleepend-hr-filter, #sleepend-min-filter, #notes-filter')
+  .not('.js-logFilterButton, .js-logResetButton')
+  .val('')
+  .removeAttr('checked')
+  .removeAttr('selected')
+	.prop('checked', false);
+}
 
 function empty(value) {
 	if(typeof(value) === 'number' || typeof(value) === 'boolean') {
@@ -74,7 +90,7 @@ function empty(value) {
 	return count === 0;
 }
 
-function filterLogs(params, callbackFn) {
+function filterLogs(params, callbackFn, callbackFn2) {
 	let settings = {
 		url: `/logs?${params}`,
 		method: 'GET',
@@ -83,6 +99,7 @@ function filterLogs(params, callbackFn) {
 	$.ajax(settings)
 	.done(data => {
 		callbackFn(data);
+		callbackFn2(data);
 	});
 }
 
