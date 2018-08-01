@@ -107,7 +107,6 @@ function createEditHandlers(data) {
 	data.logs.forEach(logData => {
 		// edit log button
 		$(`#js-logEditButton-allLogs-${logData.id}`).on('click', function(e) {
-			e.preventDefault();
 			$(`#js-allLogsFormEdit-${logData.id}`).removeClass('hidden');
 			$(`#js-logEditButton-allLogs-${logData.id}`).addClass('hidden');
 		});
@@ -135,69 +134,61 @@ function createEditHandlers(data) {
 		});
 
 		// cancel on edit form
-		$(`js-logCancelButton-allLogs-${logData.id}`).on('click', function(e) {
-			e.preventDefault();
+		$(`#js-logCancelButton-allLogs-${logData.id}`).on('click', function(e) {
 			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
 			$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
-			getDisplayLogs();
+			matchEditFields([logData]);
 		});
 
-	});
-}
+		// delete on edit form
+		$(`#js-logDeleteButton-allLogs-${logData.id}`).on('click', function(e) {
+			console.log(`yay delete button for log ${logData.id}`);
+			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
+			$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
+			$(`#js-allLogsIndividualContainer-${logData.id}`).empty().addClass('hidden');
 
-function putLog(logData) {
-	let id = logData.id;
-	let settings = {
-		url: `/logs/${id}`,
-		method: 'PUT',
-		dataType: 'json',
-		contentType: 'application/json',
-		data: JSON.stringify(logData),
-	};
-
-	$.ajax(settings)
-	.done(data => {
-		return getDisplayLogs();
+			deleteLog(logData.id);
+		});
 	});
 }
 
 function matchEditFields(data) {
-	data.logs.forEach(logData => {
-		let id = logData.id;
-		let date = `${logData.dateAdjusted}`;
+	data.forEach(data => {
+		let id = data.id;
+		let date = `${data.dateAdjusted}`;
 		let entryDate = convertDate(date);
 
-		$(`#js-allLogsFormEdit-${logData.id} #logId-allLogs`).val(id);
-		$(`#js-allLogsFormEdit-${logData.id} #entry-date-allLogs`).val(entryDate);
-		$(`#js-allLogsFormEdit-${logData.id} #migraine-length-allLogs`).val(logData.migraineLengthHr);
-		$(`#js-allLogsFormEdit-${logData.id} #weather-allLogs`).val(logData.weather);
-		$(`#js-allLogsFormEdit-${logData.id} #water-count-allLogs`).val(logData.water);
+		$(`#js-allLogsFormEdit-${data.id} #logId-allLogs`).val(id);
+		$(`#js-allLogsFormEdit-${data.id} #entry-date-allLogs`).val(entryDate);
+		$(`#js-allLogsFormEdit-${data.id} #migraine-length-allLogs`).val(data.migraineLengthHr);
+		$(`#js-allLogsFormEdit-${data.id} #weather-allLogs`).val(data.weather);
+		$(`#js-allLogsFormEdit-${data.id} #water-count-allLogs`).val(data.water);
 
-		if ($(`#js-allLogsFormEdit-${logData.id} #skippedmeals-allLogs-1:selected`).prop('selected')) {
-			$(`#js-allLogsFormEdit-${logData.id} #skippedmeals-edit-1:selected`).prop('selected', false);
+		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1`).prop('selected')) {
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-edit-1:selected`).prop('selected', false);
 		}
-		if ($(`#js-allLogsFormEdit-${logData.id} #skippedmeals-edit-2:selected`).prop('selected')) {
-			$(`#js-allLogsFormEdit-${logData.id} #skippedmeals-edit-2:selected`).prop('selected', false);
+		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-edit-2`).prop('selected')) {
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-edit-2:selected`).prop('selected', false);
 		}
-		if ($(`#js-allLogsFormEdit-${logData.id} #skippedmeals-edit-3:selected`).prop('selected')) {
-			$(`#js-allLogsFormEdit-${logData.id} #skippedmeals-edit-3:selected`).prop('selected', false);
-		}
-
-		if (logData.skippedMeals.includes('1')) {
-			$(`#js-allLogsFormEdit-${logData.id} #skippedmeals-allLogs-1`).attr('selected', 'selected');
-			$(`#js-allLogsFormEdit-${logData.id} #skippedmeals-allLogs-1`).prop('selected', true);
-		}
-		if (logData.skippedMeals.includes('2')) {
-			$(`#js-allLogsFormEdit-${logData.id} #skippedmeals-allLogs-2`).attr('selected', 'selected');
-			$(`#js-allLogsFormEdit-${logData.id} #skippedmeals-allLogs-2`).prop('selected', true);
-		}
-		if (logData.skippedMeals.includes('3')) {
-			$(`#js-allLogsFormEdit-${logData.id} #skippedmeals-allLogs-3`).attr('selected', 'selected');
-			$(`#js-allLogsFormEdit-${logData.id} #skippedmeals-allLogs-3`).prop('selected', true);
+		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-edit-3`).prop('selected')) {
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-edit-3:selected`).prop('selected', false);
 		}
 
-		let splitStartTime = logData.sleepStart.split(":");
-		let splitEndTime = logData.sleepEnd.split(":");
+		if (data.skippedMeals.includes('1')) {
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).attr('selected', 'selected');
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).prop('selected', true);
+		}
+		if (data.skippedMeals.includes('2')) {
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).attr('selected', 'selected');
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).prop('selected', true);
+		}
+		if (data.skippedMeals.includes('3')) {
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).attr('selected', 'selected');
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).prop('selected', true);
+		}
+
+		let splitStartTime = data.sleepStart.split(":");
+		let splitEndTime = data.sleepEnd.split(":");
 		let startHr = splitStartTime[0];
 		let startMin = splitStartTime[1];
 		let endHr = splitEndTime[0];
@@ -208,19 +199,19 @@ function matchEditFields(data) {
 		let convertedEndHr = convertTime(endHr);
 		let convertedEndMin = convertTime(endMin);
 
-		$(`#js-allLogsFormEdit-${logData.id} #sleepstart-allLogs-hr${convertedStartHr}`).attr('selected', 'selected');
-		$(`#js-allLogsFormEdit-${logData.id} #sleepstart-allLogs-hr${convertedStartHr}`).prop('selected', true);
+		$(`#js-allLogsFormEdit-${data.id} #sleepstart-allLogs-hr${convertedStartHr}`).attr('selected', 'selected');
+		$(`#js-allLogsFormEdit-${data.id} #sleepstart-allLogs-hr${convertedStartHr}`).prop('selected', true);
 
-		$(`#js-allLogsFormEdit-${logData.id} #sleepstart-allLogs-min${convertedStartMin}`).attr('selected', 'selected');
-		$(`#js-allLogsFormEdit-${logData.id} #sleepstart-allLogs-min${convertedStartMin}`).prop('selected', true);
+		$(`#js-allLogsFormEdit-${data.id} #sleepstart-allLogs-min${convertedStartMin}`).attr('selected', 'selected');
+		$(`#js-allLogsFormEdit-${data.id} #sleepstart-allLogs-min${convertedStartMin}`).prop('selected', true);
 
-		$(`#js-allLogsFormEdit-${logData.id} #sleepend-allLogs-hr${convertedEndHr}`).attr('selected', 'selected');
-		$(`#js-allLogsFormEdit-${logData.id} #sleepend-allLogs-hr${convertedEndHr}`).prop('selected', true);
+		$(`#js-allLogsFormEdit-${data.id} #sleepend-allLogs-hr${convertedEndHr}`).attr('selected', 'selected');
+		$(`#js-allLogsFormEdit-${data.id} #sleepend-allLogs-hr${convertedEndHr}`).prop('selected', true);
 
-		$(`#js-allLogsFormEdit-${logData.id} #sleepend-allLogs-min${convertedEndMin}`).attr('selected', 'selected');
-		$(`#js-allLogsFormEdit-${logData.id} #sleepend-allLogs-min${convertedEndMin}`).prop('selected', true);
+		$(`#js-allLogsFormEdit-${data.id} #sleepend-allLogs-min${convertedEndMin}`).attr('selected', 'selected');
+		$(`#js-allLogsFormEdit-${data.id} #sleepend-allLogs-min${convertedEndMin}`).prop('selected', true);
 
-		$(`#js-allLogsFormEdit-${logData.id} #notes-allLogs`).val(logData.notes);
+		$(`#js-allLogsFormEdit-${data.id} #notes-allLogs`).val(data.notes);
 	});
 }
 
@@ -293,6 +284,9 @@ function createLogHtml(data) {
 		if (logData.skippedMeals.includes('3')) {
 			skippedMealsModified += "dinner ";
 		}
+		if (!(logData.skippedMeals.includes('1')) && !(logData.skippedMeals.includes('2')) && !(logData.skippedMeals.includes('3'))) {
+			skippedMealsModified = "n/a";
+		}
 
 		// if empty Notes
 		let notesModified = logData.notes;
@@ -301,7 +295,7 @@ function createLogHtml(data) {
 		}
 
 		$('.js-allLogsContainer').append(`
-			<div class="allLogsIndividualContainer" id="allLogsIndividualContainer-${logDataId}">
+			<div class="allLogsIndividualContainer" id="js-allLogsIndividualContainer-${logDataId}">
 				<h5>${logData.dateAdjusted}</h5>
 
 				<p>Migraine today?: ${migraineYesNo}</p>
@@ -412,16 +406,42 @@ function createLogHtml(data) {
 							<label for="notes-allLogs">Additional notes:</label><textarea id="notes-allLogs"></textarea><br>
 
 							<input type="submit" name="save-button-allLogs-${logDataId}" value="Save" class="logSaveButton-allLogs" id="js-logSaveButton-allLogs-${logDataId}">
-							<input type="submit" name="cancel-button-allLogs-${logDataId}" value="Cancel" class="logCancelButton-allLogs" id="js-logCancelButton-allLogs-${logDataId}">
-							<input type="submit" name="delete-button-allLogs-${logDataId}" value="Delete log" class="logDeleteButton-allLogs" id="js-logDeleteButton-allLogs-${logDataId}">
+							<button type="button" name="cancel-button-allLogs-${logDataId}" class="logCancelButton-allLogs" id="js-logCancelButton-allLogs-${logDataId}">Cancel</button>
+							<button type="button" name="delete-button-allLogs-${logDataId}" class="logDeleteButton-allLogs" id="js-logDeleteButton-allLogs-${logDataId}">Delete log</button>
 						</fieldset>
 					</form>
 				</div>
 
-				<input type="submit" name="edit-button-allLogs-${logDataId}" value="Edit log" class="logEditButton-allLogs" id="js-logEditButton-allLogs-${logDataId}">
+				<button type="button" name="edit-button-allLogs-${logDataId}" class="logEditButton-allLogs" id="js-logEditButton-allLogs-${logDataId}">Edit log</button>
 				<hr>
 			</div>`);
 	});
+}
+
+function putLog(logData) {
+	let id = logData.id;
+	let settings = {
+		url: `/logs/${id}`,
+		method: 'PUT',
+		dataType: 'json',
+		contentType: 'application/json',
+		data: JSON.stringify(logData),
+	};
+
+	$.ajax(settings)
+	.done(data => {
+		return getDisplayLogs();
+	});
+}
+
+function deleteLog(logId) {
+	let settings = {
+		url: `/logs/${logId}`,
+		method: 'DELETE'
+	};
+
+	$.ajax(settings)
+	.done();
 }
 
 function getAllLogs(callbackFn, callbackFn2, callbackFn3) {
@@ -433,7 +453,7 @@ function getAllLogs(callbackFn, callbackFn2, callbackFn3) {
 	$.ajax(settings)
 	.done(data => {
 		callbackFn(data);
-		callbackFn2(data);
+		callbackFn2(data.logs);
 		callbackFn3(data);
 	});
 }

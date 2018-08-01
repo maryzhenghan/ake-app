@@ -15,7 +15,6 @@ $('.js-todayLogEdit').on('click', function(e) {
 	$('.js-todayLogFormEdit').removeClass('hidden');
 	$('.js-todayLogFormCreate').addClass('hidden');
 	$('.js-todayLogCreate').removeClass('hidden');
-	getDisplayLogs();
 });
 
 // saving new log
