@@ -1,7 +1,6 @@
 // ADD/EDIT LOG //
 // new log button on homepage
 $('.js-todayLogCreate').on('click', function(e) {
-	e.preventDefault();
 	$('.js-todayLogFormCreate').removeClass('hidden');
 	$('.js-todayLogFormEdit').addClass('hidden');
 	$('.js-todayLogCreate').addClass('hidden');
@@ -13,11 +12,9 @@ $('.js-todayLogCreate').on('click', function(e) {
 
 // edit log button on homepage
 $('.js-todayLogEdit').on('click', function(e) {
-	e.preventDefault();
 	$('.js-todayLogFormEdit').removeClass('hidden');
 	$('.js-todayLogFormCreate').addClass('hidden');
 	$('.js-todayLogCreate').removeClass('hidden');
-	$('.js-todayLogEdit').addClass('hidden');
 	getDisplayLogs();
 });
 
@@ -68,17 +65,15 @@ $('.js-logSaveButton-edit').on('click', function(e) {
 	putLog(logDataObject);
 });
 
-// cancel created
+// cancel on create form
 $('.js-logCancelButton').on('click', function(e) {
-	e.preventDefault();
 	$('.js-todayLogFormCreate').addClass('hidden');
 	$('.js-todayLogCreate').removeClass('hidden');
 	clearForm();
 });
 
-// cancel edit
+// cancel on edit form
 $('.js-logCancelButton-edit').on('click', function(e) {
-	e.preventDefault();
 	$('.js-todayLogFormEdit').addClass('hidden');
 	$('.js-todayLogEdit').removeClass('hidden');
 	getDisplayLogs();
@@ -86,7 +81,6 @@ $('.js-logCancelButton-edit').on('click', function(e) {
 
 // delete log
 $('.js-logDeleteButton-edit').on('click', function(e) {
-	e.preventDefault();
 	let deleteLogId = $('#logId').val();
 	deleteTodayLog(deleteLogId);
 });
@@ -111,14 +105,15 @@ function getTodayDate() {
 	let mm = today.getMonth()+1;
 	let yyyy = today.getFullYear();
 
-	if (dd<10) {
-		dd = '0'+dd;
+	if (dd < 10) {
+		dd = '0' + dd;
 	}
-	if (mm<10) {
-		mm = '0'+mm;
+	if (mm < 10) {
+		mm = '0' + mm;
 	}
 
 	let todayDate = mm+'/'+dd+'/'+yyyy;
+	console.log(todayDate);
 	$('.js-todayDate').text(todayDate);
 
 	return todayDate;

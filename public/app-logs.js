@@ -109,6 +109,7 @@ function createEditHandlers(data) {
 		$(`#js-logEditButton-allLogs-${logData.id}`).on('click', function(e) {
 			e.preventDefault();
 			$(`#js-allLogsFormEdit-${logData.id}`).removeClass('hidden');
+			$(`#js-logEditButton-allLogs-${logData.id}`).addClass('hidden');
 		});
 
 		// saving edited log
@@ -132,6 +133,15 @@ function createEditHandlers(data) {
 
 			putLog(logDataObject);
 		});
+
+		// cancel on edit form
+		$(`js-logCancelButton-allLogs-${logData.id}`).on('click', function(e) {
+			e.preventDefault();
+			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
+			$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
+			getDisplayLogs();
+		});
+
 	});
 }
 
@@ -325,6 +335,7 @@ function createLogHtml(data) {
 
 							<label for="sleepstart-hr-allLogs">Went to bed last night at:</label>
 							<select id="sleepstart-hr-allLogs" name="sleepstart-hr-allLogs"><br>
+								<option value="xx" id="sleepstart-allLogs-hrxx"></option>
 								<option value="00" id="sleepstart-allLogs-hr00">00</option>
 								<option value="01" id="sleepstart-allLogs-hr01">01</option>
 								<option value="02" id="sleepstart-allLogs-hr02">02</option>
@@ -353,6 +364,7 @@ function createLogHtml(data) {
 
 							<label for="sleepstart-min-allLogs">:</label>
 							<select id="sleepstart-min-allLogs" name="sleepstart-min-allLogs"><br>
+								<option value="xx" id="sleepstart-allLogs-minxx"></option>
 								<option value="00" id="sleepstart-allLogs-min00">00</option>
 								<option value="15" id="sleepstart-allLogs-min15">15</option>
 								<option value="30" id="sleepstart-allLogs-min30">30</option>
@@ -361,6 +373,7 @@ function createLogHtml(data) {
 
 							<label for="sleepend-hr-allLogs">Woke up this morning at:</label>
 							<select id="sleepend-hr-allLogs" name="sleepsend-hr-allLogs"><br>
+								<option value="xx" id="sleepend-allLogs-hrxx"></option>
 								<option value="00" id="sleepend-allLogs-hr00">00</option>
 								<option value="01" id="sleepend-allLogs-hr01">01</option>
 								<option value="02" id="sleepend-allLogs-hr02">02</option>
@@ -389,6 +402,7 @@ function createLogHtml(data) {
 
 							<label for="sleepend-min-allLogs">:</label>
 							<select id="sleepend-min-allLogs" name="sleepend-min-allLogs"><br>
+								<option value="00" id="sleepend-allLogs-minxx"></option>
 								<option value="00" id="sleepend-allLogs-min00">00</option>
 								<option value="15" id="sleepend-allLogs-min15">15</option>
 								<option value="30" id="sleepend-allLogs-min30">30</option>

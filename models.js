@@ -71,8 +71,7 @@ migraineLogSchema.virtual('dateAdjusted').get(function () {
 	let today = this.date;
 
 	let dd = today.getUTCDate();
-
-	let mm = today.getMonth()+1;
+	let mm = today.getUTCMonth()+1;
 	let yyyy = today.getFullYear();
 
 	if (dd < 10) {
