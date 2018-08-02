@@ -1,6 +1,6 @@
 'use strict';
 
-const allFields = ['date', 'dateEnd', 'migraineLengthHr', 'weather', 'water', 'skippedMeals', 'sleepStartHr', 'sleepStartMin', 'sleepEndHr', 'sleepEndMin', 'notes'];
+const allFields = ['date', 'dateEnd', 'migraineYesNo', 'migraineLengthHr', 'weather', 'water', 'skippedMeals', 'sleepTotalRange', 'sleepStartHr', 'sleepStartMin', 'sleepEndHr', 'sleepEndMin', 'notes'];
 
 // filter button
 $('.js-logFilterButton').on('click', function(e) {
@@ -31,6 +31,12 @@ $('.js-logFilterButton').on('click', function(e) {
 
 	allFields.forEach(field => {
 		// CHECK IF RANGE IS EVEN POSSIBLE IN MONGO
+
+		// fix second date filter
+		// fix notes filter
+		// multiple skipped meals
+		// nice to half: water range
+
 		if (!empty(filters[field])) {
 			if (field === "date") {
 				filterParams += `date=${filters[field]}&`;
@@ -182,13 +188,13 @@ function matchEditFields(data) {
 		$(`#js-allLogsFormEdit-${data.id} #water-count-allLogs`).val(data.water);
 
 		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1`).prop('selected')) {
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-edit-1:selected`).prop('selected', false);
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).prop('selected', false);
 		}
-		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-edit-2`).prop('selected')) {
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-edit-2:selected`).prop('selected', false);
+		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2`).prop('selected')) {
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).prop('selected', false);
 		}
-		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-edit-3`).prop('selected')) {
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-edit-3:selected`).prop('selected', false);
+		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3`).prop('selected')) {
+			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).prop('selected', false);
 		}
 
 		if (data.skippedMeals.includes('1')) {
@@ -380,7 +386,7 @@ function createLogHtml(data) {
 								<option value="15" id="sleepstart-allLogs-min15">15</option>
 								<option value="30" id="sleepstart-allLogs-min30">30</option>
 								<option value="45" id="sleepstart-allLogs-min45">45</option>
-							</select>
+							</select><br>
 
 							<label for="sleepend-hr-allLogs">Woke up this morning at:</label>
 							<select id="sleepend-hr-allLogs" name="sleepsend-hr-allLogs"><br>
@@ -418,7 +424,7 @@ function createLogHtml(data) {
 								<option value="15" id="sleepend-allLogs-min15">15</option>
 								<option value="30" id="sleepend-allLogs-min30">30</option>
 								<option value="45" id="sleepend-allLogs-min45">45</option>
-							</select>
+							</select><br>
 
 							<label for="notes-allLogs">Additional notes:</label><textarea id="notes-allLogs"></textarea><br>
 
