@@ -13,13 +13,9 @@ const seedLogs = require('../db/seed/logs');
 const expect = chai.expect;
 chai.use(chaiHttp);
 
-describe('Migraine app API resource', function() {
-	// Note that with your current tests you don't need
-	// your before and after functions, since chai.request(app)
-	// calls app.listen() for you, however I think once you
-	// are testing database interactions you need to call those
-	// to connect to the test database etc.
+// TESTS
 
+describe('Migraine app API resource', function() {
 	before(function() {
 		return runServer(TEST_DATABASE_URL);
 	});
@@ -103,7 +99,6 @@ describe('Migraine app API resource', function() {
 				.then(function(_res) {
 					res = _res;
 					let logId = '111111111111111111111102';
-
 					expect(res).to.have.status(200);
 					expect(res).to.be.json;
 					expect(res.body.id).to.equal(logId);
@@ -120,7 +115,6 @@ describe('Migraine app API resource', function() {
 			const newLog = {
 				"date": "06/21/2020",
 				"migraineLengthHr": 4
-
 			};
 
 			let body;
@@ -130,7 +124,6 @@ describe('Migraine app API resource', function() {
 				.send(newLog)
 				.then(function (res) {
 					body = res.body;
-
 					expect(res).to.have.status(201);
 					expect(res).to.be.json;
 					expect(res).to.be.a('object');
@@ -190,10 +183,8 @@ describe('Migraine app API resource', function() {
 		});
 	});
 
-
 	describe ('DELETE endpoint for /logs/:id', function() {
 		it('should delete a log by id and respond with 204 status', function() {
-
 			let data;
 
 			return chai.request(app)

@@ -16,22 +16,23 @@ const migraineLogSchema = new Schema({
 	notes: String
 });
 
-// calculates total hours of sleep for virtual 'sleepTotalHr'. sleep hours are submitted in military time
+// MISC FUNCTIONS
+
 function calculateSleepTotal(startHr, startMin, endHr, endMin) {
 	let calculatedSleepTotal;
 
 	if (startHr > endHr) {
-		// eg 22 > 6
-		// eg 22:30 > 6:15
+		// eg. 22 > 6
+		// eg. 22:30 > 6:15
 		calculatedSleepTotal = (24 - (startHr + (startMin / 60))) + (endHr + (endMin / 60));
 	}
 	else if (startHr < endHr) {
-		// eg 0 < 7
+		// eg. 0 < 7
 		calculatedSleepTotal = ((endHr + (endMin / 60))) - (startHr + (startMin / 60));
 
 	}
 	else {
-		// eg slept @ 6, woke up @6:30
+		// eg. slept @ 6, woke up @6:30
 		calculatedSleepTotal = ((endMin / 60) - (startMin / 60));
 	}
 
@@ -39,6 +40,7 @@ function calculateSleepTotal(startHr, startMin, endHr, endMin) {
 	return calculatedSleepTotal;
 }
 
+// VIRTUALS
 
 migraineLogSchema.virtual('sleepStart').get(function () {
 	return this.sleepStartHr + ':' + this.sleepStartMin;
@@ -47,7 +49,6 @@ migraineLogSchema.virtual('sleepStart').get(function () {
 migraineLogSchema.virtual('sleepEnd').get(function () {
 	return this.sleepEndHr + ':' + this.sleepEndMin;
 });
-
 
 migraineLogSchema.virtual('sleepTotal').get(function () {
 	let sleepTotal = calculateSleepTotal(this.sleepStartHr, this.sleepStartMin, this.sleepEndHr, this.sleepEndMin);
@@ -85,6 +86,7 @@ migraineLogSchema.virtual('dateAdjusted').get(function () {
 	return dateAdjusted;
 });
 
+// SERIALIZE
 
 migraineLogSchema.methods.serialize = function() {
 	return {

@@ -13,7 +13,6 @@ const { Log } = require('./models');
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-
 // REQUESTS
 
 app.get('/home', (req, res) => {
@@ -26,56 +25,48 @@ app.get('/all-logs', (req, res) => {
 	res.sendFile('logs.html', {root: './public'});
 });
 
-// for filter, be sure to make an "allowed fields" for the queries to limit access
 app.get('/logs', (req, res) => {
+	if (req.query.date && req.query.dateEnd) {
+		let dateStart = new Date(req.query.date);
+		let dateStartMs = dateStart.getTime();
+		let dateEnd = new Date(req.query.dateEnd);
+		let dateEndMs = dateEnd.getTime();
 
-	// items.find({
-	//   created_at: {
-	//       $gte: ISODate("2010-04-29T00:00:00.000Z"),
-	//       $lt: ISODate("2010-05-01T00:00:00.000Z")
-	//   }
-	// })
+		req.query.date = {
+			$gte: dateStartMs,
+			$lte: dateEndMs
+		}
+		delete req.query.dateEnd;
+	}
 
-	// if (!empty(req.query.date) && (!empty(req.query.dateEnd))) {
-	// 	console.log('yay date and dateEnd are BOTH not empty');
-	// }
-	//
-	// else if (!empty(req.query.date) || !(empty(req.query.dateEnd))) {
-	// 	console.log('yay date OR dateEnd is empty');
-	// 	Log
-	// 		.find(req.query)
-	// 		.sort({ date: -1 })
-	// 		.then(logs => {
-	// 			res.status(200).json({
-	// 						logs: logs.map(
-	// 							(log) => log.serialize())
-	// 					});
-	// 		})
-	// 		.catch(err => {
-	// 			console.error(err);
-	// 			res.status(500).json({ message: 'Internal server error' });
-	// 		});
-	// }
+	if (!(req.query.date) && req.query.dateEnd) {
+		req.query.date = req.query.dateEnd;
+		delete req.query.dateEnd;
+	}
 
-	// else {
+	if (req.query.weather) {
+		req.query.weather = { $regex: `.*${req.query.weather}.*`};
+	}
+
+	if (req.query.notes) {
+		req.query.notes = { $regex: `.*${req.query.notes}.*`, $options: 'i' };
+	}
+
 		Log
 			.find(req.query)
 			.sort({ date: -1 })
 			.then(logs => {
 				res.status(200).json({
-							logs: logs.map(
-								(log) => log.serialize())
-						});
+					logs: logs.map(
+						(log) => log.serialize())
+					});
 			})
 			.catch(err => {
 				console.error(err);
 				res.status(500).json({ message: 'Internal server error' });
 			});
-	// }
-
 });
 
-// request log by ID
 app.get('/logs/:id', (req, res) => {
 	Log
 		.findById(req.params.id)
@@ -85,7 +76,6 @@ app.get('/logs/:id', (req, res) => {
 			res.status(500).json({ message: 'Internal server error' });
 		});
 });
-
 
 app.post('/logs', (req, res) => {
 	const requiredFields = ['date', 'migraineLengthHr'];
@@ -140,7 +130,6 @@ app.post('/logs', (req, res) => {
 		});
 });
 
-
 app.put('/logs/:id', (req, res) => {
 	if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
 		const message = (
@@ -168,7 +157,6 @@ app.put('/logs/:id', (req, res) => {
 		});
 });
 
-
 app.delete('/logs/:id', (req, res) => {
 	Log
 		.findByIdAndRemove(req.params.id)
@@ -179,14 +167,11 @@ app.delete('/logs/:id', (req, res) => {
 		});
 });
 
-
-// catch-all endpoint if client makes request to non-existent endpoint
 app.use('*', function(req, res) {
 	res.status(404).json({ message: 'Not Found' });
 });
 
-
-let server;
+// MISC FUNCTIONS
 
 function empty(value) {
   if(typeof(value) === 'number' || typeof(value) === 'boolean') {
@@ -212,6 +197,10 @@ function empty(value) {
   }
   return count === 0;
 }
+
+// SERVER FUNCTIONS
+
+let server;
 
 function runServer(databaseUrl, port = PORT) {
 	return new Promise((resolve, reject) => {

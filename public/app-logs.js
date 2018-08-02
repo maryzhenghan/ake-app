@@ -2,24 +2,19 @@
 
 const allFields = ['date', 'dateEnd', 'migraineYesNo', 'migraineLengthHr', 'weather', 'water', 'skippedMeals', 'sleepTotalRange', 'sleepStartHr', 'sleepStartMin', 'sleepEndHr', 'sleepEndMin', 'notes'];
 
+// MAIN CLICK HANDLERS
+
 // filter button
 $('.js-logFilterButton').on('click', function(e) {
-	e.preventDefault();
 	$('.js-allLogsContainer').empty();
-
-	// if those fields are not empty, then need to add a new filter to "filters" object
-	// assign variables that get filled into filters...
 
 	let filters = {
 		date: $('#entry-date-start-filter').val(),
 		dateEnd: $('#entry-date-end-filter').val(),
-		// will return true or false
-		migraineYesNo: $('#migraine-yesno-filter').prop('checked'),
 		migraineLengthHr: $('#migraine-length-filter').val(),
 		weather: $('#weather-filter').val(),
 		water: $('#water-count-filter').val(),
 		skippedMeals: $('#skipped-meals-filter').val(),
-		sleepTotalRange: $('#sleeprange-filter').text(),
 		sleepStartHr: $('#sleepstart-hr-filter option:selected').text(),
 		sleepStartMin: $('#sleepstart-min-filter option:selected').text(),
 		sleepEndHr: $('#sleepend-hr-filter option:selected').text(),
@@ -30,22 +25,13 @@ $('.js-logFilterButton').on('click', function(e) {
 	let filterParams = "";
 
 	allFields.forEach(field => {
-		// CHECK IF RANGE IS EVEN POSSIBLE IN MONGO
-
-		// fix second date filter
-		// fix notes filter
-		// multiple skipped meals
-		// nice to half: water range
-
 		if (!empty(filters[field])) {
 			if (field === "date") {
 				filterParams += `date=${filters[field]}&`;
 			}
-
 			else if (field === "dateEnd") {
 				filterParams += `dateEnd=${filters[field]}&`;
 			}
-
 			else {
 				filterParams += `${field}=${filters[field]}&`;
 			}
@@ -61,6 +47,7 @@ $('.js-logResetButton').on('click', function(e) {
 	clearForm();
 });
 
+// MISC FUNCTIONS
 
 function clearForm() {
 	$('.js-allLogsForm input, #migraine-yesno-filter, #skipped-meals-filter, #sleeprange-filter, #sleepstart-hr-filter, #sleepstart-min-filter, #sleepend-hr-filter, #sleepend-min-filter, #notes-filter')
@@ -72,14 +59,12 @@ function clearForm() {
 }
 
 function empty(value) {
-	if(typeof(value) === 'number' || typeof(value) === 'boolean') {
+	if(typeof(value) === 'number' || (typeof(value) === 'boolean')) {
 		return false;
 	}
-
 	if(typeof(value) === 'undefined' || value === null) {
 		return true;
 	}
-
 	if(typeof(value.length) !== 'undefined') {
 		if(/^[\s]*$/.test(value.toString())) {
 			return true;
@@ -96,23 +81,9 @@ function empty(value) {
 	return count === 0;
 }
 
-function filterLogs(params, callbackFn, callbackFn2) {
-	let settings = {
-		url: `/logs?${params}`,
-		method: 'GET',
-	}
-
-	$.ajax(settings)
-	.done(data => {
-		callbackFn(data);
-		callbackFn2(data);
-	});
-}
-
 function convertDate(date) {
 	let splitDate = date.split("/");
 	let combineDate = `${splitDate[2]}-${splitDate[0]}-${splitDate[1]}`;
-
 	return combineDate;
 }
 
@@ -120,11 +91,12 @@ function convertTime(splitTime) {
 	if (splitTime < 10) {
 		return `0${splitTime}`;
 	}
-
 	else {
 		return splitTime;
 	}
 }
+
+// DATA MANIPULATION FUNCTIONS
 
 function createEditHandlers(data) {
 	data.logs.forEach(logData => {
@@ -134,7 +106,7 @@ function createEditHandlers(data) {
 			$(`#js-logEditButton-allLogs-${logData.id}`).addClass('hidden');
 		});
 
-		// saving edited log
+		// save edited log button
 		$(`#js-logSaveButton-allLogs-${logData.id}`).on('click', function(e) {
 			e.preventDefault();
 			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
@@ -156,16 +128,15 @@ function createEditHandlers(data) {
 			putLog(logDataObject);
 		});
 
-		// cancel on edit form
+		// cancel edit button
 		$(`#js-logCancelButton-allLogs-${logData.id}`).on('click', function(e) {
 			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
 			$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
 			matchEditFields([logData]);
 		});
 
-		// delete on edit form
+		// delete button
 		$(`#js-logDeleteButton-allLogs-${logData.id}`).on('click', function(e) {
-			console.log(`yay delete button for log ${logData.id}`);
 			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
 			$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
 			$(`#js-allLogsIndividualContainer-${logData.id}`).empty().addClass('hidden');
@@ -187,6 +158,7 @@ function matchEditFields(data) {
 		$(`#js-allLogsFormEdit-${data.id} #weather-allLogs`).val(data.weather);
 		$(`#js-allLogsFormEdit-${data.id} #water-count-allLogs`).val(data.water);
 
+		// skipped meals
 		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1`).prop('selected')) {
 			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).prop('selected', false);
 		}
@@ -210,6 +182,7 @@ function matchEditFields(data) {
 			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).prop('selected', true);
 		}
 
+		// sleep times
 		let splitStartTime = data.sleepStart.split(":");
 		let splitEndTime = data.sleepEnd.split(":");
 		let startHr = splitStartTime[0];
@@ -234,6 +207,7 @@ function matchEditFields(data) {
 		$(`#js-allLogsFormEdit-${data.id} #sleepend-allLogs-min${convertedEndMin}`).attr('selected', 'selected');
 		$(`#js-allLogsFormEdit-${data.id} #sleepend-allLogs-min${convertedEndMin}`).prop('selected', true);
 
+		// notes
 		$(`#js-allLogsFormEdit-${data.id} #notes-allLogs`).val(data.notes);
 	});
 }
@@ -244,7 +218,7 @@ function createLogHtml(data) {
 	data.logs.forEach(logData => {
 		let logDataId = logData.id;
 
-		// clock related edits
+		// sleep times display
 		let sleepStartHrSplit = logData.sleepStart.split(":");
 		let sleepEndHrSplit = logData.sleepEnd.split(":");
 
@@ -284,7 +258,7 @@ function createLogHtml(data) {
 			sleepEnd12HrClock = "PM";
 		}
 
-		// true false migraine
+		// migraine: true false
 		let migraineYesNo;
 		if (logData.migraine === true) {
 			migraineYesNo = 'Yes';
@@ -293,7 +267,25 @@ function createLogHtml(data) {
 			migraineYesNo = 'No';
 		}
 
-		// skippedMeals
+		// weather description
+		let weatherDescription;
+		if (logData.weather === "") {
+			weatherDescription = "n/a";
+		}
+		else {
+			weatherDescription = logData.weather;
+		}
+
+		// water count
+		let waterCount;
+		if (empty(logData.water)) {
+			waterCount = 'n/a';
+		}
+		else {
+			waterCount = logData.water;
+		}
+
+		// skipped meals
 		let skippedMealsModified = "";
 		let skippedB = "breakfast";
 		let skippedL = "lunch";
@@ -311,20 +303,21 @@ function createLogHtml(data) {
 			skippedMealsModified = "n/a";
 		}
 
-		// if empty Notes
+		// notes
 		let notesModified = logData.notes;
 		if (logData.notes === "") {
 			notesModified = "n/a";
 		}
 
+		// append HTML
 		$('.js-allLogsContainer').append(`
 			<div class="allLogsIndividualContainer" id="js-allLogsIndividualContainer-${logDataId}">
 				<h5>${logData.dateAdjusted}</h5>
 
 				<p>Migraine today?: ${migraineYesNo}</p>
 				<p>Length of migraine (hours): ${logData.migraineLengthHr}</p>
-				<p>Weather description: ${logData.weather}</p>
-				<p>Water count (oz): ${logData.water}</p>
+				<p>Weather description: ${weatherDescription}</p>
+				<p>Water count (oz): ${waterCount}</p>
 				<p>Skipped meals: ${skippedMealsModified}</p>
 				<p>Asleep: From ${sleepStartSplit}:${sleepStartSplit2} ${sleepStart12HrClock} to ${sleepEndSplit}:${sleepEndSplit2} ${sleepEnd12HrClock}</p>
 				<p>Total hours slept: ${logData.sleepTotal}</p>
@@ -441,6 +434,31 @@ function createLogHtml(data) {
 	});
 }
 
+// REQUEST FUNCTIONS
+
+function filterLogs(params, callbackFn, callbackFn2) {
+	let settings = {
+		url: `/logs?${params}`,
+		method: 'GET',
+	}
+
+	$.ajax(settings)
+	.done(data => {
+		callbackFn(data);
+		callbackFn2(data);
+	});
+}
+
+function deleteLog(logId) {
+	let settings = {
+		url: `/logs/${logId}`,
+		method: 'DELETE'
+	};
+
+	$.ajax(settings)
+	.done();
+}
+
 function putLog(logData) {
 	let id = logData.id;
 	let settings = {
@@ -455,16 +473,6 @@ function putLog(logData) {
 	.done(data => {
 		return getDisplayLogs();
 	});
-}
-
-function deleteLog(logId) {
-	let settings = {
-		url: `/logs/${logId}`,
-		method: 'DELETE'
-	};
-
-	$.ajax(settings)
-	.done();
 }
 
 function getAllLogs(callbackFn, callbackFn2, callbackFn3) {

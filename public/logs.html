@@ -10,18 +10,15 @@
 		<h1>
 			<a href="./home">MigraineApp</a>
 		</h1>
-
 		<div role="nav">
 			<h2><a href="./all-logs">All logs</a></h2>
 		</div>
 	</header>
-
 	<hr>
 
 	<main role="main" aria-live="assertive">
 		<div class="js-allLogs">
 			<h2>All logs</h2>
-
 			<div class="js-allLogsForm">
 				<form>
 					<fieldset>
@@ -29,8 +26,6 @@
 
 						<label for="entry-date-start-filter">Log start date:</label><input type="date" id="entry-date-start-filter" min="2018-01-01" required><br>
 						<label for="entry-date-end-filter">Log end date:</label><input type="date" id="entry-date-end-filter" min="2018-01-01" required><br>
-
-						<label for="migraine-yesno-filter">Migraine:</label><input type="checkbox" name="migraine-yesno-checkbox" value="migraine-yesno" id="migraine-yesno-filter"><br>
 						<label for="migraine-length-filter">Migraine Length (hours):</label><input type="text" id="migraine-length-filter"><br>
 						<label for="weather-filter">Weather contains phrase:</label><input type="text" id="weather-filter"><br>
 						<label for="water-count-filter">Water count (oz):</label><input type="text" id="water-count-filter"><br>
@@ -40,16 +35,6 @@
 							<option value="1" id="skippedmeals-filter-1">Breakfast</object>
 							<option value="2" id="skippedmeals-filter-2">Lunch</object>
 							<option value="3" id="skippedmeals-filter-3">Dinner</object>
-						</select>
-						<br>
-
-						<label for="sleeprange-filter">Total sleep (hours):</label>
-						<select id="sleeprange-filter" name="sleeprange-filter"><br>
-							<option value="x" id="sleeprange-filter-x"></option>
-							<option value="0" id="sleeprange-filter-0">0</option>
-							<option value="1-3" id="sleeprange-filter-1-3">1-3</option>
-							<option value="4-6" id="sleeprange-filter-4-6">4-6</option>
-							<option value="6+" id="sleeprange-filter-6">6+</options>
 						</select>
 						<br>
 
@@ -81,7 +66,6 @@
 							<option value="22" id="sleepstart-filter-hr22">22</option>
 							<option value="23" id="sleepstart-filter-hr23">23</option>
 						</select>
-
 						<label for="sleepstart-min-filter">:</label>
 						<select id="sleepstart-min-filter" name="sleepstart-min-filter"><br>
 							<option value="xx" id="sleepend-filter-minxx"></option>
@@ -119,7 +103,6 @@
 							<option value="22" id="sleepend-filter-hr22">22</option>
 							<option value="23" id="sleepend-filter-hr23">23</option>
 						</select>
-
 						<label for="sleepend-min-filter">:</label>
 						<select id="sleepend-min-filter" name="sleepend-min-filter"><br>
 							<option value="xx" id="sleepend-filter-minxx"></option>
