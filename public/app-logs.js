@@ -110,6 +110,7 @@ function createEditHandlers(data) {
 		$(`#js-logSaveButton-allLogs-${logData.id}`).on('click', function(e) {
 			e.preventDefault();
 			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
+			$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
 
 			let logDataObject = {
 				id: $(`#js-allLogsFormEdit-${logData.id} #logId-allLogs`).val(),
