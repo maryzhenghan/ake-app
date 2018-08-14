@@ -431,13 +431,13 @@ function createLogHtml(data) {
 
 				<button type="button" name="edit-button-allLogs-${logDataId}" class="logEditButton-allLogs" id="js-logEditButton-allLogs-${logDataId}">Edit log</button>
 				<hr>
-			</div>`);
+				</div>`);
 	});
 }
 
 // REQUEST FUNCTIONS
 
-function filterLogs(params, callbackFn, callbackFn2) {
+function filterLogs(filterParams, createLogHtml, createEditHandlers) {
 	let settings = {
 		url: `/logs?${params}`,
 		method: 'GET',
@@ -445,8 +445,8 @@ function filterLogs(params, callbackFn, callbackFn2) {
 
 	$.ajax(settings)
 	.done(data => {
-		callbackFn(data);
-		callbackFn2(data);
+		createLogHtml(data);
+		createEditHandlers(data);
 	});
 }
 
@@ -476,7 +476,7 @@ function putLog(logData) {
 	});
 }
 
-function getAllLogs(callbackFn, callbackFn2, callbackFn3) {
+function getAllLogs(createLogHtml, matchEditFields, createEditHandlers) {
 	let settings = {
 		url: '/logs',
 		method: 'GET'
@@ -484,9 +484,9 @@ function getAllLogs(callbackFn, callbackFn2, callbackFn3) {
 
 	$.ajax(settings)
 	.done(data => {
-		callbackFn(data);
-		callbackFn2(data.logs);
-		callbackFn3(data);
+		createLogHtml(data);
+		matchEditFields(data.logs);
+		createEditHandlers(data);
 	});
 }
 

@@ -91,10 +91,10 @@ $('.js-logDeleteButton-edit').on('click', function(e) {
 
 function clearForm() {
 	$('.js-todayLogFormCreate input, #skipped-meals, #sleepstart-hr, #sleepstart-min, #sleepend-hr, #sleepend-min, #notes')
-  .not('.js-logSaveButton, .js-logCancelButton')
-  .val('')
-  .removeAttr('checked')
-  .removeAttr('selected');
+  	.not('.js-logSaveButton, .js-logCancelButton')
+  	.val('')
+  	.removeAttr('checked')
+  	.removeAttr('selected');
 
 	let todayDate = getTodayDate();
 	let requestFormatDate = getRequestFormatDate(todayDate);
@@ -158,7 +158,6 @@ function empty(value) {
 function convertDate(date) {
 	let splitDate = date.split("/");
 	let combineDate = `${splitDate[2]}-${splitDate[0]}-${splitDate[1]}`;
-
 	return combineDate;
 }
 
@@ -166,7 +165,6 @@ function convertTime(splitTime) {
 	if (splitTime < 10) {
 		return `0${splitTime}`;
 	}
-
 	else {
 		return splitTime;
 	}
@@ -236,108 +234,129 @@ function matchEditFields(data) {
 }
 
 function createLogHtml(logData) {
-		// sleep times display
-		let sleepStartHrSplit = logData.sleepStart.split(":");
-		let sleepEndHrSplit = logData.sleepEnd.split(":");
+	// sleep times display
+	let sleepStartHrSplit = logData.sleepStart.split(":");
+	let sleepEndHrSplit = logData.sleepEnd.split(":");
 
-		let sleepStartSplit = sleepStartHrSplit[0];
-		let sleepStartSplit2 = sleepStartHrSplit[1];
+	let sleepStartSplit = sleepStartHrSplit[0];
+	let sleepStartSplit2 = sleepStartHrSplit[1];
 
-		let sleepEndSplit = sleepEndHrSplit[0];
-		let sleepEndSplit2 = sleepEndHrSplit[1];
+	let sleepEndSplit = sleepEndHrSplit[0];
+	let sleepEndSplit2 = sleepEndHrSplit[1];
 
-		if (sleepStartSplit < 10) {
-			sleepStartSplit = '0' + sleepStartSplit;
-		}
-		if (sleepStartSplit2 < 10) {
-			sleepStartSplit2 = '0' + sleepStartSplit2;
-		}
-		if (sleepEndSplit < 10) {
-			sleepEndSplit = '0' + sleepEndSplit;
-		}
-		if (sleepEndSplit2 < 10) {
-			sleepEndSplit2 = '0' + sleepEndSplit2;
-		}
+	if (sleepStartSplit < 10) {
+		sleepStartSplit = '0' + sleepStartSplit;
+	}
+	if (sleepStartSplit2 < 10) {
+		sleepStartSplit2 = '0' + sleepStartSplit2;
+	}
+	if (sleepEndSplit < 10) {
+		sleepEndSplit = '0' + sleepEndSplit;
+	}
+	if (sleepEndSplit2 < 10) {
+		sleepEndSplit2 = '0' + sleepEndSplit2;
+	}
 
-		let sleepStart12HrClock;
-		let sleepEnd12HrClock;
+	let sleepStart12HrClock;
+	let sleepEnd12HrClock;
 
-		if (sleepStartSplit < 12) {
-			sleepStart12HrClock = "AM";
-		}
-		else {
-			sleepStart12HrClock = "PM";
-		}
+	if (sleepStartSplit < 12) {
+		sleepStart12HrClock = "AM";
+	}
+	else {
+		sleepStart12HrClock = "PM";
+	}
 
-		if (sleepEndSplit < 12) {
-			sleepEnd12HrClock = "AM";
-		}
-		else {
-			sleepEnd12HrClock = "PM";
-		}
+	if (sleepEndSplit < 12) {
+		sleepEnd12HrClock = "AM";
+	}
+	else {
+		sleepEnd12HrClock = "PM";
+	}
 
-		// migraine: true false
-		let migraineYesNo;
-		if (logData.migraine === true) {
-			migraineYesNo = 'Yes';
-		}
-		else {
-			migraineYesNo = 'No';
-		}
+	// migraine: true false
+	let migraineYesNo;
+	if (logData.migraine === true) {
+		migraineYesNo = 'Yes';
+	}
+	else {
+		migraineYesNo = 'No';
+	}
 
-		// weather description
-		let weatherDescription;
-		if (logData.weather === "") {
-			weatherDescription = "n/a";
-		}
-		else {
-			weatherDescription = logData.weather;
-		}
+	// weather description
+	let weatherDescription;
+	if (logData.weather === "") {
+		weatherDescription = "n/a";
+	}
+	else {
+		weatherDescription = logData.weather;
+	}
 
-		// water count
-		let waterCount;
-		if (empty(logData.water)) {
-			waterCount = 'n/a';
-		}
-		else {
-			waterCount = logData.water;
-		}
+	// water count
+	let waterCount;
+	if (empty(logData.water)) {
+		waterCount = 'n/a';
+	}
+	else {
+		waterCount = logData.water;
+	}
 
-		// skipped meals
-		let skippedMealsModified = "";
-		let skippedB = "breakfast";
-		let skippedL = "lunch";
-		let skippedD = "dinner";
-		if (logData.skippedMeals.includes('1')) {
-			skippedMealsModified += "breakfast ";
-		}
-		if (logData.skippedMeals.includes('2')) {
-			skippedMealsModified += "lunch ";
-		}
-		if (logData.skippedMeals.includes('3')) {
-			skippedMealsModified += "dinner ";
-		}
-		if (!(logData.skippedMeals.includes('1')) && !(logData.skippedMeals.includes('2')) && !(logData.skippedMeals.includes('3'))) {
-			skippedMealsModified = "n/a";
-		}
+	// skipped meals
+	let skippedMealsModified = "";
+	let skippedB = "breakfast";
+	let skippedL = "lunch";
+	let skippedD = "dinner";
+	if (logData.skippedMeals.includes('1')) {
+		skippedMealsModified += "breakfast ";
+	}
+	if (logData.skippedMeals.includes('2')) {
+		skippedMealsModified += "lunch ";
+	}
+	if (logData.skippedMeals.includes('3')) {
+		skippedMealsModified += "dinner ";
+	}
+	if (!(logData.skippedMeals.includes('1')) && !(logData.skippedMeals.includes('2')) && !(logData.skippedMeals.includes('3'))) {
+		skippedMealsModified = "n/a";
+	}
 
-		// notes
-		let notesModified = logData.notes;
-		if (logData.notes === "") {
-			notesModified = "n/a";
-		}
+	// notes
+	let notesModified = logData.notes;
+	if (logData.notes === "") {
+		notesModified = "n/a";
+	}
 
-		// append HTML
-		$('.js-todayLogDisplayYes').empty().append(`
-			<p><h5>${logData.dateAdjusted}</h5>
-			<p>Migraine today?: ${migraineYesNo}</p>
-			<p>Length of migraine (hours): ${logData.migraineLengthHr}</p>
-			<p>Weather description: ${weatherDescription}</p>
-			<p>Water count (oz): ${waterCount}</p>
-			<p>Skipped meals: ${skippedMealsModified}</p>
-			<p>Asleep: From ${sleepStartSplit}:${sleepStartSplit2} ${sleepStart12HrClock} to ${sleepEndSplit}:${sleepEndSplit2} ${sleepEnd12HrClock}</p>
-			<p>Total hours slept: ${logData.sleepTotal}</p>
-			<p>Notes: ${notesModified}</p>`);
+	// append HTML
+	$('.js-todayLogDisplayYes').empty().append(`
+		<div class="log-box">
+			<div class="log-contents">
+				<div class="log-date"><h5>${logData.dateAdjusted}</h5></div>
+
+				<h6>Migraine?</h6>
+				<span class="log-migraineYesNo">${migraineYesNo}</span>
+
+				<h6>Length of migraine <span class="italics">(hours)</span></h6>
+				<span class="log-migraineLengthHr">${logData.migraineLengthHr}</span>
+
+				<h6>Weather description</h6>
+				<span class="log-weatherDescription">${weatherDescription}</span>
+
+				<h6>Water count <span class="italics">(oz)</span></h6>
+				<span class="log-waterCount">${waterCount}</span>
+
+				<h6>Skipped meals</h6>
+				<span class="log-skippedMeals">${skippedMealsModified}</span>
+
+				<h6>Sleep</h6>
+				<span class="log-sleep">From <p class="log-sleep-hours">${sleepStartSplit}:${sleepStartSplit2}${sleepStart12HrClock}</p> to <p class="log-sleep-hours">${sleepEndSplit}:${sleepEndSplit2}${sleepEnd12HrClock}</p></span>
+
+				<h6>Total hours slept</h6>
+				<span class="log-sleepTotal">${logData.sleepTotal}</span>
+
+				<h6>Additional notes</h6>
+				<span class="log-notesModified">${notesModified}</span>
+			</div>
+		</div>`);
+
 }
 
 // REQUEST FUNCTIONS
@@ -394,7 +413,7 @@ function postNewLog(logData) {
 	});
 }
 
-function getTodayLog(callbackFn, callbackFn2) {
+function getTodayLog(createLogHtml, matchEditFields) {
 	let todayDate = getTodayDate();
 	let requestFormatDate = getRequestFormatDate(todayDate);
 
@@ -413,8 +432,8 @@ function getTodayLog(callbackFn, callbackFn2) {
 			$('.js-todayLogEdit').removeClass('hidden');
 			$('.js-todayLogCreate').removeClass('hidden');
 
-			callbackFn(data.logs[0]);
-			callbackFn2(data.logs[0]);
+			createLogHtml(data.logs[0]);
+			matchEditFields(data.logs[0]);
 		}
 
 		else {

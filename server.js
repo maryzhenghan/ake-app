@@ -1,6 +1,5 @@
 'use strict';
 
-const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 
@@ -11,16 +10,16 @@ const { PORT, DATABASE_URL } = require('./config');
 const { Log } = require('./models');
 
 app.use(express.static('public'));
-app.use(bodyParser.json());
+app.use(express.json());
 
 // REQUESTS
 
-app.get('/home', (req, res) => {
+app.get('/', (req, res) => {
 	res.status(200);
 	res.sendFile('index.html', {root: './public'});
 });
 
-app.get('/all-logs', (req, res) => {
+app.get('/logs.html', (req, res) => {
 	res.status(200);
 	res.sendFile('logs.html', {root: './public'});
 });
@@ -40,7 +39,7 @@ app.get('/logs', (req, res) => {
 	}
 
 	if (!(req.query.date) && req.query.dateEnd) {
-		req.query.date = req.query.dateEnd;
+	  req.query.date = req.query.dateEnd;
 		delete req.query.dateEnd;
 	}
 
@@ -52,19 +51,19 @@ app.get('/logs', (req, res) => {
 		req.query.notes = { $regex: `.*${req.query.notes}.*`, $options: 'i' };
 	}
 
-		Log
-			.find(req.query)
-			.sort({ date: -1 })
-			.then(logs => {
-				res.status(200).json({
-					logs: logs.map(
-						(log) => log.serialize())
-					});
-			})
-			.catch(err => {
-				console.error(err);
-				res.status(500).json({ message: 'Internal server error' });
-			});
+	Log
+		.find(req.query)
+		.sort({ date: -1 })
+		.then(logs => {
+			res.status(200).json({
+				logs: logs.map(
+					(log) => log.serialize())
+				});
+		})
+		.catch(err => {
+			console.error(err);
+			res.status(500).json({ message: 'Internal server error' });
+		});
 });
 
 app.get('/logs/:id', (req, res) => {
@@ -83,7 +82,6 @@ app.post('/logs', (req, res) => {
 	let message;
 	let missingError = false;
 	let date = req.body.date;
-	let alreadyExistsError;
 
 	requiredFields.forEach(field => {
 		if (empty(req.body[field])) {
@@ -102,9 +100,7 @@ app.post('/logs', (req, res) => {
 		.find({ date: date })
 		.then(log => {
 			if (log.length !== 0) {
-				alreadyExistsError = 'A log with this date already exists';
-				console.log(`This is the already existing log: ${log}`);
-				return res.status(400).send(alreadyExistsError);
+				return res.status(400).send('A log with this date already exists');
 			}
 
 			else {
@@ -185,8 +181,8 @@ function empty(value) {
 	if(typeof(value.length) !== 'undefined') {
 	  if(/^[\s]*$/.test(value.toString())) {
 	    return true;
-	  }
-	  return value.length === 0;
+    }
+  return value.length === 0;
 	}
 
   let count = 0;
