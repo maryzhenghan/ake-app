@@ -2,9 +2,14 @@
 <html lang="en">
 
 <head>
-	<title>ake app | home</title>
+	<title>ake migraine app | home</title>
 	<link rel="stylesheet" type="text/css" href="index.css">
 	<link href="https://fonts.googleapis.com/css?family=Dosis:500|Lato:300,400" rel="stylesheet">
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/assets/ake-apple-touch-icon.png">
+	<link rel="icon" type="image/png" href="/assets/ake-favicon_32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/ake-favicon_16x16.png" sizes="16x16">
+	<meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
@@ -43,16 +48,16 @@
 				</div>
 
 				<div class="todayLog-buttons">
-					<input type="submit" value="Edit log" class="js-todayLogEdit log-button button-border border-purple hidden">
-					<input type="submit" value="Create log" class="js-todayLogCreate log-button button-border border-green hidden">
+					<input type="submit" value="Edit log" class="js-todayLogEdit grey form-button button-border border-purple hidden">
+					<input type="submit" value="Create log" class="js-todayLogCreate grey form-button button-border border-green hidden">
 				</div>
 
 				<div class="js-todayLogFormCreate hidden">
 					<form class="log-create-form">
-						<fieldset>
-							<legend>Log Creator</legend>
+						<fieldset class="fieldset border-green">
+							<legend class="grey legend border-green">Create log</legend>
 								<div class="form-elements">
-									<label for="entry-date">Date</label><input type="date" id="entry-date" class="field-border border-blue" min="2018-01-01" required><br>
+									<label for="entry-date" class="top-field">Date</label><input type="date" id="entry-date" class="field-border border-blue" min="2018-01-01" required><br>
 
 									<label for="migraine-length">Migraine Length <span class="italics">(hrs)</span></i></label><input type="text" id="migraine-length" class="field-border border-purple"><br>
 									<label for="weather">Weather description</label><input type="text" id="weather" class="field-border border-lightblue"><br>
@@ -103,66 +108,66 @@
 											<option value="45" id="sleepstart-min45">45</option>
 										</select>
 									</div>
-								<br>
+									<br>
 
-								<label for="sleepend-hr">Woke up this morning @ <span class="italics-secondline">(24 hr clock)</span></label>
-								<div class="sleep-div">
-									<select id="sleepend-hr" class="sleep-select grey field-border-reverse border-blue" name="sleepsend-hr"><br>
-										<option value="xx" id="sleepend-hrxx"></option>
-										<option value="00" id="sleepend-hr00">00</option>
-										<option value="01" id="sleepend-hr01">01</option>
-										<option value="02" id="sleepend-hr02">02</option>
-										<option value="03" id="sleepend-hr03">03</option>
-										<option value="04" id="sleepend-hr04">04</option>
-										<option value="05" id="sleepend-hr05">05</option>
-										<option value="06" id="sleepend-hr06">06</option>
-										<option value="07" id="sleepend-hr07">07</option>
-										<option value="08" id="sleepend-hr08">08</option>
-										<option value="09" id="sleepend-hr09">09</option>
-										<option value="10" id="sleepend-hr10">10</option>
-										<option value="11" id="sleepend-hr11">11</option>
-										<option value="12" id="sleepend-hr12">12</option>
-										<option value="13" id="sleepend-hr13">13</option>
-										<option value="14" id="sleepend-hr14">14</option>
-										<option value="15" id="sleepend-hr15">15</option>
-										<option value="16" id="sleepend-hr16">16</option>
-										<option value="17" id="sleepend-hr17">17</option>
-										<option value="18" id="sleepend-hr18">18</option>
-										<option value="19" id="sleepend-hr19">19</option>
-										<option value="20" id="sleepend-hr20">20</option>
-										<option value="21" id="sleepend-hr21">21</option>
-										<option value="22" id="sleepend-hr22">22</option>
-										<option value="23" id="sleepend-hr23">23</option>
-									</select>
-									<label for="sleepend-min" class="colon">:</label>
-									<select id="sleepend-min" class="sleep-select grey field-border-reverse border-blue" name="sleepend-min"><br>
-										<option value="xx" id="sleepend-minxx"></option>
-										<option value="00" id="sleepend-min00">00</option>
-										<option value="15" id="sleepend-min15">15</option>
-										<option value="30" id="sleepend-min30">30</option>
-										<option value="45" id="sleepend-min45">45</option>
-									</select>
+									<label for="sleepend-hr">Woke up this morning @ <span class="italics-secondline">(24 hr clock)</span></label>
+									<div class="sleep-div">
+										<select id="sleepend-hr" class="sleep-select grey field-border-reverse border-blue" name="sleepsend-hr"><br>
+											<option value="xx" id="sleepend-hrxx"></option>
+											<option value="00" id="sleepend-hr00">00</option>
+											<option value="01" id="sleepend-hr01">01</option>
+											<option value="02" id="sleepend-hr02">02</option>
+											<option value="03" id="sleepend-hr03">03</option>
+											<option value="04" id="sleepend-hr04">04</option>
+											<option value="05" id="sleepend-hr05">05</option>
+											<option value="06" id="sleepend-hr06">06</option>
+											<option value="07" id="sleepend-hr07">07</option>
+											<option value="08" id="sleepend-hr08">08</option>
+											<option value="09" id="sleepend-hr09">09</option>
+											<option value="10" id="sleepend-hr10">10</option>
+											<option value="11" id="sleepend-hr11">11</option>
+											<option value="12" id="sleepend-hr12">12</option>
+											<option value="13" id="sleepend-hr13">13</option>
+											<option value="14" id="sleepend-hr14">14</option>
+											<option value="15" id="sleepend-hr15">15</option>
+											<option value="16" id="sleepend-hr16">16</option>
+											<option value="17" id="sleepend-hr17">17</option>
+											<option value="18" id="sleepend-hr18">18</option>
+											<option value="19" id="sleepend-hr19">19</option>
+											<option value="20" id="sleepend-hr20">20</option>
+											<option value="21" id="sleepend-hr21">21</option>
+											<option value="22" id="sleepend-hr22">22</option>
+											<option value="23" id="sleepend-hr23">23</option>
+										</select>
+										<label for="sleepend-min" class="colon">:</label>
+										<select id="sleepend-min" class="sleep-select grey field-border-reverse border-blue" name="sleepend-min"><br>
+											<option value="xx" id="sleepend-minxx"></option>
+											<option value="00" id="sleepend-min00">00</option>
+											<option value="15" id="sleepend-min15">15</option>
+											<option value="30" id="sleepend-min30">30</option>
+											<option value="45" id="sleepend-min45">45</option>
+										</select>
+									</div>
+									<br>
+
+									<label for="notes">Additional notes</label><textarea id="notes" class="notes grey field-border-reverse border-lightblue"></textarea><br>
+
+									<div class="form-buttons-div">
+										<input type="submit" name="save-button" value="Save" class="js-logSaveButton form-button grey button-border border-green">
+										<button type="button" name="cancel-button" class="js-logCancelButton form-button grey button-border border-grey">Cancel</button>
+									</div>
 								</div>
-								<br>
-
-								<label for="notes">Additional notes</label><textarea id="notes" class="notes grey field-border-reverse border-lightblue"></textarea><br>
-
-								<div class="form-buttons-div">
-									<input type="submit" name="save-button" value="Save" class="js-logSaveButton form-button grey button-border border-green">
-									<button type="button" name="cancel-button" class="js-logCancelButton form-button grey button-border border-grey">Cancel</button>
-								</div>
-							</div>
 						</fieldset>
 					</form>
 				</div>
 
 				<div class="js-todayLogFormEdit hidden">
 					<form class="log-edit-form">
-						<fieldset>
-							<legend>Log Editor</legend>
+						<fieldset class="fieldset border-purple">
+							<legend class="grey legend legend-border border-purple">Edit log</legend>
 							<div class="form-elements">
 								<input type="hidden" id="logId" name="logId" value="">
-								<label for="entry-date-edit">Date</label><input type="date" id="entry-date-edit" class="field-border border-blue" min="2018-01-01" required><br>
+								<label for="entry-date-edit" class="top-field">Date</label><input type="date" id="entry-date-edit" class="field-border border-blue" min="2018-01-01" required><br>
 
 								<label for="migraine-length-edit">Migraine Length <span class="italics">(hrs)</span></label><input type="text" id="migraine-length-edit" class="field-border border-purple"><br>
 								<label for="weather-edit">Weather description</label><input type="text" id="weather-edit" class="field-border border-lightblue"><br>
@@ -179,6 +184,7 @@
 								<label for="sleepstart-hr-edit">Slept last night @ <span class="italics-secondline">(24 hr clock)</span></label>
 								<div class="sleep-div">
 									<select id="sleepstart-hr-edit" class="sleep-select grey field-border-reverse border-lightblue" name="sleepstart-hr-edit"><br>
+										<option value="xx" id="sleepstart-edit-hrxx"></option>
 										<option value="00" id="sleepstart-edit-hr00">00</option>
 										<option value="01" id="sleepstart-edit-hr01">01</option>
 										<option value="02" id="sleepstart-edit-hr02">02</option>
@@ -206,6 +212,7 @@
 									</select>
 									<label for="sleepstart-min-edit" class="colon">:</label>
 									<select id="sleepstart-min-edit" class="sleep-select grey field-border-reverse border-lightblue" name="sleepstart-min-edit"><br>
+										<option value="xx" id="sleepstart-edit-minxx"></option>
 										<option value="00" id="sleepstart-edit-min00">00</option>
 										<option value="15" id="sleepstart-edit-min15">15</option>
 										<option value="30" id="sleepstart-edit-min30">30</option>
@@ -217,6 +224,7 @@
 								<label for="sleepend-hr-edit">Woke up this morning @ <span class="italics-secondline">(24 hr clock)</span></label>
 								<div class="sleep-div">
 									<select id="sleepend-hr-edit" class="sleep-select grey field-border-reverse border-blue" name="sleepsend-hr-edit"><br>
+										<option value="xx" id="sleepend-edit-hrxx"></option>
 										<option value="00" id="sleepend-edit-hr00">00</option>
 										<option value="01" id="sleepend-edit-hr01">01</option>
 										<option value="02" id="sleepend-edit-hr02">02</option>
@@ -244,6 +252,7 @@
 									</select>
 									<label for="sleepend-min-edit" class="colon">:</label>
 									<select id="sleepend-min-edit" class="sleep-select grey field-border-reverse border-blue" name="sleepend-min-edit"><br>
+										<option value="xx" id="sleepend-edit-minxx"></option>
 										<option value="00" id="sleepend-edit-min00">00</option>
 										<option value="15" id="sleepend-edit-min15">15</option>
 										<option value="30" id="sleepend-edit-min30">30</option>

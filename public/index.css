@@ -4,6 +4,7 @@ body {
 	color: #808080;
 	font-family: 'Lato', sans-serif;
 	margin: 3% auto;
+	text-align: center;
 	width: 60%;
 }
 
@@ -62,13 +63,17 @@ hr {
 
 /* SECTION 2 */
 
-.todayDate {
+.todayDate, .allLogs {
 	margin: 0 auto;
 	text-align: right;
 	width: 30%;
 }
 
-.todayDateWelcome h2 {
+.allLogs {
+	width: 25%;
+}
+
+.todayDateWelcome h2, .allLogs h2 {
 	border-top: 0;
 	border-right: 0;
 	border-bottom: 0;
@@ -78,9 +83,10 @@ hr {
 	letter-spacing: 5px;
 	margin-bottom: 0;
 	padding: 0px 0px 7px 3.5%;
+	text-transform: uppercase;
 }
 
-.todayDateWelcome h3 {
+.todayDateWelcome h3, .allLogsWelcome h3 {
 	display: inline-block;
 	font-size: 28px;
 	font-weight: 300;
@@ -91,6 +97,10 @@ hr {
 	width: 40%;
 }
 
+.allLogsWelcome h3 {
+	width: 50%;
+}
+
 .ake {
 	color: #00d091;
 	font-family: 'Dosis';
@@ -99,7 +109,7 @@ hr {
 
 /* SECTION 3 */
 
-.todayLog {
+.todayLog, .filterLogs {
 	padding-bottom: 2%;
 }
 
@@ -127,13 +137,12 @@ hr {
 	text-transform: lowercase;
 }
 
-.todayLog-buttons {
+.todayLog-buttons, .filterLog-buttons {
 	margin: 0 auto;
 	width: 60%;
 }
 
-.todayLog-buttons input {
-	color: #808080;
+.todayLog-buttons input, .filterLog-buttons button {
 	font-family: 'Lato', sans-serif;
 	font-size: 12px;
 	font-weight: 300;
@@ -147,12 +156,7 @@ hr {
 	height: 15px;
 }
 
-.log-button {
-	margin-right: 1%;
-	width: 48%;
-}
-
-.log-create-form, .log-edit-form {
+.log-create-form, .log-edit-form, .log-filter-form {
 	font-weight: 300;
 	font-size: 12px;
 	line-height: 2em;
@@ -161,16 +165,26 @@ hr {
 	width: 60%;
 }
 
-.log-create-form fieldset, .log-edit-form fieldset {
-	border: 1px solid #00d091;
+.log-filterEdit-form {
+	font-weight: 300;
+	font-size: 12px;
+	line-height: 2em;
+	margin: 10% auto 5%;
+	text-transform: uppercase;
+	width: 100%;
+}
+
+.fieldset {
+	border: 1px solid;
 	padding-top: 6%;
 	padding-bottom: 6%;
 }
 
-.log-create-form legend, .log-edit-form legend, h5 {
+legend, h5 {
 	border-top: 0;
 	border-right: 0;
 	border-bottom: 0;
+	border-left: 5px solid;
   letter-spacing: 4px;
 	margin-left: 15%;
 	padding-left: 10px;
@@ -179,11 +193,6 @@ hr {
 	padding-bottom: 0px;
   font-size: 14px;
   text-align: left;
-}
-
-.log-create-form legend {
-	border-left: 5px solid #00d091;
-	color: #808080;
 }
 
 .form-elements {
@@ -254,11 +263,12 @@ form input {
 }
 
 .form-button {
+	background-color: #FFFFFF;
 	box-sizing: border-box;
 	display: inline-block;
 	font-weight: 300;
 	letter-spacing: 2px;
-	margin: 0 auto 10px;
+	margin: 1% 1% 10px auto;
 	padding-top: 6px;
 	padding-bottom: 20px;
 	text-align: center;
@@ -309,47 +319,24 @@ h6 {
 	margin-bottom: 1px;
 }
 
+.top-field {
+	margin-top: 1.5%;
+}
+
 .log-contents span {
 	display: block;
 	font-weight: 300;
 	font-size: 10px;
 	letter-spacing: 1.5px;
+	margin-top: 3px;
 	padding-top: 10px;
 	text-align: left;
 	text-transform: uppercase;
 	width: 100%;
 }
 
-.log-migraineYesNo, .log-migraineLengthHr, .log-skippedMeals {
-	border-top: 4px solid #9200d0;
-	color: #9200d0;
-}
-
-.log-weatherDescription, .log-sleepTotal {
-	border-top: 4px solid #01a5d0;
-	color: #01a5d0;
-}
-
-.log-sleep {
-	border-top: 4px solid #01a5d0;
-	color: #808080;
-}
-
-.log-sleep-hours {
-	color: #01a5d0;
-}
-
-.log-waterCount, .log-notesModified {
-	border-top: 4px solid #003ed0;
-	color: #003ed0;
-}
-
-.log-migraineYesNo, .log-weatherDescription, .log-skippedMeals, .log-sleep, .log-sleepTotal, .log-notesModified {
-	margin-top: 3px;
-}
-
-.log-migraineLengthHr, .log-waterCount {
-	margin-top: 7px;
+.log-fieldBorder {
+	border-top: 4px solid;
 }
 
 .log-sleep, .log-sleep-hours {
@@ -357,30 +344,14 @@ h6 {
 	text-transform: uppercase;
 }
 
-/* SECTION 5 */
-
-.log-edit-form legend {
-	border-left: 5px solid #9200d0;
-	color: #808080;
-}
-
-.log-edit-form fieldset {
-	border: 1px solid #9200d0;
-}
-
-/* SECTION 6 */
-
-.todayDateWelcome, .todayLog, .js-allLogsContainer {
-	text-align: center;
-}
-
-/* JAVASCRIPT STYLING */
+/* COMMON STYLES */
 
 .hidden {
 	display: none;
 }
 
 .italics {
+	display: inline;
 	font-style: italic;
 	line-height: 1px;
 }
@@ -408,6 +379,10 @@ h6 {
 .colon {
 	display: inline;
 	margin: 0;
+}
+
+.legend-border {
+	border-left: 5px solid;
 }
 
 .field-border {
@@ -471,8 +446,4 @@ h6 {
 	border-right-color: #d0003e;
 	border-bottom-color: #d0003e;
 	border-left-color: #d0003e;
-}
-
-option::selection {
-	background-color: purple;
 }

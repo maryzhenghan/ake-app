@@ -38,7 +38,7 @@ describe('Migraine app API resource', function() {
 			let res;
 
 			return chai.request(app)
-				.get('/home')
+				.get('/')
 				.then(function(_res) {
 					res = _res;
 					expect(res).to.have.status(200);
@@ -53,7 +53,7 @@ describe('Migraine app API resource', function() {
 			let res;
 
 			return chai.request(app)
-				.get('/all-logs')
+				.get('/logs.html')
 				.then(function(_res) {
 					res = _res;
 					expect(res).to.have.status(200);

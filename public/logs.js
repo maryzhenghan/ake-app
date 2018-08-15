@@ -312,126 +312,153 @@ function createLogHtml(data) {
 
 		// append HTML
 		$('.js-allLogsContainer').append(`
-			<div class="allLogsIndividualContainer" id="js-allLogsIndividualContainer-${logDataId}">
-				<h5>${logData.dateAdjusted}</h5>
+			<hr>
+			<div class="log-box" id="js-allLogsIndividualContainer-${logDataId}">
+				<div class="log-contents">
+					<div class="log-date"><h5>${logData.dateAdjusted}</h5></div>
 
-				<p>Migraine today?: ${migraineYesNo}</p>
-				<p>Length of migraine (hours): ${logData.migraineLengthHr}</p>
-				<p>Weather description: ${weatherDescription}</p>
-				<p>Water count (oz): ${waterCount}</p>
-				<p>Skipped meals: ${skippedMealsModified}</p>
-				<p>Asleep: From ${sleepStartSplit}:${sleepStartSplit2} ${sleepStart12HrClock} to ${sleepEndSplit}:${sleepEndSplit2} ${sleepEnd12HrClock}</p>
-				<p>Total hours slept: ${logData.sleepTotal}</p>
-				<p>Notes: ${notesModified}</p>
+					<h6 class="top-field">Migraine?</h6>
+					<span class="log-migraineYesNo log-fieldBorder border-purple">${migraineYesNo}</span>
 
-				<div class="allLogsFormEdit hidden" id="js-allLogsFormEdit-${logDataId}">
-					<form>
-						<fieldset>
-							<legend>Log Editor</legend>
+					<h6>Length of migraine <p class="italics">(hours)</p></h6>
+					<span class="log-migraineLengthHr log-fieldBorder border-purple">${logData.migraineLengthHr}</span>
 
-							<input type="hidden" id="logId-allLogs" name="logId-allLogs" value="${logData.id}">
-							<label for="entry-date-allLogs">Entry date:</label><input type="date" id="entry-date-allLogs" min="2018-01-01" required><br>
+					<h6>Weather description</h6>
+					<span class="log-weatherDescription log-fieldBorder border-lightblue">${weatherDescription}</span>
 
-							<label for="migraine-length-allLogs">Migraine Length (hours):</label><input type="text" id="migraine-length-allLogs"><br>
-							<label for="weather-allLogs">Weather description:</label><input type="text" id="weather-allLogs"><br>
-							<label for="water-count-allLogs">Water count (oz):</label><input type="text" id="water-count-allLogs"><br>
+					<h6>Water count <p class="italics">(oz)</p></h6>
+					<span class="log-waterCount log-fieldBorder border-blue">${waterCount}</span>
 
-							<label for="skipped-meals-allLogs">Skipped meals (select all that apply):</label>
-							<select id="skipped-meals-allLogs" name="skipped-meals-allLogs" size="3" multiple>
-								<option value="1" id="skippedmeals-allLogs-1">Breakfast</object>
-								<option value="2" id="skippedmeals-allLogs-2">Lunch</object>
-								<option value="3" id="skippedmeals-allLogs-3">Dinner</object>
-							</select>
-							<br>
+					<h6>Skipped meals</h6>
+					<span class="log-skippedMeals log-fieldBorder border-purple">${skippedMealsModified}</span>
 
-							<label for="sleepstart-hr-allLogs">Went to bed last night at:</label>
-							<select id="sleepstart-hr-allLogs" name="sleepstart-hr-allLogs"><br>
-								<option value="xx" id="sleepstart-allLogs-hrxx"></option>
-								<option value="00" id="sleepstart-allLogs-hr00">00</option>
-								<option value="01" id="sleepstart-allLogs-hr01">01</option>
-								<option value="02" id="sleepstart-allLogs-hr02">02</option>
-								<option value="03" id="sleepstart-allLogs-hr03">03</option>
-								<option value="04" id="sleepstart-allLogs-hr04">04</option>
-								<option value="05" id="sleepstart-allLogs-hr05">05</option>
-								<option value="06" id="sleepstart-allLogs-hr06">06</option>
-								<option value="07" id="sleepstart-allLogs-hr07">07</option>
-								<option value="08" id="sleepstart-allLogs-hr08">08</option>
-								<option value="09" id="sleepstart-allLogs-hr09">09</option>
-								<option value="10" id="sleepstart-allLogs-hr10">10</option>
-								<option value="11" id="sleepstart-allLogs-hr11">11</option>
-								<option value="12" id="sleepstart-allLogs-hr12">12</option>
-								<option value="13" id="sleepstart-allLogs-hr13">13</option>
-								<option value="14" id="sleepstart-allLogs-hr14">14</option>
-								<option value="15" id="sleepstart-allLogs-hr15">15</option>
-								<option value="16" id="sleepstart-allLogs-hr16">16</option>
-								<option value="17" id="sleepstart-allLogs-hr17">17</option>
-								<option value="18" id="sleepstart-allLogs-hr18">18</option>
-								<option value="19" id="sleepstart-allLogs-hr19">19</option>
-								<option value="20" id="sleepstart-allLogs-hr20">20</option>
-								<option value="21" id="sleepstart-allLogs-hr21">21</option>
-								<option value="22" id="sleepstart-allLogs-hr22">22</option>
-								<option value="23" id="sleepstart-allLogs-hr23">23</option>
-							</select>
+					<h6>Sleep</h6>
+					<span class="log-sleep grey log-fieldBorder border-lightblue">From <p class="log-sleep-hours lightblue">${sleepStartSplit}:${sleepStartSplit2}${sleepStart12HrClock}</p> to <p class="log-sleep-hours lightblue">${sleepEndSplit}:${sleepEndSplit2}${sleepEnd12HrClock}</p></span>
 
-							<label for="sleepstart-min-allLogs">:</label>
-							<select id="sleepstart-min-allLogs" name="sleepstart-min-allLogs"><br>
-								<option value="xx" id="sleepstart-allLogs-minxx"></option>
-								<option value="00" id="sleepstart-allLogs-min00">00</option>
-								<option value="15" id="sleepstart-allLogs-min15">15</option>
-								<option value="30" id="sleepstart-allLogs-min30">30</option>
-								<option value="45" id="sleepstart-allLogs-min45">45</option>
-							</select><br>
+					<h6>Total hours slept</h6>
+					<span class="log-sleepTotal log-fieldBorder border-lightblue">${logData.sleepTotal}</span>
 
-							<label for="sleepend-hr-allLogs">Woke up this morning at:</label>
-							<select id="sleepend-hr-allLogs" name="sleepsend-hr-allLogs"><br>
-								<option value="xx" id="sleepend-allLogs-hrxx"></option>
-								<option value="00" id="sleepend-allLogs-hr00">00</option>
-								<option value="01" id="sleepend-allLogs-hr01">01</option>
-								<option value="02" id="sleepend-allLogs-hr02">02</option>
-								<option value="03" id="sleepend-allLogs-hr03">03</option>
-								<option value="04" id="sleepend-allLogs-hr04">04</option>
-								<option value="05" id="sleepend-allLogs-hr05">05</option>
-								<option value="06" id="sleepend-allLogs-hr06">06</option>
-								<option value="07" id="sleepend-allLogs-hr07">07</option>
-								<option value="08" id="sleepend-allLogs-hr08">08</option>
-								<option value="09" id="sleepend-allLogs-hr09">09</option>
-								<option value="10" id="sleepend-allLogs-hr10">10</option>
-								<option value="11" id="sleepend-allLogs-hr11">11</option>
-								<option value="12" id="sleepend-allLogs-hr12">12</option>
-								<option value="13" id="sleepend-allLogs-hr13">13</option>
-								<option value="14" id="sleepend-allLogs-hr14">14</option>
-								<option value="15" id="sleepend-allLogs-hr15">15</option>
-								<option value="16" id="sleepend-allLogs-hr16">16</option>
-								<option value="17" id="sleepend-allLogs-hr17">17</option>
-								<option value="18" id="sleepend-allLogs-hr18">18</option>
-								<option value="19" id="sleepend-allLogs-hr19">19</option>
-								<option value="20" id="sleepend-allLogs-hr20">20</option>
-								<option value="21" id="sleepend-allLogs-hr21">21</option>
-								<option value="22" id="sleepend-allLogs-hr22">22</option>
-								<option value="23" id="sleepend-allLogs-hr23">23</option>
-							</select>
+					<h6>Additional notes</h6>
+					<span class="log-notesModified log-fieldBorder border-blue">${notesModified}</span>
 
-							<label for="sleepend-min-allLogs">:</label>
-							<select id="sleepend-min-allLogs" name="sleepend-min-allLogs"><br>
-								<option value="00" id="sleepend-allLogs-minxx"></option>
-								<option value="00" id="sleepend-allLogs-min00">00</option>
-								<option value="15" id="sleepend-allLogs-min15">15</option>
-								<option value="30" id="sleepend-allLogs-min30">30</option>
-								<option value="45" id="sleepend-allLogs-min45">45</option>
-							</select><br>
 
-							<label for="notes-allLogs">Additional notes:</label><textarea id="notes-allLogs"></textarea><br>
+					<div class="allLogsFormEdit hidden" id="js-allLogsFormEdit-${logDataId}">
+						<form class="log-filterEdit-form">
+							<fieldset class="fieldset border-purple">
+								<legend class="grey legend legend-border border-purple">Edit Log</legend>
 
-							<input type="submit" name="save-button-allLogs-${logDataId}" value="Save" class="logSaveButton-allLogs" id="js-logSaveButton-allLogs-${logDataId}">
-							<button type="button" name="cancel-button-allLogs-${logDataId}" class="logCancelButton-allLogs" id="js-logCancelButton-allLogs-${logDataId}">Cancel</button>
-							<button type="button" name="delete-button-allLogs-${logDataId}" class="logDeleteButton-allLogs" id="js-logDeleteButton-allLogs-${logDataId}">Delete log</button>
-						</fieldset>
-					</form>
+								<div class="form-elements">
+									<input type="hidden" id="logId-allLogs" name="logId-allLogs" value="${logData.id}">
+									<label for="entry-date-allLogs" class="top-field">Date</label><input type="date" id="entry-date-allLogs" class="field-border border-blue" min="2018-01-01" required><br>
+
+									<label for="migraine-length-allLogs">Migraine Length <p class="italics">(hrs)</p></label><input type="text" id="migraine-length-allLogs" class="field-border border-purple"><br>
+									<label for="weather-allLogs">Weather description</label><input type="text" id="weather-allLogs" class="field-border border-lightblue"><br>
+									<label for="water-count-allLogs">Water count <p class="italics">(oz)</p></label><input type="text" id="water-count-allLogs" class="field-border border-blue"><br>
+
+									<label for="skipped-meals-allLogs">Skipped meals <span class="italics-secondline">(select all that apply)</span></label>
+									<select id="skipped-meals-allLogs" class="skipped-meals field-border-reverse border-purple" name="skipped-meals-allLogs" size="3" multiple>
+										<option value="1" id="skippedmeals-allLogs-1" class="skipped-meals-opt">Breakfast</object>
+										<option value="2" id="skippedmeals-allLogs-2" class="skipped-meals-opt">Lunch</object>
+										<option value="3" id="skippedmeals-allLogs-3" class="skipped-meals-opt">Dinner</object>
+									</select>
+									<br>
+
+									<label for="sleepstart-hr-allLogs">Slept last night @ <span class="italics-secondline">(24 hr clock)</span></label>
+									<div class="sleep-div">
+										<select id="sleepstart-hr-allLogs" class="sleep-select grey field-border-reverse border-lightblue" name="sleepstart-hr-allLogs"><br>
+											<option value="xx" id="sleepstart-allLogs-hrxx"></option>
+											<option value="00" id="sleepstart-allLogs-hr00">00</option>
+											<option value="01" id="sleepstart-allLogs-hr01">01</option>
+											<option value="02" id="sleepstart-allLogs-hr02">02</option>
+											<option value="03" id="sleepstart-allLogs-hr03">03</option>
+											<option value="04" id="sleepstart-allLogs-hr04">04</option>
+											<option value="05" id="sleepstart-allLogs-hr05">05</option>
+											<option value="06" id="sleepstart-allLogs-hr06">06</option>
+											<option value="07" id="sleepstart-allLogs-hr07">07</option>
+											<option value="08" id="sleepstart-allLogs-hr08">08</option>
+											<option value="09" id="sleepstart-allLogs-hr09">09</option>
+											<option value="10" id="sleepstart-allLogs-hr10">10</option>
+											<option value="11" id="sleepstart-allLogs-hr11">11</option>
+											<option value="12" id="sleepstart-allLogs-hr12">12</option>
+											<option value="13" id="sleepstart-allLogs-hr13">13</option>
+											<option value="14" id="sleepstart-allLogs-hr14">14</option>
+											<option value="15" id="sleepstart-allLogs-hr15">15</option>
+											<option value="16" id="sleepstart-allLogs-hr16">16</option>
+											<option value="17" id="sleepstart-allLogs-hr17">17</option>
+											<option value="18" id="sleepstart-allLogs-hr18">18</option>
+											<option value="19" id="sleepstart-allLogs-hr19">19</option>
+											<option value="20" id="sleepstart-allLogs-hr20">20</option>
+											<option value="21" id="sleepstart-allLogs-hr21">21</option>
+											<option value="22" id="sleepstart-allLogs-hr22">22</option>
+											<option value="23" id="sleepstart-allLogs-hr23">23</option>
+										</select>
+										<label for="sleepstart-min-allLogs" class="colon">:</label>
+										<select id="sleepstart-min-allLogs" class="sleep-select grey field-border-reverse border-lightblue" name="sleepstart-min-allLogs"><br>
+											<option value="xx" id="sleepstart-allLogs-minxx"></option>
+											<option value="00" id="sleepstart-allLogs-min00">00</option>
+											<option value="15" id="sleepstart-allLogs-min15">15</option>
+											<option value="30" id="sleepstart-allLogs-min30">30</option>
+											<option value="45" id="sleepstart-allLogs-min45">45</option>
+										</select>
+									</div>
+									<br>
+
+									<label for="sleepend-hr-allLogs">Woke up this morning @ <span class="italics-secondline">(24 hr clock)</span></label>
+									<div class="sleep-div">
+										<select id="sleepend-hr-allLogs" class="sleep-select grey field-border-reverse border-blue" name="sleepsend-hr-allLogs"><br>
+											<option value="xx" id="sleepend-allLogs-hrxx"></option>
+											<option value="00" id="sleepend-allLogs-hr00">00</option>
+											<option value="01" id="sleepend-allLogs-hr01">01</option>
+											<option value="02" id="sleepend-allLogs-hr02">02</option>
+											<option value="03" id="sleepend-allLogs-hr03">03</option>
+											<option value="04" id="sleepend-allLogs-hr04">04</option>
+											<option value="05" id="sleepend-allLogs-hr05">05</option>
+											<option value="06" id="sleepend-allLogs-hr06">06</option>
+											<option value="07" id="sleepend-allLogs-hr07">07</option>
+											<option value="08" id="sleepend-allLogs-hr08">08</option>
+											<option value="09" id="sleepend-allLogs-hr09">09</option>
+											<option value="10" id="sleepend-allLogs-hr10">10</option>
+											<option value="11" id="sleepend-allLogs-hr11">11</option>
+											<option value="12" id="sleepend-allLogs-hr12">12</option>
+											<option value="13" id="sleepend-allLogs-hr13">13</option>
+											<option value="14" id="sleepend-allLogs-hr14">14</option>
+											<option value="15" id="sleepend-allLogs-hr15">15</option>
+											<option value="16" id="sleepend-allLogs-hr16">16</option>
+											<option value="17" id="sleepend-allLogs-hr17">17</option>
+											<option value="18" id="sleepend-allLogs-hr18">18</option>
+											<option value="19" id="sleepend-allLogs-hr19">19</option>
+											<option value="20" id="sleepend-allLogs-hr20">20</option>
+											<option value="21" id="sleepend-allLogs-hr21">21</option>
+											<option value="22" id="sleepend-allLogs-hr22">22</option>
+											<option value="23" id="sleepend-allLogs-hr23">23</option>
+										</select>
+										<label for="sleepend-min-allLogs" class="colon">:</label>
+										<select id="sleepend-min-allLogs" class="sleep-select grey field-border-reverse border-blue" name="sleepend-min-allLogs"><br>
+											<option value="00" id="sleepend-allLogs-minxx"></option>
+											<option value="00" id="sleepend-allLogs-min00">00</option>
+											<option value="15" id="sleepend-allLogs-min15">15</option>
+											<option value="30" id="sleepend-allLogs-min30">30</option>
+											<option value="45" id="sleepend-allLogs-min45">45</option>
+										</select>
+									</div>
+									<br>
+
+									<label for="notes-allLogs">Additional notes</label><textarea id="notes-allLogs" class="notes grey field-border-reverse border-lightblue"></textarea><br>
+
+									<div class="form-buttons-div">
+										<input type="submit" name="save-button-allLogs-${logDataId}" value="Save" class="grey form-button button-border border-green" id="js-logSaveButton-allLogs-${logDataId}">
+										<button type="button" name="cancel-button-allLogs-${logDataId}" class="grey form-button button-border border-grey" id="js-logCancelButton-allLogs-${logDataId}">Cancel</button>
+										<button type="button" name="delete-button-allLogs-${logDataId}" class="grey form-button button-border border-red" id="js-logDeleteButton-allLogs-${logDataId}">Delete</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+
+					<br>
+					<button type="button" name="edit-button-allLogs-${logDataId}" class="grey form-button button-border border-purple" id="js-logEditButton-allLogs-${logDataId}">Edit</button>
 				</div>
-
-				<button type="button" name="edit-button-allLogs-${logDataId}" class="logEditButton-allLogs" id="js-logEditButton-allLogs-${logDataId}">Edit log</button>
-				<hr>
-				</div>`);
+			</div>`);
 	});
 }
 
@@ -439,7 +466,7 @@ function createLogHtml(data) {
 
 function filterLogs(filterParams, createLogHtml, createEditHandlers) {
 	let settings = {
-		url: `/logs?${params}`,
+		url: `/logs?${filterParams}`,
 		method: 'GET',
 	}
 
