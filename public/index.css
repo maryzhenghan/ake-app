@@ -277,6 +277,21 @@ form input {
 	height: 15px;
 }
 
+.error-message {
+	display: block;
+	font-size: 14px;
+	font-style: italic;
+	margin-top: 5%;
+}
+
+.required {
+	display: inline;
+	font-style: italic;
+	font-size: 10px;
+	margin-left: 10px;
+	text-transform: lowercase;
+}
+
 /* SECTION 4 */
 
 .log-box {
@@ -374,6 +389,10 @@ h6 {
 
 .grey {
 	color: #808080;
+}
+
+.red {
+	color: #d0003e;
 }
 
 .colon {

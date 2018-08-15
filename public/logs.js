@@ -109,8 +109,6 @@ function createEditHandlers(data) {
 		// save edited log button
 		$(`#js-logSaveButton-allLogs-${logData.id}`).on('click', function(e) {
 			e.preventDefault();
-			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
-			$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
 
 			let logDataObject = {
 				id: $(`#js-allLogsFormEdit-${logData.id} #logId-allLogs`).val(),
@@ -133,15 +131,13 @@ function createEditHandlers(data) {
 		$(`#js-logCancelButton-allLogs-${logData.id}`).on('click', function(e) {
 			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
 			$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
+
+			$('.error-message').empty();
 			matchEditFields([logData]);
 		});
 
 		// delete button
 		$(`#js-logDeleteButton-allLogs-${logData.id}`).on('click', function(e) {
-			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
-			$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
-			$(`#js-allLogsIndividualContainer-${logData.id}`).empty().addClass('hidden');
-
 			deleteLog(logData.id);
 		});
 	});
@@ -349,9 +345,9 @@ function createLogHtml(data) {
 
 								<div class="form-elements">
 									<input type="hidden" id="logId-allLogs" name="logId-allLogs" value="${logData.id}">
-									<label for="entry-date-allLogs" class="top-field">Date</label><input type="date" id="entry-date-allLogs" class="field-border border-blue" min="2018-01-01" required><br>
+									<label for="entry-date-allLogs" class="top-field">Date <p class="required red">*Required</p></label><input type="date" id="entry-date-allLogs" class="field-border border-blue" min="2018-01-01" required><br>
 
-									<label for="migraine-length-allLogs">Migraine Length <p class="italics">(hrs)</p></label><input type="text" id="migraine-length-allLogs" class="field-border border-purple"><br>
+									<label for="migraine-length-allLogs">Migraine Length <p class="italics">(hrs)</p> <p class="required red">*Required</p></label><input type="text" id="migraine-length-allLogs" class="field-border border-purple"><br>
 									<label for="weather-allLogs">Weather description</label><input type="text" id="weather-allLogs" class="field-border border-lightblue"><br>
 									<label for="water-count-allLogs">Water count <p class="italics">(oz)</p></label><input type="text" id="water-count-allLogs" class="field-border border-blue"><br>
 
@@ -450,6 +446,8 @@ function createLogHtml(data) {
 										<button type="button" name="cancel-button-allLogs-${logDataId}" class="grey form-button button-border border-grey" id="js-logCancelButton-allLogs-${logDataId}">Cancel</button>
 										<button type="button" name="delete-button-allLogs-${logDataId}" class="grey form-button button-border border-red" id="js-logDeleteButton-allLogs-${logDataId}">Delete</button>
 									</div>
+
+									<div class="error-message red"></div>
 								</div>
 							</fieldset>
 						</form>
@@ -484,7 +482,14 @@ function deleteLog(logId) {
 	};
 
 	$.ajax(settings)
-	.done();
+	.fail((xhr, status, error) => {
+		$('.error-message').empty().append(`Error: ${error}`);
+	})
+	.done(data => {
+		$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
+		$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
+		$(`#js-allLogsIndividualContainer-${logData.id}`).empty().addClass('hidden');
+	});
 }
 
 function putLog(logData) {
@@ -498,7 +503,12 @@ function putLog(logData) {
 	};
 
 	$.ajax(settings)
+	.fail((xhr, status, error) => {
+		$('.error-message').empty().append(`Error: ${error}`);
+	})
 	.done(data => {
+		$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
+		$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
 		return getDisplayLogs();
 	});
 }

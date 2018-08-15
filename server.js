@@ -55,6 +55,8 @@ app.get('/logs', (req, res) => {
 		.find(req.query)
 		.sort({ date: -1 })
 		.then(logs => {
+			// When log date gets deleted by accident, un-hide the following
+			// console.log(logs);
 			res.status(200).json({
 				logs: logs.map(
 					(log) => log.serialize())
@@ -133,6 +135,23 @@ app.put('/logs/:id', (req, res) => {
 			`(${req.body.id}) must match`);
 		console.error(message);
 		return res.status(400).json({ message: message });
+	}
+
+	const requiredFields = ['date', 'migraineLengthHr'];
+	let message;
+	let missingError = false;
+
+	requiredFields.forEach(field => {
+		if (empty(req.body[field])) {
+			message = `Missing \`${field}\` value in request body`;
+			console.error(message);
+			missingError = true;
+			return;
+		}
+	});
+
+	if (missingError) {
+		return res.status(400).send(message);
 	}
 
 	const toUpdate = {};

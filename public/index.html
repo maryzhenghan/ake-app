@@ -57,9 +57,9 @@
 						<fieldset class="fieldset border-green">
 							<legend class="grey legend border-green">Create log</legend>
 								<div class="form-elements">
-									<label for="entry-date" class="top-field">Date</label><input type="date" id="entry-date" class="field-border border-blue" min="2018-01-01" required><br>
+									<label for="entry-date" class="top-field">Date <span class="required red">*Required</span></label><input type="date" id="entry-date" class="field-border border-blue" min="2018-01-01" required><br>
 
-									<label for="migraine-length">Migraine Length <span class="italics">(hrs)</span></i></label><input type="text" id="migraine-length" class="field-border border-purple"><br>
+									<label for="migraine-length">Migraine Length <span class="italics">(hrs)</span> <span class="required red">*Required</span></i></label><input type="text" id="migraine-length" class="field-border border-purple"><br>
 									<label for="weather">Weather description</label><input type="text" id="weather" class="field-border border-lightblue"><br>
 									<label for="water-count">Water count <span class="italics">(oz)</span></label><input type="text" id="water-count" class="field-border border-blue"><br>
 
@@ -156,6 +156,9 @@
 										<input type="submit" name="save-button" value="Save" class="js-logSaveButton form-button grey button-border border-green">
 										<button type="button" name="cancel-button" class="js-logCancelButton form-button grey button-border border-grey">Cancel</button>
 									</div>
+
+									<div class="error-message red">
+									</div>
 								</div>
 						</fieldset>
 					</form>
@@ -167,9 +170,9 @@
 							<legend class="grey legend legend-border border-purple">Edit log</legend>
 							<div class="form-elements">
 								<input type="hidden" id="logId" name="logId" value="">
-								<label for="entry-date-edit" class="top-field">Date</label><input type="date" id="entry-date-edit" class="field-border border-blue" min="2018-01-01" required><br>
+								<label for="entry-date-edit" class="top-field">Date <span class="required red">*Required</span></label><input type="date" id="entry-date-edit" class="field-border border-blue" min="2018-01-01" required><br>
 
-								<label for="migraine-length-edit">Migraine Length <span class="italics">(hrs)</span></label><input type="text" id="migraine-length-edit" class="field-border border-purple"><br>
+								<label for="migraine-length-edit">Migraine Length <span class="italics">(hrs)</span> <span class="required red">*Required</span></label><input type="text" id="migraine-length-edit" class="field-border border-purple"><br>
 								<label for="weather-edit">Weather description</label><input type="text" id="weather-edit" class="field-border border-lightblue"><br>
 								<label for="water-count-edit">Water count <span class="italics">(oz)</span></label><input type="text" id="water-count-edit" class="field-border border-blue"><br>
 
@@ -267,6 +270,9 @@
 									<input type="submit" name="save-button-edit" value="Save" class="js-logSaveButton-edit form-button grey button-border border-green">
 									<button type="button" name="cancel-button-edit" class="js-logCancelButton-edit form-button grey button-border border-grey">Cancel</button>
 									<button type="button" name="delete-button-edit" class="js-logDeleteButton-edit form-button grey button-border border-red">Delete</button>
+								</div>
+
+								<div class="error-message red">
 								</div>
 							</div>
 						</fieldset>

@@ -23,9 +23,6 @@ $('.js-todayLogEdit').on('click', function(e) {
 // save new log button
 $('.js-logSaveButton').on('click', function(e) {
 	e.preventDefault();
-	$('.js-todayLogFormCreate').addClass('hidden');
-	$('.js-todayLogDisplayYes').removeClass('hidden');
-	$('.js-todayLogDisplayNo').addClass('hidden');
 
 	let logDataObject = {
 		date: $('#entry-date').val(),
@@ -46,9 +43,6 @@ $('.js-logSaveButton').on('click', function(e) {
 // save edited log button
 $('.js-logSaveButton-edit').on('click', function(e) {
 	e.preventDefault();
-	$('.js-todayLogFormEdit').addClass('hidden');
-	$('.js-todayLogDisplay').removeClass('hidden');
-	$('.js-todayLogEdit').removeClass('hidden');
 
 	let logDataObject = {
 		id: $('#logId').val(),
@@ -71,6 +65,7 @@ $('.js-logSaveButton-edit').on('click', function(e) {
 $('.js-logCancelButton').on('click', function(e) {
 	$('.js-todayLogFormCreate').addClass('hidden');
 	$('.js-todayLogCreate').removeClass('hidden');
+	$('.error-message').empty();
 	clearForm();
 });
 
@@ -78,6 +73,7 @@ $('.js-logCancelButton').on('click', function(e) {
 $('.js-logCancelButton-edit').on('click', function(e) {
 	$('.js-todayLogFormEdit').addClass('hidden');
 	$('.js-todayLogEdit').removeClass('hidden');
+	$('.error-message').empty();
 	getDisplayLogs();
 });
 
@@ -368,6 +364,9 @@ function deleteTodayLog(id) {
 	};
 
 	$.ajax(settings)
+	.fail((xhr, status, error) => {
+		$('.error-message').empty().append(`Error: ${error}`);
+	})
 	.done(data => {
 		$('.js-todayLogFormEdit').addClass('hidden');
 		$('.js-todayLogEdit').addClass('hidden');
@@ -388,7 +387,13 @@ function putLog(logData) {
 	};
 
 	$.ajax(settings)
+	.fail((xhr, status, error) => {
+		$('.error-message').empty().append(`Error: ${error}`);
+	})
 	.done(data => {
+		$('.js-todayLogFormEdit').addClass('hidden');
+		$('.js-todayLogDisplay').removeClass('hidden');
+		$('.js-todayLogEdit').removeClass('hidden');
 		clearForm(data);
 		return getDisplayLogs();
 	});
@@ -404,7 +409,14 @@ function postNewLog(logData) {
 	};
 
 	$.ajax(settings)
+	.fail((xhr, status, error) => {
+		$('.error-message').empty().append(`Error: ${error}`);
+	})
 	.done(data => {
+		$('.js-todayLogFormCreate').addClass('hidden');
+		$('.js-todayLogDisplayYes').removeClass('hidden');
+		$('.js-todayLogDisplayNo').addClass('hidden');
+
 		$('.js-todayLogEdit').removeClass('hidden');
 		$('.js-todayLogCreate').removeClass('hidden');
 		clearForm();
