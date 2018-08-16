@@ -16,7 +16,21 @@ const allFields = [
   'notes'
 ];
 
+let filterButton = false;
+
 // MAIN CLICK HANDLERS
+
+// filter form button
+$('.js-logFilterFormButton').on('click', function(e) {
+  if (filterButton === false) {
+    $('.js-allLogsForm').removeClass('hidden');
+    filterButton = true;
+  }
+  else {
+    $('.js-allLogsForm').addClass('hidden');
+    filterButton = false;
+  }
+});
 
 // filter button
 $('.js-logFilterButton').on('click', function(e) {
@@ -194,65 +208,29 @@ function matchEditFields(data) {
 
     // skipped meals
     if (
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1`).prop(
-        'selected'
-      )
-    ) {
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).prop(
-        'selected',
-        false
-      );
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1`).prop('selected')) {
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1`).prop('selected', false);
     }
     if (
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2`).prop(
-        'selected'
-      )
-    ) {
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).prop(
-        'selected',
-        false
-      );
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2`).prop('selected')) {
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2`).prop('selected', false);
     }
     if (
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3`).prop(
-        'selected'
-      )
-    ) {
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).prop(
-        'selected',
-        false
-      );
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3`).prop('selected')) {
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3`).prop('selected', false);
     }
 
     if (data.skippedMeals.includes('1')) {
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).attr(
-        'selected',
-        'selected'
-      );
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).prop(
-        'selected',
-        true
-      );
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1`).attr('selected', 'selected');
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1`).prop('selected', true);
     }
     if (data.skippedMeals.includes('2')) {
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).attr(
-        'selected',
-        'selected'
-      );
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).prop(
-        'selected',
-        true
-      );
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2`).attr('selected', 'selected');
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2`).prop('selected', true);
     }
     if (data.skippedMeals.includes('3')) {
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).attr(
-        'selected',
-        'selected'
-      );
-      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).prop(
-        'selected',
-        true
-      );
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3`).attr('selected', 'selected');
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3`).prop('selected', true);
     }
 
     // sleep times
@@ -412,9 +390,7 @@ function createLogHtml(data) {
 					<span class="log-migraineYesNo log-fieldBorder border-purple">${migraineYesNo}</span>
 
 					<h6>Length of migraine <p class="italics">(hours)</p></h6>
-					<span class="log-migraineLengthHr log-fieldBorder border-purple">${
-            logData.migraineLengthHr
-          }</span>
+					<span class="log-migraineLengthHr log-fieldBorder border-purple">${logData.migraineLengthHr}</span>
 
 					<h6>Weather description</h6>
 					<span class="log-weatherDescription log-fieldBorder border-lightblue">${weatherDescription}</span>
@@ -429,9 +405,7 @@ function createLogHtml(data) {
 					<span class="log-sleep grey log-fieldBorder border-lightblue">From <p class="log-sleep-hours lightblue">${sleepStartSplit}:${sleepStartSplit2}${sleepStart12HrClock}</p> to <p class="log-sleep-hours lightblue">${sleepEndSplit}:${sleepEndSplit2}${sleepEnd12HrClock}</p></span>
 
 					<h6>Total hours slept</h6>
-					<span class="log-sleepTotal log-fieldBorder border-lightblue">${
-            logData.sleepTotal
-          }</span>
+					<span class="log-sleepTotal log-fieldBorder border-lightblue">${logData.sleepTotal}</span>
 
 					<h6>Additional notes</h6>
 					<span class="log-notesModified log-fieldBorder border-blue">${notesModified}</span>
@@ -443,9 +417,7 @@ function createLogHtml(data) {
 								<legend class="grey legend legend-border border-purple">Edit Log</legend>
 
 								<div class="form-elements">
-									<input type="hidden" id="logId-allLogs" name="logId-allLogs" value="${
-                    logData.id
-                  }">
+									<input type="hidden" id="logId-allLogs" name="logId-allLogs" value="${logData.id}">
 									<label for="entry-date-allLogs" class="top-field">Date <p class="required red">*Required</p></label><input type="date" id="entry-date-allLogs" class="field-border border-blue" min="2018-01-01" required><br>
 
 									<label for="migraine-length-allLogs">Migraine Length <p class="italics">(hrs)</p> <p class="required red">*Required</p></label><input type="text" id="migraine-length-allLogs" class="field-border border-purple"><br>
