@@ -6,7 +6,7 @@
 $('.js-todayLogCreate').on('click', function(e) {
 	$('.js-todayLogFormCreate').removeClass('hidden');
 	$('.js-todayLogFormEdit').addClass('hidden');
-	$('.js-todayLogCreate').addClass('hidden');
+
 
 	if ($('#logId').val() !== "") {
 		$('.js-todayLogEdit').removeClass('hidden');

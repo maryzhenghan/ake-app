@@ -61,7 +61,7 @@ hr {
 	width: 100%;
 }
 
-/* SECTION 2 */
+/* SECTION 2 - PAGE WELCOME & DESCRIPTION */
 
 .todayDate, .allLogs {
 	margin: 0 auto;
@@ -107,7 +107,7 @@ hr {
 	font-size: 30px;
 }
 
-/* SECTION 3 */
+/* SECTION 3 - MAIN CONTENT */
 
 .todayLog, .filterLogs {
 	padding-bottom: 2%;
@@ -292,7 +292,7 @@ form input {
 	text-transform: lowercase;
 }
 
-/* SECTION 4 */
+/* SECTION 4 - LOG FORM & FILTER OUTPUTS */
 
 .log-box {
 	border: 1px solid #003ed0;
