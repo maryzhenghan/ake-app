@@ -10,19 +10,19 @@ ake fills the need for a migraine logging and tracking app that is intuitive to 
 ## Screenshots
 
 Home page (desktop):
-![ake home page](/README-ss/ake_home)
+![ake home page](/README-ss/ake_home.png)
 
 Home page with existing log:
-![ake home page with existing log](/README-ss/ake_home-log)
+![ake home page with existing log](/README-ss/ake_home-log.png)
 
 All Logs page with filter form:
-![ake all logs page with filter form](/README-ss/ake_allLogs-filter)
+![ake all logs page with filter form](/README-ss/ake_allLogs-filter.png)
 
 Editing an existing entry on the All Logs page:
-![ake all logs page with edit form](/README-ss/ake_allLogs-edit)
+![ake all logs page with edit form](/README-ss/ake_allLogs-edit.png)
 
 Home page (mobile):
-![ake home page in mobile](/README-ss/ake_mobile)
+![ake home page in mobile](/README-ss/ake_mobile.png)
 
 ## Features
 ### Migraine log
