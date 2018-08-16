@@ -54,8 +54,6 @@ app.get('/logs', (req, res) => {
   Log.find(req.query)
     .sort({ date: -1 })
     .then(logs => {
-      // When log date gets deleted by accident, un-hide the following
-      // console.log(logs);
       res.status(200).json({
         logs: logs.map(log => log.serialize())
       });

@@ -149,3 +149,19 @@
     line-height: 20px;
   }
 }
+
+@media only screen and (min-width: 640px) and (max-width: 909px) {
+  .todayDate {
+    width: 58%;
+  }
+
+  .todayDateWelcome h3, .allLogsWelcome h3 {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width: 910px) and (max-width: 1250px) {
+  .todayDate {
+    width: 44%;
+  }
+}
