@@ -236,6 +236,7 @@ h6 {
 }
 
 form input {
+  background-color: #ffffff;
   border: 0;
   color: #808080;
   display: block;
