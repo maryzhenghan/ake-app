@@ -1,313 +1,408 @@
 'use strict';
 
-const allFields = ['date', 'dateEnd', 'migraineYesNo', 'migraineLengthHr', 'weather', 'water', 'skippedMeals', 'sleepTotalRange', 'sleepStartHr', 'sleepStartMin', 'sleepEndHr', 'sleepEndMin', 'notes'];
+const allFields = [
+  'date',
+  'dateEnd',
+  'migraineYesNo',
+  'migraineLengthHr',
+  'weather',
+  'water',
+  'skippedMeals',
+  'sleepTotalRange',
+  'sleepStartHr',
+  'sleepStartMin',
+  'sleepEndHr',
+  'sleepEndMin',
+  'notes'
+];
 
 // MAIN CLICK HANDLERS
 
 // filter button
 $('.js-logFilterButton').on('click', function(e) {
-	$('.js-allLogsContainer').empty();
+  $('.js-allLogsContainer').empty();
 
-	let filters = {
-		date: $('#entry-date-start-filter').val(),
-		dateEnd: $('#entry-date-end-filter').val(),
-		migraineLengthHr: $('#migraine-length-filter').val(),
-		weather: $('#weather-filter').val(),
-		water: $('#water-count-filter').val(),
-		skippedMeals: $('#skipped-meals-filter').val(),
-		sleepStartHr: $('#sleepstart-hr-filter option:selected').text(),
-		sleepStartMin: $('#sleepstart-min-filter option:selected').text(),
-		sleepEndHr: $('#sleepend-hr-filter option:selected').text(),
-		sleepEndMin: $('#sleepend-min-filter option:selected').text(),
-		notes: $('#notes-filter').val()
-	}
+  let filters = {
+    date: $('#entry-date-start-filter').val(),
+    dateEnd: $('#entry-date-end-filter').val(),
+    migraineLengthHr: $('#migraine-length-filter').val(),
+    weather: $('#weather-filter').val(),
+    water: $('#water-count-filter').val(),
+    skippedMeals: $('#skipped-meals-filter').val(),
+    sleepStartHr: $('#sleepstart-hr-filter option:selected').text(),
+    sleepStartMin: $('#sleepstart-min-filter option:selected').text(),
+    sleepEndHr: $('#sleepend-hr-filter option:selected').text(),
+    sleepEndMin: $('#sleepend-min-filter option:selected').text(),
+    notes: $('#notes-filter').val()
+  };
 
-	let filterParams = "";
+  let filterParams = '';
 
-	allFields.forEach(field => {
-		if (!empty(filters[field])) {
-			if (field === "date") {
-				filterParams += `date=${filters[field]}&`;
-			}
-			else if (field === "dateEnd") {
-				filterParams += `dateEnd=${filters[field]}&`;
-			}
-			else {
-				filterParams += `${field}=${filters[field]}&`;
-			}
-		}
-		return filterParams;
-	});
+  allFields.forEach(field => {
+    if (!empty(filters[field])) {
+      if (field === 'date') {
+        filterParams += `date=${filters[field]}&`;
+      } else if (field === 'dateEnd') {
+        filterParams += `dateEnd=${filters[field]}&`;
+      } else {
+        filterParams += `${field}=${filters[field]}&`;
+      }
+    }
+    return filterParams;
+  });
 
-	filterLogs(filterParams, createLogHtml, createEditHandlers);
+  filterLogs(filterParams, createLogHtml, createEditHandlers);
 });
 
 // reset button
 $('.js-logResetButton').on('click', function(e) {
-	clearForm();
+  clearForm();
 });
 
 // MISC FUNCTIONS
 
 function clearForm() {
-	$('.js-allLogsForm input, #migraine-yesno-filter, #skipped-meals-filter, #sleeprange-filter, #sleepstart-hr-filter, #sleepstart-min-filter, #sleepend-hr-filter, #sleepend-min-filter, #notes-filter')
-  .not('.js-logFilterButton, .js-logResetButton')
-  .val('')
-  .removeAttr('checked')
-  .removeAttr('selected')
-	.prop('checked', false);
+  $(
+    '.js-allLogsForm input, #migraine-yesno-filter, #skipped-meals-filter, #sleeprange-filter, #sleepstart-hr-filter, #sleepstart-min-filter, #sleepend-hr-filter, #sleepend-min-filter, #notes-filter'
+  )
+    .not('.js-logFilterButton, .js-logResetButton')
+    .val('')
+    .removeAttr('checked')
+    .removeAttr('selected')
+    .prop('checked', false);
 }
 
 function empty(value) {
-	if(typeof(value) === 'number' || (typeof(value) === 'boolean')) {
-		return false;
-	}
-	if(typeof(value) === 'undefined' || value === null) {
-		return true;
-	}
-	if(typeof(value.length) !== 'undefined') {
-		if(/^[\s]*$/.test(value.toString())) {
-			return true;
-		}
-		return value.length === 0;
-	}
+  if (typeof value === 'number' || typeof value === 'boolean') {
+    return false;
+  }
+  if (typeof value === 'undefined' || value === null) {
+    return true;
+  }
+  if (typeof value.length !== 'undefined') {
+    if (/^[\s]*$/.test(value.toString())) {
+      return true;
+    }
+    return value.length === 0;
+  }
 
-	let count = 0;
-	for(let i in value) {
-		if(value.hasOwnProperty(i)) {
-			count ++;
-		}
-	}
-	return count === 0;
+  let count = 0;
+  for (let i in value) {
+    if (value.hasOwnProperty(i)) {
+      count++;
+    }
+  }
+  return count === 0;
 }
 
 function convertDate(date) {
-	let splitDate = date.split("/");
-	let combineDate = `${splitDate[2]}-${splitDate[0]}-${splitDate[1]}`;
-	return combineDate;
+  let splitDate = date.split('/');
+  let combineDate = `${splitDate[2]}-${splitDate[0]}-${splitDate[1]}`;
+  return combineDate;
 }
 
 function convertTime(splitTime) {
-	if (splitTime < 10) {
-		return `0${splitTime}`;
-	}
-	else {
-		return splitTime;
-	}
+  if (splitTime < 10) {
+    return `0${splitTime}`;
+  } else {
+    return splitTime;
+  }
 }
 
 // DATA MANIPULATION FUNCTIONS
 
 function createEditHandlers(data) {
-	data.logs.forEach(logData => {
-		// edit log button
-		$(`#js-logEditButton-allLogs-${logData.id}`).on('click', function(e) {
-			$(`#js-allLogsFormEdit-${logData.id}`).removeClass('hidden');
-			$(`#js-logEditButton-allLogs-${logData.id}`).addClass('hidden');
-		});
+  data.logs.forEach(logData => {
+    // edit log button
+    $(`#js-logEditButton-allLogs-${logData.id}`).on('click', function(e) {
+      $(`#js-allLogsFormEdit-${logData.id}`).removeClass('hidden');
+      $(`#js-logEditButton-allLogs-${logData.id}`).addClass('hidden');
+    });
 
-		// save edited log button
-		$(`#js-logSaveButton-allLogs-${logData.id}`).on('click', function(e) {
-			e.preventDefault();
+    // save edited log button
+    $(`#js-logSaveButton-allLogs-${logData.id}`).on('click', function(e) {
+      e.preventDefault();
 
-			let logDataObject = {
-				id: $(`#js-allLogsFormEdit-${logData.id} #logId-allLogs`).val(),
-				date: $(`#js-allLogsFormEdit-${logData.id} #entry-date-allLogs`).val(),
-				migraineLengthHr: $(`#js-allLogsFormEdit-${logData.id} #migraine-length-allLogs`).val(),
-				weather: $(`#js-allLogsFormEdit-${logData.id} #weather-allLogs`).val(),
-				water: $(`#js-allLogsFormEdit-${logData.id} #water-count-allLogs`).val(),
-				skippedMeals: $(`#js-allLogsFormEdit-${logData.id} #skipped-meals-allLogs`).val() || [],
-				sleepStartHr: $(`#js-allLogsFormEdit-${logData.id} #sleepstart-hr-allLogs option:selected`).text(),
-				sleepStartMin: $(`#js-allLogsFormEdit-${logData.id} #sleepstart-min-allLogs option:selected`).text(),
-				sleepEndHr: $(`#js-allLogsFormEdit-${logData.id} #sleepend-hr-allLogs option:selected`).text(),
-				sleepEndMin: $(`#js-allLogsFormEdit-${logData.id} #sleepend-min-allLogs option:selected`).text(),
-				notes: $(`#js-allLogsFormEdit-${logData.id} #notes-allLogs`).val()
-			};
+      let logDataObject = {
+        id: $(`#js-allLogsFormEdit-${logData.id} #logId-allLogs`).val(),
+        date: $(`#js-allLogsFormEdit-${logData.id} #entry-date-allLogs`).val(),
+        migraineLengthHr: $(
+          `#js-allLogsFormEdit-${logData.id} #migraine-length-allLogs`
+        ).val(),
+        weather: $(`#js-allLogsFormEdit-${logData.id} #weather-allLogs`).val(),
+        water: $(
+          `#js-allLogsFormEdit-${logData.id} #water-count-allLogs`
+        ).val(),
+        skippedMeals:
+          $(`#js-allLogsFormEdit-${logData.id} #skipped-meals-allLogs`).val() ||
+          [],
+        sleepStartHr: $(
+          `#js-allLogsFormEdit-${
+            logData.id
+          } #sleepstart-hr-allLogs option:selected`
+        ).text(),
+        sleepStartMin: $(
+          `#js-allLogsFormEdit-${
+            logData.id
+          } #sleepstart-min-allLogs option:selected`
+        ).text(),
+        sleepEndHr: $(
+          `#js-allLogsFormEdit-${
+            logData.id
+          } #sleepend-hr-allLogs option:selected`
+        ).text(),
+        sleepEndMin: $(
+          `#js-allLogsFormEdit-${
+            logData.id
+          } #sleepend-min-allLogs option:selected`
+        ).text(),
+        notes: $(`#js-allLogsFormEdit-${logData.id} #notes-allLogs`).val()
+      };
 
-			putLog(logDataObject);
-		});
+      putLog(logDataObject);
+    });
 
-		// cancel edit button
-		$(`#js-logCancelButton-allLogs-${logData.id}`).on('click', function(e) {
-			$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
-			$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
+    // cancel edit button
+    $(`#js-logCancelButton-allLogs-${logData.id}`).on('click', function(e) {
+      $(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
+      $(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
 
-			$('.error-message').empty();
-			matchEditFields([logData]);
-		});
+      $('.error-message').empty();
+      matchEditFields([logData]);
+    });
 
-		// delete button
-		$(`#js-logDeleteButton-allLogs-${logData.id}`).on('click', function(e) {
-			deleteLog(logData.id);
-		});
-	});
+    // delete button
+    $(`#js-logDeleteButton-allLogs-${logData.id}`).on('click', function(e) {
+      deleteLog(logData.id);
+    });
+  });
 }
 
 function matchEditFields(data) {
-	data.forEach(data => {
-		let id = data.id;
-		let date = `${data.dateAdjusted}`;
-		let entryDate = convertDate(date);
+  data.forEach(data => {
+    let id = data.id;
+    let date = `${data.dateAdjusted}`;
+    let entryDate = convertDate(date);
 
-		$(`#js-allLogsFormEdit-${data.id} #logId-allLogs`).val(id);
-		$(`#js-allLogsFormEdit-${data.id} #entry-date-allLogs`).val(entryDate);
-		$(`#js-allLogsFormEdit-${data.id} #migraine-length-allLogs`).val(data.migraineLengthHr);
-		$(`#js-allLogsFormEdit-${data.id} #weather-allLogs`).val(data.weather);
-		$(`#js-allLogsFormEdit-${data.id} #water-count-allLogs`).val(data.water);
+    $(`#js-allLogsFormEdit-${data.id} #logId-allLogs`).val(id);
+    $(`#js-allLogsFormEdit-${data.id} #entry-date-allLogs`).val(entryDate);
+    $(`#js-allLogsFormEdit-${data.id} #migraine-length-allLogs`).val(
+      data.migraineLengthHr
+    );
+    $(`#js-allLogsFormEdit-${data.id} #weather-allLogs`).val(data.weather);
+    $(`#js-allLogsFormEdit-${data.id} #water-count-allLogs`).val(data.water);
 
-		// skipped meals
-		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1`).prop('selected')) {
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).prop('selected', false);
-		}
-		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2`).prop('selected')) {
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).prop('selected', false);
-		}
-		if ($(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3`).prop('selected')) {
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).prop('selected', false);
-		}
+    // skipped meals
+    if (
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1`).prop(
+        'selected'
+      )
+    ) {
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).prop(
+        'selected',
+        false
+      );
+    }
+    if (
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2`).prop(
+        'selected'
+      )
+    ) {
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).prop(
+        'selected',
+        false
+      );
+    }
+    if (
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3`).prop(
+        'selected'
+      )
+    ) {
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).prop(
+        'selected',
+        false
+      );
+    }
 
-		if (data.skippedMeals.includes('1')) {
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).attr('selected', 'selected');
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).prop('selected', true);
-		}
-		if (data.skippedMeals.includes('2')) {
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).attr('selected', 'selected');
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).prop('selected', true);
-		}
-		if (data.skippedMeals.includes('3')) {
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).attr('selected', 'selected');
-			$(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).prop('selected', true);
-		}
+    if (data.skippedMeals.includes('1')) {
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).attr(
+        'selected',
+        'selected'
+      );
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-1:selected`).prop(
+        'selected',
+        true
+      );
+    }
+    if (data.skippedMeals.includes('2')) {
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).attr(
+        'selected',
+        'selected'
+      );
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-2:selected`).prop(
+        'selected',
+        true
+      );
+    }
+    if (data.skippedMeals.includes('3')) {
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).attr(
+        'selected',
+        'selected'
+      );
+      $(`#js-allLogsFormEdit-${data.id} #skippedmeals-allLogs-3:selected`).prop(
+        'selected',
+        true
+      );
+    }
 
-		// sleep times
-		let splitStartTime = data.sleepStart.split(":");
-		let splitEndTime = data.sleepEnd.split(":");
-		let startHr = splitStartTime[0];
-		let startMin = splitStartTime[1];
-		let endHr = splitEndTime[0];
-		let endMin = splitEndTime[1];
+    // sleep times
+    let splitStartTime = data.sleepStart.split(':');
+    let splitEndTime = data.sleepEnd.split(':');
+    let startHr = splitStartTime[0];
+    let startMin = splitStartTime[1];
+    let endHr = splitEndTime[0];
+    let endMin = splitEndTime[1];
 
-		let convertedStartHr = convertTime(startHr);
-		let convertedStartMin = convertTime(startMin);
-		let convertedEndHr = convertTime(endHr);
-		let convertedEndMin = convertTime(endMin);
+    let convertedStartHr = convertTime(startHr);
+    let convertedStartMin = convertTime(startMin);
+    let convertedEndHr = convertTime(endHr);
+    let convertedEndMin = convertTime(endMin);
 
-		$(`#js-allLogsFormEdit-${data.id} #sleepstart-allLogs-hr${convertedStartHr}`).attr('selected', 'selected');
-		$(`#js-allLogsFormEdit-${data.id} #sleepstart-allLogs-hr${convertedStartHr}`).prop('selected', true);
+    $(
+      `#js-allLogsFormEdit-${data.id} #sleepstart-allLogs-hr${convertedStartHr}`
+    ).attr('selected', 'selected');
+    $(
+      `#js-allLogsFormEdit-${data.id} #sleepstart-allLogs-hr${convertedStartHr}`
+    ).prop('selected', true);
 
-		$(`#js-allLogsFormEdit-${data.id} #sleepstart-allLogs-min${convertedStartMin}`).attr('selected', 'selected');
-		$(`#js-allLogsFormEdit-${data.id} #sleepstart-allLogs-min${convertedStartMin}`).prop('selected', true);
+    $(
+      `#js-allLogsFormEdit-${
+        data.id
+      } #sleepstart-allLogs-min${convertedStartMin}`
+    ).attr('selected', 'selected');
+    $(
+      `#js-allLogsFormEdit-${
+        data.id
+      } #sleepstart-allLogs-min${convertedStartMin}`
+    ).prop('selected', true);
 
-		$(`#js-allLogsFormEdit-${data.id} #sleepend-allLogs-hr${convertedEndHr}`).attr('selected', 'selected');
-		$(`#js-allLogsFormEdit-${data.id} #sleepend-allLogs-hr${convertedEndHr}`).prop('selected', true);
+    $(
+      `#js-allLogsFormEdit-${data.id} #sleepend-allLogs-hr${convertedEndHr}`
+    ).attr('selected', 'selected');
+    $(
+      `#js-allLogsFormEdit-${data.id} #sleepend-allLogs-hr${convertedEndHr}`
+    ).prop('selected', true);
 
-		$(`#js-allLogsFormEdit-${data.id} #sleepend-allLogs-min${convertedEndMin}`).attr('selected', 'selected');
-		$(`#js-allLogsFormEdit-${data.id} #sleepend-allLogs-min${convertedEndMin}`).prop('selected', true);
+    $(
+      `#js-allLogsFormEdit-${data.id} #sleepend-allLogs-min${convertedEndMin}`
+    ).attr('selected', 'selected');
+    $(
+      `#js-allLogsFormEdit-${data.id} #sleepend-allLogs-min${convertedEndMin}`
+    ).prop('selected', true);
 
-		// notes
-		$(`#js-allLogsFormEdit-${data.id} #notes-allLogs`).val(data.notes);
-	});
+    // notes
+    $(`#js-allLogsFormEdit-${data.id} #notes-allLogs`).val(data.notes);
+  });
 }
 
 function createLogHtml(data) {
-	$('.js-allLogsContainer').empty();
+  $('.js-allLogsContainer').empty();
 
-	data.logs.forEach(logData => {
-		let logDataId = logData.id;
+  data.logs.forEach(logData => {
+    let logDataId = logData.id;
 
-		// sleep times display
-		let sleepStartHrSplit = logData.sleepStart.split(":");
-		let sleepEndHrSplit = logData.sleepEnd.split(":");
+    // sleep times display
+    let sleepStartHrSplit = logData.sleepStart.split(':');
+    let sleepEndHrSplit = logData.sleepEnd.split(':');
 
-		let sleepStartSplit = sleepStartHrSplit[0];
-		let sleepStartSplit2 = sleepStartHrSplit[1];
+    let sleepStartSplit = sleepStartHrSplit[0];
+    let sleepStartSplit2 = sleepStartHrSplit[1];
 
-		let sleepEndSplit = sleepEndHrSplit[0];
-		let sleepEndSplit2 = sleepEndHrSplit[1];
+    let sleepEndSplit = sleepEndHrSplit[0];
+    let sleepEndSplit2 = sleepEndHrSplit[1];
 
-		if (sleepStartSplit < 10) {
-			sleepStartSplit = '0' + sleepStartSplit;
-		}
-		if (sleepStartSplit2 < 10) {
-			sleepStartSplit2 = '0' + sleepStartSplit2;
-		}
-		if (sleepEndSplit < 10) {
-			sleepEndSplit = '0' + sleepEndSplit;
-		}
-		if (sleepEndSplit2 < 10) {
-			sleepEndSplit2 = '0' + sleepEndSplit2;
-		}
+    if (sleepStartSplit < 10) {
+      sleepStartSplit = '0' + sleepStartSplit;
+    }
+    if (sleepStartSplit2 < 10) {
+      sleepStartSplit2 = '0' + sleepStartSplit2;
+    }
+    if (sleepEndSplit < 10) {
+      sleepEndSplit = '0' + sleepEndSplit;
+    }
+    if (sleepEndSplit2 < 10) {
+      sleepEndSplit2 = '0' + sleepEndSplit2;
+    }
 
-		let sleepStart12HrClock;
-		let sleepEnd12HrClock;
+    let sleepStart12HrClock;
+    let sleepEnd12HrClock;
 
-		if (sleepStartSplit < 12) {
-			sleepStart12HrClock = "AM";
-		}
-		else {
-			sleepStart12HrClock = "PM";
-		}
+    if (sleepStartSplit < 12) {
+      sleepStart12HrClock = 'AM';
+    } else {
+      sleepStart12HrClock = 'PM';
+    }
 
-		if (sleepEndSplit < 12) {
-			sleepEnd12HrClock = "AM";
-		}
-		else {
-			sleepEnd12HrClock = "PM";
-		}
+    if (sleepEndSplit < 12) {
+      sleepEnd12HrClock = 'AM';
+    } else {
+      sleepEnd12HrClock = 'PM';
+    }
 
-		// migraine: true false
-		let migraineYesNo;
-		if (logData.migraine === true) {
-			migraineYesNo = 'Yes';
-		}
-		else {
-			migraineYesNo = 'No';
-		}
+    // migraine: true false
+    let migraineYesNo;
+    if (logData.migraine === true) {
+      migraineYesNo = 'Yes';
+    } else {
+      migraineYesNo = 'No';
+    }
 
-		// weather description
-		let weatherDescription;
-		if (logData.weather === "") {
-			weatherDescription = "n/a";
-		}
-		else {
-			weatherDescription = logData.weather;
-		}
+    // weather description
+    let weatherDescription;
+    if (logData.weather === '') {
+      weatherDescription = 'n/a';
+    } else {
+      weatherDescription = logData.weather;
+    }
 
-		// water count
-		let waterCount;
-		if (empty(logData.water)) {
-			waterCount = 'n/a';
-		}
-		else {
-			waterCount = logData.water;
-		}
+    // water count
+    let waterCount;
+    if (empty(logData.water)) {
+      waterCount = 'n/a';
+    } else {
+      waterCount = logData.water;
+    }
 
-		// skipped meals
-		let skippedMealsModified = "";
-		let skippedB = "breakfast";
-		let skippedL = "lunch";
-		let skippedD = "dinner";
-		if (logData.skippedMeals.includes('1')) {
-			skippedMealsModified += "breakfast ";
-		}
-		if (logData.skippedMeals.includes('2')) {
-			skippedMealsModified += "lunch ";
-		}
-		if (logData.skippedMeals.includes('3')) {
-			skippedMealsModified += "dinner ";
-		}
-		if (!(logData.skippedMeals.includes('1')) && !(logData.skippedMeals.includes('2')) && !(logData.skippedMeals.includes('3'))) {
-			skippedMealsModified = "n/a";
-		}
+    // skipped meals
+    let skippedMealsModified = '';
+    let skippedB = 'breakfast';
+    let skippedL = 'lunch';
+    let skippedD = 'dinner';
+    if (logData.skippedMeals.includes('1')) {
+      skippedMealsModified += 'breakfast ';
+    }
+    if (logData.skippedMeals.includes('2')) {
+      skippedMealsModified += 'lunch ';
+    }
+    if (logData.skippedMeals.includes('3')) {
+      skippedMealsModified += 'dinner ';
+    }
+    if (
+      !logData.skippedMeals.includes('1') &&
+      !logData.skippedMeals.includes('2') &&
+      !logData.skippedMeals.includes('3')
+    ) {
+      skippedMealsModified = 'n/a';
+    }
 
-		// notes
-		let notesModified = logData.notes;
-		if (logData.notes === "") {
-			notesModified = "n/a";
-		}
+    // notes
+    let notesModified = logData.notes;
+    if (logData.notes === '') {
+      notesModified = 'n/a';
+    }
 
-		// append HTML
-		$('.js-allLogsContainer').append(`
+    // append HTML
+    $('.js-allLogsContainer').append(`
 			<hr>
 			<div class="log-box" id="js-allLogsIndividualContainer-${logDataId}">
 				<div class="log-contents">
@@ -317,7 +412,9 @@ function createLogHtml(data) {
 					<span class="log-migraineYesNo log-fieldBorder border-purple">${migraineYesNo}</span>
 
 					<h6>Length of migraine <p class="italics">(hours)</p></h6>
-					<span class="log-migraineLengthHr log-fieldBorder border-purple">${logData.migraineLengthHr}</span>
+					<span class="log-migraineLengthHr log-fieldBorder border-purple">${
+            logData.migraineLengthHr
+          }</span>
 
 					<h6>Weather description</h6>
 					<span class="log-weatherDescription log-fieldBorder border-lightblue">${weatherDescription}</span>
@@ -332,7 +429,9 @@ function createLogHtml(data) {
 					<span class="log-sleep grey log-fieldBorder border-lightblue">From <p class="log-sleep-hours lightblue">${sleepStartSplit}:${sleepStartSplit2}${sleepStart12HrClock}</p> to <p class="log-sleep-hours lightblue">${sleepEndSplit}:${sleepEndSplit2}${sleepEnd12HrClock}</p></span>
 
 					<h6>Total hours slept</h6>
-					<span class="log-sleepTotal log-fieldBorder border-lightblue">${logData.sleepTotal}</span>
+					<span class="log-sleepTotal log-fieldBorder border-lightblue">${
+            logData.sleepTotal
+          }</span>
 
 					<h6>Additional notes</h6>
 					<span class="log-notesModified log-fieldBorder border-blue">${notesModified}</span>
@@ -344,7 +443,9 @@ function createLogHtml(data) {
 								<legend class="grey legend legend-border border-purple">Edit Log</legend>
 
 								<div class="form-elements">
-									<input type="hidden" id="logId-allLogs" name="logId-allLogs" value="${logData.id}">
+									<input type="hidden" id="logId-allLogs" name="logId-allLogs" value="${
+                    logData.id
+                  }">
 									<label for="entry-date-allLogs" class="top-field">Date <p class="required red">*Required</p></label><input type="date" id="entry-date-allLogs" class="field-border border-blue" min="2018-01-01" required><br>
 
 									<label for="migraine-length-allLogs">Migraine Length <p class="italics">(hrs)</p> <p class="required red">*Required</p></label><input type="text" id="migraine-length-allLogs" class="field-border border-purple"><br>
@@ -457,78 +558,82 @@ function createLogHtml(data) {
 					<button type="button" name="edit-button-allLogs-${logDataId}" class="grey form-button button-border border-purple" id="js-logEditButton-allLogs-${logDataId}">Edit</button>
 				</div>
 			</div>`);
-	});
+  });
 }
 
 // REQUEST FUNCTIONS
 
 function filterLogs(filterParams, createLogHtml, createEditHandlers) {
-	let settings = {
-		url: `/logs?${filterParams}`,
-		method: 'GET',
-	}
+  let settings = {
+    url: `/logs?${filterParams}`,
+    method: 'GET'
+  };
 
-	$.ajax(settings)
-	.done(data => {
-		createLogHtml(data);
-		createEditHandlers(data);
-	});
+  $.ajax(settings).done(data => {
+    createLogHtml(data);
+    createEditHandlers(data);
+  });
 }
 
 function deleteLog(logId) {
-	let settings = {
-		url: `/logs/${logId}`,
-		method: 'DELETE'
-	};
+  let settings = {
+    url: `/logs/${logId}`,
+    method: 'DELETE'
+  };
 
-	$.ajax(settings)
-	.fail((xhr, status, error) => {
-		$('.error-message').empty().append(`Error: ${error}`);
-	})
-	.done(data => {
-		$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
-		$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
-		$(`#js-allLogsIndividualContainer-${logData.id}`).empty().addClass('hidden');
-	});
+  $.ajax(settings)
+    .fail((xhr, status, error) => {
+      $('.error-message')
+        .empty()
+        .append(`Error: ${error}`);
+    })
+    .done(data => {
+      $(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
+      $(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
+      $(`#js-allLogsIndividualContainer-${logData.id}`)
+        .empty()
+        .addClass('hidden');
+    });
 }
 
 function putLog(logData) {
-	let id = logData.id;
-	let settings = {
-		url: `/logs/${id}`,
-		method: 'PUT',
-		dataType: 'json',
-		contentType: 'application/json',
-		data: JSON.stringify(logData),
-	};
+  let id = logData.id;
+  let settings = {
+    url: `/logs/${id}`,
+    method: 'PUT',
+    dataType: 'json',
+    contentType: 'application/json',
+    data: JSON.stringify(logData)
+  };
 
-	$.ajax(settings)
-	.fail((xhr, status, error) => {
-		$('.error-message').empty().append(`Error: ${error}`);
-	})
-	.done(data => {
-		$(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
-		$(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
-		return getDisplayLogs();
-	});
+  $.ajax(settings)
+    .fail((xhr, status, error) => {
+      $('.error-message')
+        .empty()
+        .append(`Error: ${error}`);
+    })
+    .done(data => {
+      $(`#js-allLogsFormEdit-${logData.id}`).addClass('hidden');
+      $(`#js-logEditButton-allLogs-${logData.id}`).removeClass('hidden');
+      return getDisplayLogs();
+    });
 }
 
 function getAllLogs(createLogHtml, matchEditFields, createEditHandlers) {
-	let settings = {
-		url: '/logs',
-		method: 'GET'
-	};
+  let settings = {
+    url: '/logs',
+    method: 'GET'
+  };
 
-	$.ajax(settings)
-	.done(data => {
-		createLogHtml(data);
-		matchEditFields(data.logs);
-		createEditHandlers(data);
-	});
+  $.ajax(settings).done(data => {
+    createLogHtml(data);
+    matchEditFields(data.logs);
+    createEditHandlers(data);
+  });
 }
 
 function getDisplayLogs() {
-	getAllLogs(createLogHtml, matchEditFields, createEditHandlers);
+  getAllLogs(createLogHtml, matchEditFields, createEditHandlers);
 }
 
 $(getDisplayLogs);

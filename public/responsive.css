@@ -1,5 +1,6 @@
 /* For smartphones, tablets, and smaller browsers */
-@media only screen and (min-width : 320px) and (max-width : 639px) {
+
+@media only screen and (min-width: 320px) and (max-width: 639px) {
   body {
     border-radius: 0;
     box-shadow: 0 0;
@@ -13,24 +14,28 @@
     font-size: 48px;
   }
 
-  .nav-link, .js-logSaveButton {
+  .nav-link,
+  .js-logSaveButton {
     width: 80%;
     height: 20px;
   }
 
-  h2 a, a:visited {
-  	font-size: 16px;
+  h2 a,
+  a:visited {
+    font-size: 16px;
     padding-top: 2px;
   }
 
   /* SECTION 2 - PAGE WELCOME & DESCRIPTION */
 
-  .todayDate, .allLogs {
+  .todayDate,
+  .allLogs {
     width: 75%;
   }
 
-  .todayDateWelcome h3, .allLogsWelcome h3 {
-  	width: 80%;
+  .todayDateWelcome h3,
+  .allLogsWelcome h3 {
+    width: 80%;
   }
 
   /* SECTION 3 - MAIN CONTENT */
@@ -43,17 +48,19 @@
     width: 60%;
   }
 
-  .todayLog-buttons, .filterLog-buttons {
-  	width: 80%;
+  .todayLog-buttons,
+  .filterLog-buttons {
+    width: 80%;
     height: 20px;
     margin-bottom: 10%;
   }
 
-  .todayLog-buttons input, .filterLog-buttons button {
+  .todayLog-buttons input,
+  .filterLog-buttons button {
     font-size: 15px;
     margin-bottom: 0;
     width: 80%;
-  	height: 30px;
+    height: 30px;
   }
 
   .todayLogForms {
@@ -64,23 +71,27 @@
     margin-top: 5%;
   }
 
-  .log-create-form, .log-edit-form, .log-filter-form {
-  	width: 85%;
+  .log-create-form,
+  .log-edit-form,
+  .log-filter-form {
+    width: 85%;
   }
 
   .log-filter-form fieldset {
     padding-bottom: 75px;
   }
 
-  legend, h5 {
+  legend,
+  h5 {
     font-size: 18px;
   }
 
   .form-elements {
-  	width: 80%;
+    width: 80%;
   }
 
-  form label, h6 {
+  form label,
+  h6 {
     font-size: 15px;
     line-height: 1em;
     margin-bottom: 5px;
@@ -92,14 +103,16 @@
   }
 
   .skipped-meals-opt {
-  	font-size: 16px;
+    font-size: 16px;
   }
 
-  .sleep-select, .notes {
+  .sleep-select,
+  .notes {
     font-size: 14px;
   }
 
-  .form-button, .log-box button {
+  .form-button,
+  .log-box button {
     font-family: 'Lato', sans-serif;
     font-size: 15px;
     font-weight: 300;
@@ -130,9 +143,9 @@
 
   /* COMMON STYLES */
 
-  .italics, .italics-secondline {
+  .italics,
+  .italics-secondline {
     font-size: 12px;
     line-height: 20px;
   }
-
 }
