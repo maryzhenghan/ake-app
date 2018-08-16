@@ -160,6 +160,7 @@ hr {
 .todayLog-buttons button,
 .log-filter-button button,
 .filterLog-buttons button {
+  background-color: #ffffff;
   font-family: 'Lato', sans-serif;
   font-size: 12px;
   font-weight: 300;
@@ -266,6 +267,7 @@ form input {
 }
 
 .sleep-select {
+  background-color: #ffffff;
   border-radius: 0;
   font-family: 'Lato', sans-serif;
   font-weight: 300;
@@ -297,6 +299,7 @@ textarea {
   background-color: #ffffff;
   box-sizing: border-box;
   display: inline-block;
+  font-family: 'Lato', sans-serif;
   font-weight: 300;
   letter-spacing: 2px;
   margin: 1% 1% 10px auto;
