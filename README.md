@@ -11,7 +11,7 @@ ake fills the need for a migraine logging and tracking app that is intuitive to 
 
 Home page (desktop):
 
-![ake home page](/README-ss/ake_home.png)
+![ake home page](/README-ss/ake_home-noLog.png)
 
 
 Home page with existing log:
