@@ -154,7 +154,7 @@ describe('Migraine app API resource', function() {
 
 	describe ('PUT endpoint for /logs/:id', function() {
 		it('should return a 400 error if the IDs in the req path and req body DO NOT match', function() {
-			const updateLog = { "id": "111111111111111111111100", "migraineLengthHr": 4 };
+			const updateLog = { "id": "111111111111111111111100", "date": "08/20/2018", "migraineLengthHr": 4 };
 			const fakeId = "xxxxx";
 
 			return chai.request(app)
@@ -167,7 +167,7 @@ describe('Migraine app API resource', function() {
 		});
 
 		it('should update the log', function() {
-			const updateLog = { "id": "111111111111111111111100", "migraineLengthHr": 400 };
+			const updateLog = { "id": "111111111111111111111100", "date": "08/20/2018", "migraineLengthHr": 400 };
 			let data;
 
 			return Log.findById(updateLog.id)
